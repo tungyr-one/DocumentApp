@@ -1,0 +1,57 @@
+<form [formGroup]="editForm" (ngSubmit)="onSubmit(editForm)">
+    <div>
+      <label>
+        Name:
+        <input formControlName="name" placeholder="Your name">
+      </label>
+      <div *ngIf="editForm.get('name')?.invalid && (editForm.get('name')?.dirty || editForm.get('name')?.touched)">
+        Please provide a name.
+      </div>
+    </div>
+    <div>
+      <label>
+        Version:
+        <input formControlName="version" placeholder="Your version">
+      </label>
+      <div *ngIf="editForm.get('version')?.invalid && (editForm.get('version')?.dirty || editForm.get('version')?.touched)">
+        Please provide a valid version.
+      </div>
+    </div>
+    <div>
+      <label>
+        Author:
+        <input formControlName="author" placeholder="author">
+      </label>
+      <div *ngIf="editForm.get('author')?.invalid && (editForm.get('author')?.dirty || editForm.get('author')?.touched)">
+        Please provide a valid author name.
+      </div>
+    </div>
+    <div>
+        <label>
+          cathegory:
+          <input formControlName="category" placeholder="Your category">
+        </label>
+        <div *ngIf="editForm.get('category')?.invalid && (editForm.get('category')?.dirty || editForm.get('category')?.touched)">
+          Please provide a valid category.
+        </div>
+      </div>    <div>
+        <label>
+          Subcategory:
+          <input formControlName="subcategory" placeholder="Your subcategory">
+        </label>
+        <div *ngIf="editForm.get('subcategory')?.invalid && (editForm.get('subcategory')?.dirty || editForm.get('subcategory')?.touched)">
+          Please provide a valid subcategory.
+        </div>
+      </div>    
+      <div>
+        <label>
+          Text:
+          <input formControlName="text" placeholder="Your text">
+        </label>
+        <div style="border: solid 1px red;" *ngIf="editForm.get('text')?.invalid && (editForm.get('text')?.dirty || editForm.get('text')?.touched)">
+          Please provide a valid text.
+        </div>
+      </div>   
+    <button type="submit" [disabled]="editForm.invalid">Send</button>
+  </form>
+

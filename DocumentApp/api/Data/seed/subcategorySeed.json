@@ -1,0 +1,21 @@
+[
+   {
+      "Id": 1,
+      "Name": "Khaki",
+      "CategoryId": 1,
+      "Doc": []
+
+   },
+   {
+      "Id": 2,
+      "Name": "Pink",
+      "CategoryId": 2,
+      "Doc": []
+   },
+   {
+      "Id": 3,
+      "Name": "Green",
+      "CategoryId": 3,
+      "Doc": []
+   }
+]
