@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Observable, tap } from 'rxjs';
 import { Doc } from 'src/app/_models/doc';
 import { DocService } from '../_services/doc.service';
 
@@ -13,21 +14,21 @@ import { DocService } from '../_services/doc.service';
 export class DocEditComponent implements OnInit{
   editForm: FormGroup;
   id:string|null;
-  doc:Doc;
+  doc:Observable<Doc>;
 
   constructor(private docService:DocService, private toastr: ToastrService,
     private fb: FormBuilder, private route: ActivatedRoute) { }
 
-  ngOnInit() {    
+  ngOnInit() {  
+    this.loadDoc();  
     this.editForm = this.fb.group({
-      name: ['name', Validators.required],
+      name: ['', Validators.required],
       version: ['', [Validators.required]],
       author: ['', [Validators.required]],
       category: ['', [Validators.required]],
       subcategory: ['', [Validators.required]],
       text: ['', [Validators.required, Validators.minLength(15)]],
     });
-    this.loadDoc();
   }
 
   onSubmit(form: FormGroup) {
@@ -41,24 +42,33 @@ export class DocEditComponent implements OnInit{
     this.toastr.success('Ehuuuuuuu!');
   }
 
-  fillForm(editDoc:Doc){
-    this.editForm.controls['name'].setValue('ddddddddd');
+  // fillForm(editDoc:Doc){
+  //   this.editForm.controls['name'].setValue('ddddddddd');
 
-    this.editForm.controls['version'].setValue(this.doc.version);
-  }
+  //   this.editForm.controls['version'].setValue(this.doc.version);
+  // }
 
   loadDoc(){
     this.id = this.route.snapshot.paramMap.get('id');
     console.log("id: " + this.id);
     if(this.id !== null)
     {
-        this.docService.getDoc(this.id).subscribe(doc =>{
-        this.doc = doc;
-      })
+      this.doc = this.docService.getDoc(this.id)
+      .pipe(tap(doc=> this.editForm.patchValue(doc)));
+        // this.docService.getDoc(this.id).subscribe(doc =>{
+        // this.doc = doc;
+        // console.log(doc);
+      // })
     }
     else
     {
       this.toastr.error('Unable to load document data');
+    }
+  }
+
+  submit() {
+    if (this.editForm.valid) {
+      console.log(this.editForm.value);
     }
   }
 }

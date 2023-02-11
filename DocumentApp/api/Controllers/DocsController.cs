@@ -38,7 +38,7 @@ namespace api.Controllers
         public async Task<ActionResult<DocDto>> GetDoc(int id)
         {
             var doc = await _docRepository.GetDocAsync(id);
-            return Ok(_mapper.Map<IEnumerable<DocDto>>(doc));
+            return Ok(_mapper.Map<DocDto>(doc));
         }
 
         [HttpPut("{id}")]

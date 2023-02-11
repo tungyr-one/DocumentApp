@@ -1,0 +1,14 @@
+.error {
+color:red;
+}
+
+#text{
+   height: 50%;
+   width: auto;
+}
+
+*:disabled {
+   background-color: dimgrey;
+   color: linen;
+   opacity: 1;
+}

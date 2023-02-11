@@ -1,4 +1,77 @@
-<form [formGroup]="editForm" (ngSubmit)="onSubmit(editForm)">
+<form 
+  *ngIf="doc | async"
+  [formGroup]="editForm" 
+  (ngSubmit)="submit()">
+  <div>
+    <label>
+      Name:
+      <input id="name" formControlName="name" placeholder="Document name">
+    </label>
+    <div *ngIf="editForm.get('name')?.invalid && (editForm.get('name')?.dirty || editForm.get('name')?.touched)" class="error-field">
+      <p class="error">Please provide a name.</p> 
+    </div>
+  </div>
+  <div>
+    <label>
+      Version:
+      <input id="version" formControlName="version" placeholder="Doc version" readonly>
+    </label>
+    <div *ngIf="editForm.get('version')?.invalid && (editForm.get('version')?.dirty || editForm.get('version')?.touched)">
+      <p class="error">Please provide a version.</p> 
+    </div>
+  </div>
+  <div>
+    <label>
+      Author:
+      <input id="author" formControlName="author" placeholder="Doc author">
+    </label>
+    <div *ngIf="editForm.get('author')?.invalid && (editForm.get('author')?.dirty || editForm.get('author')?.touched)">
+      <p class="error">Please provide an author.</p> 
+    </div>
+  </div>
+  <div>
+    <label>
+      Category:
+      <input id="category" formControlName="category" placeholder="Doc category">
+    </label>
+    <div *ngIf="editForm.get('category')?.invalid && (editForm.get('category')?.dirty || editForm.get('category')?.touched)">
+      <p class="error">Please provide a category.</p> 
+    </div>
+  </div>
+  <div>
+    <label>
+      Subcategory:
+      <input id="subcategory" formControlName="subcategory" placeholder="Doc subcategory">
+    </label>
+    <div *ngIf="editForm.get('subcategory')?.invalid && (editForm.get('subcategory')?.dirty || editForm.get('subcategory')?.touched)">
+      <p class="error">Please provide a subcategory.</p> 
+    </div>
+  </div>
+  <div>
+    <label>
+      Text:    
+    </label>
+    <div>
+      <textarea  id="text" formControlName="text" placeholder="Doc text" rows="15" cols="50"></textarea>
+    </div>
+      
+    <div *ngIf="editForm.get('text')?.invalid && (editForm.get('text')?.dirty || editForm.get('text')?.touched)">
+      <p class="error">Please provide a text.</p> 
+    </div>
+  </div>
+  <button [disabled]="!editForm.valid">Save document</button>
+</form>
+
+<ng-template #loading>
+  Loading User...
+</ng-template>
+
+
+
+<!-- <form 
+  *ngIf="doc | async"
+  [formGroup]="editForm" 
+  (ngSubmit)="submit()">
     <div>
       <label>
         Name:
@@ -53,5 +126,41 @@
         </div>
       </div>   
     <button type="submit" [disabled]="editForm.invalid">Send</button>
-  </form>
+  </form> -->
 
+
+
+
+<!-- <hr style="height: 5px; background-color: green;">
+
+  <div class="row" *ngIf="doc">
+    <div class="col-4">
+        <div class="card">
+            <img src="{{doc.name || './assets/user.png'}}" alt="{{doc.version}}"
+             class="card-img-top img-thumbnail">
+            <div class="card-body">
+                <div>
+                    <strong>Location:</strong>
+                    <p>{{doc.name}}, {{doc.version}}</p>
+                </div>
+                <div>
+                    <strong>Age:</strong>
+                    <p>{{member.age}}</p>
+                </div>
+                <div>
+                    <strong>Last active:</strong>
+                    <p>{{member.lastActive}}</p>
+                </div>
+                <div>
+                    <strong>Member since:</strong>
+                    <p>{{member.created}}</p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="btn-group d-flex">
+                    <button class="btn btn-primary">Like</button>
+                    <button class="btn btn-success">Message</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
