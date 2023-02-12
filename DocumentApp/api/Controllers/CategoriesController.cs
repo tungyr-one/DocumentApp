@@ -1,8 +1,5 @@
-
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using api.Entities;
 using System;
 using System.Threading.Tasks;
 using api.DTOs;
@@ -26,10 +23,10 @@ namespace api.Controllers
         [HttpGet]
         public async Task<ActionResult<CategoryDto>> GetCategories()
         {
-            var cats = await _categoryRepository.GetCategoriesAsync();
+            var categories = await _categoryRepository.GetCategoriesAsync();
             _logger.LogInformation("Get all categories.");
-            Console.WriteLine(cats);
-            return Ok(cats);
+            Console.WriteLine(categories);
+            return Ok(categories);
         }
     }
     

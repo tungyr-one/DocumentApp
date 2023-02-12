@@ -13,6 +13,9 @@ namespace api.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<DocDb, DocDto>().ReverseMap();
+            CreateMap<DocUpdateDto, DocDb>();
+            CreateMap<CategoryDb, CategoryDto>().ReverseMap();
+            CreateMap<SubcategoryDb, SubcategoryDto>().ReverseMap();
         }
     }
 }

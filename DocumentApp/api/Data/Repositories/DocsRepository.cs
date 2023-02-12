@@ -30,12 +30,10 @@ namespace api.Data.Repositories
 
         public async Task<DocDb> GetDocAsync(int id)
         {
-            var docDb = await _context.Docs.Where(d => d.Id == id)
+            return await _context.Docs
             .Include(d => d.Category)
             .Include(d => d.Subcategory)              
-            .SingleOrDefaultAsync();
-
-            return docDb;
+            .SingleOrDefaultAsync(d => d.Id == id);
         }
 
         public async Task<bool> SaveAllAsync()
@@ -49,7 +47,7 @@ namespace api.Data.Repositories
         }
 
          public void Update(DocDb doc)
-        {
+        {            
            _context.Entry(doc).State = EntityState.Modified;
         }
 

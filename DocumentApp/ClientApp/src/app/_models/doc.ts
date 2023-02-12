@@ -4,7 +4,9 @@ export interface Doc {
    created: Date;
    version: string;
    author: string;
-   category: string;
-   subcategory: string;
+   categoryId: number;
+   subcategoryId: number;
+   categoryName: string;
+   subcategoryName: string;
    text: string;
 }

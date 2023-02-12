@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Doc } from '../_models/doc';
+import { Doc } from '../_models/Doc';
 import { DocService } from '../_services/doc.service';
 
 @Component({

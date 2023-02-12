@@ -1,7 +1,7 @@
 <form 
-  *ngIf="doc | async"
+  *ngIf="doc$ | async"
   [formGroup]="editForm" 
-  (ngSubmit)="submit()">
+  (ngSubmit)="onSubmit(editForm)">
   <div>
     <label>
       Name:
@@ -30,22 +30,30 @@
     </div>
   </div>
   <div>
-    <label>
-      Category:
-      <input id="category" formControlName="category" placeholder="Doc category">
-    </label>
-    <div *ngIf="editForm.get('category')?.invalid && (editForm.get('category')?.dirty || editForm.get('category')?.touched)">
-      <p class="error">Please provide a category.</p> 
-    </div>
+    <label>Category:</label>
+    <select
+          class="custom-select mb-3"
+          formControlName="categoryName"
+        >
+          <!-- <option  value="">Choose Category</option> -->
+          <option *ngFor="let category of Categories"
+          [selected]="category.name == '{{(doc$ | async)?.categoryName}}'">
+            {{category.name}}
+          </option>
+        </select>
   </div>
   <div>
-    <label>
-      Subcategory:
-      <input id="subcategory" formControlName="subcategory" placeholder="Doc subcategory">
-    </label>
-    <div *ngIf="editForm.get('subcategory')?.invalid && (editForm.get('subcategory')?.dirty || editForm.get('subcategory')?.touched)">
-      <p class="error">Please provide a subcategory.</p> 
-    </div>
+    <label>Subcategory:</label>
+    <select
+          class="custom-select mb-3"
+          formControlName="subcategoryName"
+        >
+          <!-- <option  value="">Choose Category</option> -->
+          <option *ngFor="let subcategory of Subcategories"
+          [selected]="subcategory.name == '{{(doc$ | async)?.subcategoryName}}'">
+            {{subcategory.name}}
+          </option>
+        </select>
   </div>
   <div>
     <label>
@@ -66,101 +74,7 @@
   Loading User...
 </ng-template>
 
-
-
-<!-- <form 
-  *ngIf="doc | async"
-  [formGroup]="editForm" 
-  (ngSubmit)="submit()">
-    <div>
-      <label>
-        Name:
-        <input formControlName="name" placeholder="Your name">
-      </label>
-      <div *ngIf="editForm.get('name')?.invalid && (editForm.get('name')?.dirty || editForm.get('name')?.touched)">
-        Please provide a name.
-      </div>
-    </div>
-    <div>
-      <label>
-        Version:
-        <input formControlName="version" placeholder="Your version">
-      </label>
-      <div *ngIf="editForm.get('version')?.invalid && (editForm.get('version')?.dirty || editForm.get('version')?.touched)">
-        Please provide a valid version.
-      </div>
-    </div>
-    <div>
-      <label>
-        Author:
-        <input formControlName="author" placeholder="author">
-      </label>
-      <div *ngIf="editForm.get('author')?.invalid && (editForm.get('author')?.dirty || editForm.get('author')?.touched)">
-        Please provide a valid author name.
-      </div>
-    </div>
-    <div>
-        <label>
-          cathegory:
-          <input formControlName="category" placeholder="Your category">
-        </label>
-        <div *ngIf="editForm.get('category')?.invalid && (editForm.get('category')?.dirty || editForm.get('category')?.touched)">
-          Please provide a valid category.
-        </div>
-      </div>    <div>
-        <label>
-          Subcategory:
-          <input formControlName="subcategory" placeholder="Your subcategory">
-        </label>
-        <div *ngIf="editForm.get('subcategory')?.invalid && (editForm.get('subcategory')?.dirty || editForm.get('subcategory')?.touched)">
-          Please provide a valid subcategory.
-        </div>
-      </div>    
-      <div>
-        <label>
-          Text:
-          <input formControlName="text" placeholder="Your text">
-        </label>
-        <div style="border: solid 1px red;" *ngIf="editForm.get('text')?.invalid && (editForm.get('text')?.dirty || editForm.get('text')?.touched)">
-          Please provide a valid text.
-        </div>
-      </div>   
-    <button type="submit" [disabled]="editForm.invalid">Send</button>
-  </form> -->
-
-
-
-
-<!-- <hr style="height: 5px; background-color: green;">
-
-  <div class="row" *ngIf="doc">
-    <div class="col-4">
-        <div class="card">
-            <img src="{{doc.name || './assets/user.png'}}" alt="{{doc.version}}"
-             class="card-img-top img-thumbnail">
-            <div class="card-body">
-                <div>
-                    <strong>Location:</strong>
-                    <p>{{doc.name}}, {{doc.version}}</p>
-                </div>
-                <div>
-                    <strong>Age:</strong>
-                    <p>{{member.age}}</p>
-                </div>
-                <div>
-                    <strong>Last active:</strong>
-                    <p>{{member.lastActive}}</p>
-                </div>
-                <div>
-                    <strong>Member since:</strong>
-                    <p>{{member.created}}</p>
-                </div>
-            </div>
-            <div class="card-footer">
-                <div class="btn-group d-flex">
-                    <button class="btn btn-primary">Like</button>
-                    <button class="btn btn-success">Message</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
+<hr style="background-color: green; height: 15px;">
+<div  *ngIf="doc$ | async">
+  <p>{{(doc$ | async)?.categoryName}}</p>
+</div>

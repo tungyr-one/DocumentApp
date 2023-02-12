@@ -41,7 +41,7 @@ namespace api.Controllers
             return Ok(_mapper.Map<DocDto>(doc));
         }
 
-        [HttpPut("{id}")]
+        [HttpPost("{id}")]
         public async Task<ActionResult> CreateDoc(DocDto newDoc)
         {
             var docToDb = _mapper.Map<DocDb>(newDoc);
@@ -52,13 +52,12 @@ namespace api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateDoc(int id, DocDto docUpd)
+        public async Task<ActionResult> UpdateDoc(int id, DocUpdateDto DocUpdateDto)
         {
-            var doc = await _docRepository.GetDocAsync(docUpd.Id);
-            _mapper.Map(docUpd, doc);
-
-            _docRepository.Update(doc);
-
+            var docDb = await _docRepository.GetDocAsync(id);
+            _mapper.Map(DocUpdateDto, docDb);
+            _docRepository.Update(docDb);
+            
             if (await _docRepository.SaveAllAsync()) return NoContent();
             return BadRequest("Failed to update document");
         }

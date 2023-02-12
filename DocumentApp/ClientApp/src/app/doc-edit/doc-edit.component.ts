@@ -1,10 +1,14 @@
+import { Category } from './../_models/Category';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, tap } from 'rxjs';
-import { Doc } from 'src/app/_models/doc';
+import { Doc } from 'src/app/_models/Doc';
 import { DocService } from '../_services/doc.service';
+import { CategoryService } from '../_services/category.service';
+import { Subcategory } from '../_models/Subcategory';
+import { SubcategoryService } from '../_services/subcategory.service';
 
 @Component({
   selector: 'app-doc-edit',
@@ -14,51 +18,77 @@ import { DocService } from '../_services/doc.service';
 export class DocEditComponent implements OnInit{
   editForm: FormGroup;
   id:string|null;
-  doc:Observable<Doc>;
+  doc$:Observable<Doc>;
+  Categories:Category[] = [];
+  Subcategories:Subcategory[] = [];
 
-  constructor(private docService:DocService, private toastr: ToastrService,
-    private fb: FormBuilder, private route: ActivatedRoute) { }
+  isSubmitted = false;
+
+    // City Names
+
+
+  constructor(private docService:DocService, 
+    private catService:CategoryService, 
+    private subcatService:SubcategoryService, 
+    private toastr: ToastrService,
+    private fb: FormBuilder, 
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {  
-    this.loadDoc();  
+    this.loadDoc();
+    this.loadCategories();
+    this.loadSubcategories();
     this.editForm = this.fb.group({
       name: ['', Validators.required],
       version: ['', [Validators.required]],
       author: ['', [Validators.required]],
-      category: ['', [Validators.required]],
-      subcategory: ['', [Validators.required]],
+      categoryName: ['', [Validators.required]],
+      subcategoryName: ['', [Validators.required]],
       text: ['', [Validators.required, Validators.minLength(15)]],
     });
+
   }
 
   onSubmit(form: FormGroup) {
     console.log('Valid?', form.valid);
-    console.log('Name', form.value.name);
-    console.log('Version', form.value.email);
-    console.log('Author', form.value.message);
-    console.log('Category', form.value.message);
-    console.log('Subcategory', form.value.message);
-    console.log('Text', form.value.message);
+    const values = {...this.editForm.value};
+    console.log(values);
+
+    if(this.id)
+    {
+        this.docService.UpdateDocument(this.id, values).subscribe({
+              next: () => {
+                this.router.navigateByUrl('')
+              }, 
+              // error: error:any => {
+              //   console.log(error);
+              // }
+            })
+    }
+
+   
+
     this.toastr.success('Ehuuuuuuu!');
+
+    this.isSubmitted = true;
+    if (!this.editForm.valid) {
+      return false;
+    } else {
+      // alert(JSON.stringify(this.editForm.value))
+      return true;
+    }
   }
 
-  // fillForm(editDoc:Doc){
-  //   this.editForm.controls['name'].setValue('ddddddddd');
-
-  //   this.editForm.controls['version'].setValue(this.doc.version);
-  // }
 
   loadDoc(){
     this.id = this.route.snapshot.paramMap.get('id');
-    console.log("id: " + this.id);
+    // console.log("id: " + this.id);
     if(this.id !== null)
     {
-      this.doc = this.docService.getDoc(this.id)
+      this.doc$ = this.docService.getDocument(this.id)
       .pipe(tap(doc=> this.editForm.patchValue(doc)));
-        // this.docService.getDoc(this.id).subscribe(doc =>{
-        // this.doc = doc;
-        // console.log(doc);
-      // })
+      
     }
     else
     {
@@ -66,9 +96,30 @@ export class DocEditComponent implements OnInit{
     }
   }
 
+  loadCategories(){
+    this.catService.getCategories().subscribe({
+      next: response => {
+          this.Categories = response;
+      }
+    })
+  }
+
+  loadSubcategories(){
+    this.subcatService.getSubcategories().subscribe({
+      next: response => {
+          this.Subcategories = response;
+      }
+    })
+  }
+
   submit() {
     if (this.editForm.valid) {
       console.log(this.editForm.value);
     }
+  }
+  
+  // Getter method to access formcontrols
+  get categoryName() {
+    return this.editForm.get('categoryName');
   }
 }
