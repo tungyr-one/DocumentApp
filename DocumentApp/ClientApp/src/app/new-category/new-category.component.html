@@ -1,1 +1,35 @@
-<p>new-category works!</p>
+<div class="container-mt5" style='text-align: center;'>
+   <form 
+      *ngIf="Categories"
+     [formGroup]="newCategoryForm" 
+     (ngSubmit)="onSubmit(newCategoryForm)">
+     <div class="mb-5">
+       <label>
+         Category name:
+         <input id="name" formControlName="categoryName" placeholder="Category name">
+       </label>
+       <div *ngIf="newCategoryForm.get('name')?.invalid && (newCategoryForm.get('name')?.dirty || newCategoryForm.get('name')?.touched)" class="error-field">
+         <p class="error">Please provide a name.</p> 
+       </div>
+     </div>
+     <div>
+      <input type="checkbox" (change)="isChecked =! isChecked" class="form-check-input" id="exampleCheck1" [checked] = true >
+      <label for="addSubcategory"> Add subcategory</label><br>
+     </div>        
+     <div *ngIf="isChecked">
+       <label>
+         Subcategory name:
+         <input id="version" formControlName="subcategoryName" placeholder="Subcategory name">
+       </label>
+       <div *ngIf="newCategoryForm.get('version')?.invalid && (newCategoryForm.get('version')?.dirty || newCategoryForm.get('version')?.touched)">
+         <p class="error">Please provide a subcategory.</p> 
+       </div>
+     </div>
+     <div *ngIf="!isChecked"></div>
+
+     <div class="text-center">
+       <button [disabled]="!newCategoryForm.valid" class="btn btn-success mr-5" type="submit">Save category</button>
+       <button class="btn btn-default ml-5" (click)="cancel()" type="button">Cancel</button>
+     </div>
+       </form>
+ 

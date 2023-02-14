@@ -23,21 +23,18 @@ export class DocumentListComponent implements OnInit
     this.dataSource = new MatTableDataSource();
   }
 
-  ngOnInit(): void {  
+  ngOnInit(): void {   
     this.loadDocs();
   }
 
   loadDocs() {    
     this.docService.getDocuments().subscribe({
       next: (response: any) => {
-          this.dataSource = new MatTableDataSource(response);        
+          this.dataSource = new MatTableDataSource(response);      
+          this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;     
       }
     })
-  }
-
-  ngAfterViewInit() {    
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   deleteDoc(id:string)
