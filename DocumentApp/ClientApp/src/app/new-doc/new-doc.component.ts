@@ -44,7 +44,7 @@ export class NewDocComponent implements OnInit{
     const values = {...this.newDocForm.value};
     console.log(values);
 
-    this.docService.CreateDocument(values).subscribe({
+    this.docService.createDocument(values).subscribe({
       next: () => {
         this.router.navigateByUrl('');
       },

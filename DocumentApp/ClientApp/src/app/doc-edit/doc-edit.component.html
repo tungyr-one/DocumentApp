@@ -70,6 +70,7 @@
     </div>
     <div class="text-center">
       <button [disabled]="!editForm.valid" class="btn btn-success mr-5" type="submit">Save document</button>
+      <button class="btn btn-default ml-5" (click)="deleteDoc()" type="button">Delete</button>
       <button class="btn btn-default ml-5" (click)="cancel()" type="button">Cancel</button>
     </div>
       </form>

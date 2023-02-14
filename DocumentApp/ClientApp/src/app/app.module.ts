@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { DocEditComponent } from './doc-edit/doc-edit.component';
 import { ToastrModule } from 'ngx-toastr';
 import { NewDocComponent } from './new-doc/new-doc.component';
+import { NewCategoryComponent } from './new-category/new-category.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { NewDocComponent } from './new-doc/new-doc.component';
     HomeComponent,
     DocumentListComponent,
     DocEditComponent,
-    NewDocComponent
+    NewDocComponent,
+    NewCategoryComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

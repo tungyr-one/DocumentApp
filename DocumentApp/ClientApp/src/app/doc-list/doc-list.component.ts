@@ -24,11 +24,10 @@ export class DocumentListComponent implements OnInit
   }
 
   ngOnInit(): void {  
-    this.loadMembers();
+    this.loadDocs();
   }
 
-  
-  loadMembers() {    
+  loadDocs() {    
     this.docService.getDocuments().subscribe({
       next: (response: any) => {
           this.dataSource = new MatTableDataSource(response);        
@@ -39,6 +38,16 @@ export class DocumentListComponent implements OnInit
   ngAfterViewInit() {    
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  deleteDoc(id:string)
+  {
+    console.log("id:" + id);
+    this.docService.deleteDocument(id).subscribe({
+      next: () => {
+        this.ngOnInit();
+      }
+    });
   }
 
   applyFilter(event: Event) {

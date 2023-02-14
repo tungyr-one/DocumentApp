@@ -33,14 +33,16 @@ export class DocService {
       }));
   }
 
-  CreateDocument(model:any){
+  createDocument(model:any){
     model.Created = new Date();
     return this.http.post(this.baseUrl + 'docs/', model)
   }
 
-  UpdateDocument(id:string, model:any){
+  updateDocument(id:string, model:any){
     return this.http.put(this.baseUrl + 'docs/'+ id, model)
   }
 
-
+  deleteDocument(id:string){
+    return this.http.delete(this.baseUrl + 'docs/'+ id)
+  }
 }

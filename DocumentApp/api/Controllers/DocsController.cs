@@ -76,7 +76,7 @@ namespace api.Controllers
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteDoc(int id)
-       {    
+       {  
             _docsRepository.Delete(id);
 
             if (await _docsRepository.SaveAllAsync()) return Ok();

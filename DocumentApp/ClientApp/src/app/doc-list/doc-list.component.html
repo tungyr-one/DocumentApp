@@ -8,7 +8,17 @@
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-      <td mat-cell *matCellDef="let row">{{row.name}} </td>
+      <td  mat-cell *matCellDef="let row"><a class="docName" routerLink="/docs/edit/{{row.id}}">{{row.name}}</a> 
+        <div>
+          <div class="inlineOpen">
+            <a routerLink="/docs/edit/{{row.id}}"><button class="btn btn-primary btn-sm mr-2">Open</button></a>
+          </div>
+          <div class="inlineDelete">
+            <button (click)="deleteDoc(row.id)" class="btn btn-primary btn-sm ml-2" >Delete</button>
+          </div>
+        </div>
+
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="created">
@@ -33,14 +43,7 @@
 
     <ng-container matColumnDef="subcategory">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Subcategory </th>
-      <td mat-cell *matCellDef="let row"> {{row.subcategoryName}}
-
-       <a routerLink="/docs/edit/{{row.id}}">
-         <div style="height:100%;width:100%;color:greenyellow;">
-           open
-         </div>
-       </a> 
-      </td>
+      <td mat-cell *matCellDef="let row"> {{row.subcategoryName}}</td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

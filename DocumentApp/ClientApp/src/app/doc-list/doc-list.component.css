@@ -1,0 +1,21 @@
+.inlineOpen {
+   display: inline;
+   height:100%;
+   width:100%;   
+   font-size: medium;
+ }
+
+.inlineDelete {
+   display: inline;
+   height:100%;
+   width:100%;
+   color:darkorange; 
+   font-size: medium;
+ }
+
+ .docName {
+   font-size: large;
+   color:greenyellow; 
+   font-weight: bold;
+   margin-bottom: 15%;
+ }

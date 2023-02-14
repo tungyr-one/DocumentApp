@@ -52,12 +52,26 @@ export class DocEditComponent implements OnInit{
 
     if(this.id)
     {
-        this.docService.UpdateDocument(this.id, values).subscribe({
+        this.docService.updateDocument(this.id, values).subscribe({
               next: () => {
                 this.router.navigateByUrl('')
               }
             })
     }
+  }
+
+  //TODO:warn user about deletion
+  deleteDoc()
+  {
+    if(this.id)
+    {
+      console.log("this.id:" + this.id);
+    this.docService.deleteDocument(this.id).subscribe({
+      next: () => {
+        this.router.navigateByUrl('')
+      }
+    });
+    }    
   }
 
   loadDoc(){

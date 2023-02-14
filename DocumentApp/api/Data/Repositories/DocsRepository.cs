@@ -53,7 +53,8 @@ namespace api.Data.Repositories
 
         public void Delete(int id)
         {
-            _context.Entry(id).State = EntityState.Deleted; 
+            var docToDelete = _context.Docs.Find(id);
+            _context.Entry(docToDelete).State = EntityState.Deleted; 
         }                  
     }
 }
