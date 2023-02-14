@@ -22,16 +22,14 @@
         <ul class="navbar-nav flex-grow">
           <li
             class="nav-item"
-            [routerLinkActive]="['link-active']"
-            [routerLinkActiveOptions]="{ exact: true }"
           >
             <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
+          <li class="nav-item">
             <a class="nav-link text-dark" [routerLink]="['/']">New category</a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/']">New document</a>
+          <li class="nav-item" >
+            <a class="nav-link text-dark" [routerLink]="['/docs/new']">New document</a>
           </li>
         </ul>
       </div>

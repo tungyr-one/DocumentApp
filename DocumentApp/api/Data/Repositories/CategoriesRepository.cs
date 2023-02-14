@@ -26,5 +26,11 @@ namespace api.Data.Repositories
             .Include(d => d.Subcategories)
             .ToListAsync();
       }
+
+      public async Task<CategoryDb> GetCategoryByNameAsync(string catName)
+      {
+            return await _context.Categories
+            .SingleOrDefaultAsync(c => c.Name == catName);
+      }
    }
 }

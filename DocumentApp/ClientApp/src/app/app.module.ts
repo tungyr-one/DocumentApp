@@ -7,7 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { DocumentListComponent } from './document-list/document-list.component';
+import { DocumentListComponent } from './doc-list/doc-list.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSortModule } from '@angular/material/sort';
@@ -16,6 +16,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { DocEditComponent } from './doc-edit/doc-edit.component';
 import { ToastrModule } from 'ngx-toastr';
+import { NewDocComponent } from './new-doc/new-doc.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ToastrModule } from 'ngx-toastr';
     NavMenuComponent,
     HomeComponent,
     DocumentListComponent,
-    DocEditComponent
+    DocEditComponent,
+    NewDocComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

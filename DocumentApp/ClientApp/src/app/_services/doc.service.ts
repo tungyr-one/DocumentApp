@@ -28,23 +28,18 @@ export class DocService {
     if (doc != undefined) return of(doc);
     return this.http.get<Doc>(this.baseUrl + 'docs/'+ id).pipe(
       map((doc:Doc) => {
-        // TODO to much calls to back!
         // console.log(doc);
         return doc;
       }));
-    // return this.http.get<Doc>(this.baseUrl + 'docs/'+ id);
+  }
+
+  CreateDocument(model:any){
+    model.Created = new Date();
+    return this.http.post(this.baseUrl + 'docs/', model)
   }
 
   UpdateDocument(id:string, model:any){
     return this.http.put(this.baseUrl + 'docs/'+ id, model)
-    // .pipe(
-    //   map((user:Doc) => {
-    //     if (doc) {
-    //       this.setCurrentUser(user);
-    //     }
-    //     return user;
-    //   })
-    // )
   }
 
 

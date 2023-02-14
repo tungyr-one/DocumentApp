@@ -8,8 +8,7 @@ namespace api.Interfaces
 {
     public interface ICategoriesRepository
     {
-
         Task<IEnumerable<CategoryDb>> GetCategoriesAsync();
-
+        Task<CategoryDb> GetCategoryByNameAsync(string name);
     }
 }

@@ -1,24 +1,20 @@
-import { Category } from './../_models/Category';
+import { CategoryService } from './../_services/category.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup,  Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { Observable, tap } from 'rxjs';
-import { Doc } from 'src/app/_models/Doc';
-import { DocService } from '../_services/doc.service';
-import { CategoryService } from '../_services/category.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Category } from '../_models/Category';
 import { Subcategory } from '../_models/Subcategory';
+import { DocService } from '../_services/doc.service';
 import { SubcategoryService } from '../_services/subcategory.service';
+import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-doc-edit',
-  templateUrl: './doc-edit.component.html',
-  styleUrls: ['./doc-edit.component.css']
+  selector: 'app-new-doc',
+  templateUrl: './new-doc.component.html',
+  styleUrls: ['./new-doc.component.css']
 })
-export class DocEditComponent implements OnInit{
-  editForm: FormGroup;
-  id:string|null;
-  doc$:Observable<Doc>;
+export class NewDocComponent implements OnInit{
+  newDocForm: FormGroup;
   Categories:Category[] = [];
   Subcategories:Subcategory[] = [];
 
@@ -30,11 +26,10 @@ export class DocEditComponent implements OnInit{
     private route: ActivatedRoute,
     private router: Router) { }
 
-  ngOnInit() {  
-    this.loadDoc();
-    this.loadCategories();
+  ngOnInit(): void {
     this.loadSubcategories();
-    this.editForm = this.fb.group({
+    this.loadCategories();
+    this.newDocForm = this.fb.group({
       name: ['', Validators.required],
       version: ['', [Validators.required]],
       author: ['', [Validators.required]],
@@ -42,37 +37,19 @@ export class DocEditComponent implements OnInit{
       subcategoryName: ['', [Validators.required]],
       text: ['', [Validators.required, Validators.minLength(15)]],
     });
-
   }
 
   onSubmit(form: FormGroup) {
     console.log('Valid?', form.valid);
-    const values = {...this.editForm.value};
+    const values = {...this.newDocForm.value};
     console.log(values);
 
-    if(this.id)
-    {
-        this.docService.UpdateDocument(this.id, values).subscribe({
-              next: () => {
-                this.router.navigateByUrl('')
-              }
-            })
-    }
-  }
-
-  loadDoc(){
-    this.id = this.route.snapshot.paramMap.get('id');
-    // console.log("id: " + this.id);
-    if(this.id !== null)
-    {
-      this.doc$ = this.docService.getDocument(this.id)
-      .pipe(tap(doc=> this.editForm.patchValue(doc)));
-      
-    }
-    else
-    {
-      this.toastr.error('Unable to load document data');
-    }
+    this.docService.CreateDocument(values).subscribe({
+      next: () => {
+        this.router.navigateByUrl('');
+      },
+    });
+    
   }
 
   loadCategories(){
@@ -95,4 +72,5 @@ export class DocEditComponent implements OnInit{
   cancel(){
     this.router.navigateByUrl('');
   }
+
 }

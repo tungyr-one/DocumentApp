@@ -9,5 +9,6 @@ namespace api.Interfaces
     public interface ISubcategoriesRepository
     {
         Task<IEnumerable<SubcategoryDb>> GetSubcategoriesAsync();
+        Task<SubcategoryDb> GetSubcategoryByNameAsync(string name);
     }
 }

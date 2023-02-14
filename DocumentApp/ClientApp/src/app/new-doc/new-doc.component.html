@@ -1,0 +1,74 @@
+<div class="container-mt5" style='text-align: center;'>
+   <form 
+      *ngIf="Categories"
+     [formGroup]="newDocForm" 
+     (ngSubmit)="onSubmit(newDocForm)">
+     <div class="mb-5">
+       <label>
+         Name:
+         <input id="name" formControlName="name" placeholder="Document name">
+       </label>
+       <div *ngIf="newDocForm.get('name')?.invalid && (newDocForm.get('name')?.dirty || newDocForm.get('name')?.touched)" class="error-field">
+         <p class="error">Please provide a name.</p> 
+       </div>
+     </div>
+     <div class="mt-5">
+       <label>
+         Version:
+         <input id="version" formControlName="version" placeholder="Doc version">
+       </label>
+       <div *ngIf="newDocForm.get('version')?.invalid && (newDocForm.get('version')?.dirty || newDocForm.get('version')?.touched)">
+         <p class="error">Please provide a version.</p> 
+       </div>
+     </div>
+     <div>
+       <label>
+         Author:
+         <input id="author" formControlName="author" placeholder="Doc author">
+       </label>
+       <div *ngIf="newDocForm.get('author')?.invalid && (newDocForm.get('author')?.dirty || newDocForm.get('author')?.touched)">
+         <p class="error">Please provide an author.</p> 
+       </div>
+     </div>
+     <div>
+       <label>Category:</label>
+       <select
+             class="custom-select mb-3"
+             formControlName="categoryName"
+           >
+             <option  value="">Choose Category</option>
+             <option *ngFor="let category of Categories">
+               {{category.name}}
+             </option>
+           </select>
+     </div>
+     <div>
+       <label>Subcategory:</label>
+       <select
+             class="custom-select mb-3"
+             formControlName="subcategoryName"
+           >
+             <option  value="">Choose Subcategory</option>
+             <option *ngFor="let subcategory of Subcategories">
+               {{subcategory.name}}
+             </option>
+           </select>
+     </div>
+     <div>
+       <label>
+         Text:    
+       </label>
+       <div>
+         <textarea  id="text" formControlName="text" placeholder="Doc text" rows="15" cols="100"></textarea>
+       </div>
+         
+       <div *ngIf="newDocForm.get('text')?.invalid && (newDocForm.get('text')?.dirty || newDocForm.get('text')?.touched)">
+         <p class="error">Please provide a text.</p> 
+       </div>
+     </div>
+     <div class="text-center">
+       <button [disabled]="!newDocForm.valid" class="btn btn-success mr-5" type="submit">Save document</button>
+       <button class="btn btn-default ml-5" (click)="cancel()" type="button">Cancel</button>
+     </div>
+       </form>
+ 

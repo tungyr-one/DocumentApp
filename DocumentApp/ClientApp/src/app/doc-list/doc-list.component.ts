@@ -6,14 +6,14 @@ import { Doc } from '../_models/Doc';
 import { DocService } from '../_services/doc.service';
 
 @Component({
-  selector: 'app-document-list',
-  templateUrl: './document-list.component.html',
-  styleUrls: ['./document-list.component.css']
+  selector: 'app-doc-list',
+  templateUrl: './doc-list.component.html',
+  styleUrls: ['./doc-list.component.css']
 })
 export class DocumentListComponent implements OnInit
 {
   docs: Doc[] = [];
-  displayedColumns: string[] = ['id', 'name', 'created', 'version', 'author', 'category', 'subcategory'];
+  displayedColumns: string[] = ['name', 'created', 'version', 'author', 'category', 'subcategory'];
   dataSource: MatTableDataSource<Doc>;
 
   @ViewChild(MatPaginator) paginator:MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);;

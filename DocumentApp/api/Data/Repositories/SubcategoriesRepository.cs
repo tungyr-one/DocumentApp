@@ -19,11 +19,17 @@ namespace api.Data.Repositories
             _context = context;
             _mapper = mapper;
         }
-              public async Task<IEnumerable<SubcategoryDb>> GetSubcategoriesAsync()
+        public async Task<IEnumerable<SubcategoryDb>> GetSubcategoriesAsync()
         {
                 return await _context.Subcategories
                 .Include(d => d.Docs)
                 .ToListAsync();
+        }
+
+        public async Task<SubcategoryDb> GetSubcategoryByNameAsync(string subName)
+        {
+            return await _context.Subcategories
+            .SingleOrDefaultAsync(s => s.Name == subName);
         }
    }
 }
