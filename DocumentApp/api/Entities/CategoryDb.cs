@@ -10,7 +10,8 @@ namespace api.Entities
         [System.ComponentModel.DataAnnotations.Key]
         public int Id { get; set; }
         public string Name { get; set; }  
-        public ICollection<SubcategoryDb> Subcategories { get; set; } = null!;
-        public ICollection<DocDb> Docs { get; set; } = null!;
+        #nullable enable
+        public ICollection<SubcategoryDb>? Subcategories { get; set; }
+        public ICollection<DocDb>? Docs { get; set; }
     }
 }

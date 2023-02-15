@@ -17,16 +17,37 @@
       <label for="addSubcategory"> Add subcategory</label><br>
      </div>        
      <div *ngIf="isChecked">
-       <label>
+      <div>
+        <label>
          Subcategory name:
-         <input id="version" formControlName="subcategoryName" placeholder="Subcategory name">
+         <input id="version" formControlName="subcategoryNameOne" placeholder="Subcategory name">
        </label>
        <div *ngIf="newCategoryForm.get('version')?.invalid && (newCategoryForm.get('version')?.dirty || newCategoryForm.get('version')?.touched)">
          <p class="error">Please provide a subcategory.</p> 
        </div>
-     </div>
-     <div *ngIf="!isChecked"></div>
+      </div>
 
+      <div>
+        <label>
+         Subcategory name:
+         <input id="version" formControlName="subcategoryNameTwo" placeholder="Subcategory name">
+       </label>
+       <div *ngIf="newCategoryForm.get('version')?.invalid && (newCategoryForm.get('version')?.dirty || newCategoryForm.get('version')?.touched)">
+         <p class="error">Please provide a subcategory.</p> 
+       </div>
+      </div>       
+
+      <div>
+        <label>
+         Subcategory name:
+         <input id="version" formControlName="subcategoryNameThree" placeholder="Subcategory name">
+       </label>
+       <div *ngIf="newCategoryForm.get('version')?.invalid && (newCategoryForm.get('version')?.dirty || newCategoryForm.get('version')?.touched)">
+         <p class="error">Please provide a subcategory.</p> 
+       </div>
+      </div>
+       
+     </div>
      <div class="text-center">
        <button [disabled]="!newCategoryForm.valid" class="btn btn-success mr-5" type="submit">Save category</button>
        <button class="btn btn-default ml-5" (click)="cancel()" type="button">Cancel</button>

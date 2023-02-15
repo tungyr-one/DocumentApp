@@ -11,6 +11,7 @@ namespace api.Entities
         public string Name { get; set; }  
         public CategoryDb Category {get; set; }
         public int CategoryId { get; set; }
-        public ICollection<DocDb> Docs { get; set; } = null!;
+        #nullable enable
+        public ICollection<DocDb>? Docs { get; set; }
     }
 }

@@ -1,3 +1,4 @@
+import { NewCategory } from './../_models/NewCategory';
 import { CategoryService } from './../_services/category.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -28,11 +29,13 @@ export class NewCategoryComponent implements OnInit{
     private router: Router) { }
 
   ngOnInit(): void {
-    this.loadSubcategories();
     this.loadCategories();
+    this.loadSubcategories();
     this.newCategoryForm = this.fb.group({
-      categoryName: ['', [Validators.required]],
-      subcategoryName: ['', [Validators.required]]
+      categoryName: ['!exampleCat', [Validators.required]],
+      subcategoryNameOne: ['!exsubcat1'],
+      subcategoryNameTwo: ['!exsubcat2'],
+      subcategoryNameThree: ['!exsubcat3'],
     });
   }
 
@@ -40,12 +43,21 @@ export class NewCategoryComponent implements OnInit{
     console.log('Valid?', form.valid);
     const values = {...this.newCategoryForm.value};
     console.log(values);
+    let subcats: Array<string> = [this.newCategoryForm.get('subcategoryNameOne')?.value, 
+    this.newCategoryForm.get('subcategoryNameTwo')?.value,  
+    this.newCategoryForm.get('subcategoryNameThree')?.value];
+    console.log(subcats);
+    let newCategory:NewCategory = { 
+      name: this.newCategoryForm.get('categoryName')?.value,
+      subcategories: subcats
+    }
+    console.log(newCategory);
 
-    this.docService.createDocument(values).subscribe({
-      next: () => {
-        this.router.navigateByUrl('');
-      },
-    });
+    // this.categoryService.createCategory(values).subscribe({
+    //   next: () => {
+    //     this.router.navigateByUrl('');
+    //   },
+    // });
     
   }
 

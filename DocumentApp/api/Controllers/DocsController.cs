@@ -68,6 +68,17 @@ namespace api.Controllers
         {
             var docDb = await _docsRepository.GetDocAsync(id);
             _mapper.Map(DocUpdateDto, docDb);
+            docDb.Category = _categoriesRepository.GetCategoryByNameAsync(DocUpdateDto.CategoryName).Result;
+            if(string.IsNullOrEmpty(DocUpdateDto.SubcategoryName))
+            {
+                docDb.Subcategory = null;
+                docDb.SubcategoryId = null;
+            }
+            else
+            {
+                docDb.Subcategory = _subcategoriesRepository.GetSubcategoryByNameAsync(DocUpdateDto.SubcategoryName).Result;
+            }
+            
             _docsRepository.Update(docDb);
             
             if (await _docsRepository.SaveAllAsync()) return NoContent();

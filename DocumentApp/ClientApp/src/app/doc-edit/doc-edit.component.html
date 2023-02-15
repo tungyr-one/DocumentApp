@@ -1,4 +1,5 @@
 <div class="container-mt5" style='text-align: center;'>
+  <h2>Edit document</h2> 
   <form 
     *ngIf="doc$ | async; let document"
     [formGroup]="editForm" 
@@ -35,25 +36,25 @@
       <select
             class="custom-select mb-3"
             formControlName="categoryName"
+            (change)="onChange()"
           >
             <!-- <option  value="">Choose Category</option> -->
-            <option *ngFor="let category of Categories"
-            [selected]="category.name == 'document?.categoryName}}'">
+            <option *ngFor="let category of Categories" [ngValue]="category.name">
               {{category.name}}
             </option>
           </select>
     </div>
+    <p style="color:red">{{document.categoryName}}</p>
     <div>
       <label>Subcategory:</label>
       <select
             class="custom-select mb-3"
             formControlName="subcategoryName"
           >
-            <!-- <option  value="">Choose Category</option> -->
-            <option *ngFor="let subcategory of Subcategories"
-            [selected]="subcategory.name == 'document?.subcategoryName}}'">
+            <option *ngFor="let subcategory of Subcategories" [ngValue]="subcategory.name">
               {{subcategory.name}}
             </option>
+            <option  value="">None</option>
           </select>
     </div>
     <div>

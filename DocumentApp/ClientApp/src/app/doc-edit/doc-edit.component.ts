@@ -28,27 +28,27 @@ export class DocEditComponent implements OnInit{
     private toastr: ToastrService,
     private fb: FormBuilder, 
     private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router) { 
+    }
 
   ngOnInit() {  
     this.loadDoc();
     this.loadCategories();
-    this.loadSubcategories();
     this.editForm = this.fb.group({
       name: ['', Validators.required],
       version: ['', [Validators.required]],
       author: ['', [Validators.required]],
       categoryName: ['', [Validators.required]],
-      subcategoryName: ['', [Validators.required]],
+      subcategoryName: [''],
       text: ['', [Validators.required, Validators.minLength(15)]],
     });
-
+    // this.editForm.controls['categoryName'].setValue('cate', {onlySelf: true});
   }
 
   onSubmit(form: FormGroup) {
     console.log('Valid?', form.valid);
     const values = {...this.editForm.value};
-    console.log(values);
+    console.log("onSubmit: " + this.editForm.get('subcategoryName')?.value);
 
     if(this.id)
     {
@@ -76,12 +76,16 @@ export class DocEditComponent implements OnInit{
 
   loadDoc(){
     this.id = this.route.snapshot.paramMap.get('id');
-    // console.log("id: " + this.id);
     if(this.id !== null)
     {
       this.doc$ = this.docService.getDocument(this.id)
-      .pipe(tap(doc=> this.editForm.patchValue(doc)));
-      
+      .pipe(tap(doc=> 
+        this.editForm.patchValue(doc)
+        ),
+        //TODO make category display correct on loading
+        // tap(doc=> this.editForm.controls['categoryName'].setValue(doc.categoryName)),
+        tap(doc=> this.loadSubcategories(doc.categoryName)),
+        tap(doc=> console.log(doc)));
     }
     else
     {
@@ -93,16 +97,32 @@ export class DocEditComponent implements OnInit{
     this.catService.getCategories().subscribe({
       next: response => {
           this.Categories = response;
+          // console.log(this.Categories);
       }
     })
   }
 
-  loadSubcategories(){
-    this.subcatService.getSubcategories().subscribe({
-      next: response => {
-          this.Subcategories = response;
-      }
-    })
+  onChange() {
+    const values = {...this.editForm.value};
+    this.loadSubcategories(values.categoryName)
+  }
+
+  loadSubcategories(categoryName:string){
+    const category = this.Categories.find((obj) => {
+      return obj.name === categoryName;
+    });
+    if(category === undefined)
+    {
+      this.editForm.controls['subcategoryName'].setValue('None');
+      this.Subcategories = [];
+    }
+    else
+    {
+        if(category?.subcategories)
+        {
+            this.Subcategories = category?.subcategories;
+        }  
+    }
   }
 
   //TODO:warn user he may lose data

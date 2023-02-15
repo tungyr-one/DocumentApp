@@ -1,5 +1,6 @@
 <div class="container-mt5" style='text-align: center;'>
-   <form 
+  <h2>New document</h2> 
+  <form 
       *ngIf="Categories"
      [formGroup]="newDocForm" 
      (ngSubmit)="onSubmit(newDocForm)">
@@ -35,6 +36,7 @@
        <select
              class="custom-select mb-3"
              formControlName="categoryName"
+             (change)="onChange()"
            >
              <option  value="">Choose Category</option>
              <option *ngFor="let category of Categories">
@@ -48,7 +50,7 @@
              class="custom-select mb-3"
              formControlName="subcategoryName"
            >
-             <option  value="">Choose Subcategory</option>
+             <option  value="">None</option>
              <option *ngFor="let subcategory of Subcategories">
                {{subcategory.name}}
              </option>

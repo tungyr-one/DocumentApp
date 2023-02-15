@@ -27,15 +27,16 @@ export class NewDocComponent implements OnInit{
     private router: Router) { }
 
   ngOnInit(): void {
-    this.loadSubcategories();
     this.loadCategories();
+    //TODO remove consistent values
     this.newDocForm = this.fb.group({
-      name: ['', Validators.required],
-      version: ['', [Validators.required]],
-      author: ['', [Validators.required]],
+      name: ['!Test doc', Validators.required],
+      version: ['0.1', [Validators.required]],
+      author: ['Victor', [Validators.required]],
       categoryName: ['', [Validators.required]],
-      subcategoryName: ['', [Validators.required]],
-      text: ['', [Validators.required, Validators.minLength(15)]],
+      subcategoryName: [''],
+      text: ['I had run into similar situation, the scenario was ',
+       [Validators.required, Validators.minLength(15)]],
     });
   }
 
@@ -48,8 +49,7 @@ export class NewDocComponent implements OnInit{
       next: () => {
         this.router.navigateByUrl('');
       },
-    });
-    
+    });    
   }
 
   loadCategories(){
@@ -60,12 +60,23 @@ export class NewDocComponent implements OnInit{
     })
   }
 
-  loadSubcategories(){
-    this.subcatService.getSubcategories().subscribe({
-      next: response => {
-          this.Subcategories = response;
-      }
-    })
+  onChange() {
+    const values = {...this.newDocForm.value};
+    const category = this.Categories.find((obj) => {
+      return obj.name === values.categoryName;
+    });
+    if(category === undefined)
+    {
+      this.newDocForm.controls['subcategoryName'].setValue('None');
+      this.Subcategories = [];
+    }
+    else
+    {
+        if(category?.subcategories)
+        {
+            this.Subcategories = category?.subcategories;
+        }  
+    }
   }
 
   //TODO:warn user he may lose data
