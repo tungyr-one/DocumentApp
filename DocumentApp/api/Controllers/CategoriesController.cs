@@ -6,6 +6,7 @@ using api.DTOs;
 using api.Interfaces;
 using api.Entities;
 using AutoMapper;
+using System.Collections.Generic;
 
 namespace api.Controllers
 {
@@ -15,7 +16,7 @@ namespace api.Controllers
     {
         private readonly ILogger<CategoriesController> _logger;
         public ICategoriesRepository _categoryRepository { get; }
-      public IMapper _mapper { get; }
+        public IMapper _mapper { get; }
 
         public CategoriesController(ICategoriesRepository categoryRepository,ILogger<CategoriesController> logger,
          IMapper mapper)
@@ -33,16 +34,38 @@ namespace api.Controllers
             return Ok(categories);
         }
 
-         [HttpPost]
-        public async Task<ActionResult> CreateCategory(CategoryDto newCategory)
+        [HttpPost]
+        public async Task<ActionResult> CreateCategory(CategoryNewDto newCategory)
         {
-            var categoryToDb = _mapper.Map<CategoryDb>(newCategory);            
-            if(!string.IsNullOrEmpty(categoryToDb.))
+            //TODO check if category exists already
+            var subcategoriesToAdd = new List<SubcategoryDb>();
+            var categoryToDb = new CategoryDb {Name = newCategory.Name};        
             _categoryRepository.Create(categoryToDb);
+            await _categoryRepository.SaveAllAsync();
 
-            if (await _docsRepository.SaveAllAsync()) return Ok();
-            return BadRequest("Failed to create document");
+            var category = _categoryRepository.GetCategoryByNameAsync(newCategory.Name).Result;
+
+            foreach(string subcategoryName in newCategory.SubcategoryNames)
+            {
+                if(!string.IsNullOrEmpty(subcategoryName))
+                {
+                    subcategoriesToAdd.Add(new SubcategoryDb {Name = subcategoryName});
+                }
+            }
+            category.Subcategories = subcategoriesToAdd;          
+
+            if (await _categoryRepository.SaveAllAsync()) return Ok();
+            return BadRequest("Failed to create category");
         }
+                
+        [HttpDelete("{name}")]
+        public async Task<ActionResult> DeleteCategory(string name)
+       {  
+            _categoryRepository.Delete(name);
+
+            if (await _categoryRepository.SaveAllAsync()) return Ok();
+            return BadRequest("Failed to delete document");
+        }  
     }
     
 }

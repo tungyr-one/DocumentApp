@@ -65,7 +65,7 @@ export class NewDocComponent implements OnInit{
     const category = this.Categories.find((obj) => {
       return obj.name === values.categoryName;
     });
-    if(category === undefined)
+    if(category?.subcategories === undefined)
     {
       this.newDocForm.controls['subcategoryName'].setValue('None');
       this.Subcategories = [];

@@ -111,7 +111,7 @@ export class DocEditComponent implements OnInit{
     const category = this.Categories.find((obj) => {
       return obj.name === categoryName;
     });
-    if(category === undefined)
+    if(category?.subcategories === undefined)
     {
       this.editForm.controls['subcategoryName'].setValue('None');
       this.Subcategories = [];

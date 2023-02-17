@@ -21,7 +21,7 @@ export class NewCategoryComponent implements OnInit{
   isChecked:boolean = true;
 
   constructor(private docService:DocService, 
-    private catService:CategoryService, 
+    private categoryService:CategoryService, 
     private subcatService:SubcategoryService, 
     private toastr: ToastrService,
     private fb: FormBuilder, 
@@ -49,20 +49,20 @@ export class NewCategoryComponent implements OnInit{
     console.log(subcats);
     let newCategory:NewCategory = { 
       name: this.newCategoryForm.get('categoryName')?.value,
-      subcategories: subcats
+      subcategoryNames: subcats
     }
     console.log(newCategory);
 
-    // this.categoryService.createCategory(values).subscribe({
-    //   next: () => {
-    //     this.router.navigateByUrl('');
-    //   },
-    // });
+    this.categoryService.createCategory(newCategory).subscribe({
+      next: () => {
+        this.router.navigateByUrl('');
+      },
+    });
     
   }
 
   loadCategories(){
-    this.catService.getCategories().subscribe({
+    this.categoryService.getCategories().subscribe({
       next: response => {
           this.Categories = response;
       }

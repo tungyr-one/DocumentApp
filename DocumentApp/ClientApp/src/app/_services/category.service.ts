@@ -21,8 +21,12 @@ export class CategoryService {
   }))
   }
 
-  createCategory()
+  createCategory(model:any)
   {
-    
+    return this.http.post(this.baseUrl + 'categories/', model)
+  }
+
+  deleteCategory(name:string){
+    return this.http.delete(this.baseUrl + 'categories/'+ name)
   }
 }

@@ -17,6 +17,14 @@ namespace api.Data
             modelBuilder.Entity<DocDb>(d =>{
             d.Property(p => p.Id).UseIdentityAlwaysColumn();
             });
+
+            modelBuilder.Entity<CategoryDb>(d =>{
+            d.Property(p => p.Id).UseIdentityAlwaysColumn();
+            });
+
+            modelBuilder.Entity<SubcategoryDb>(d =>{
+            d.Property(p => p.Id).UseIdentityAlwaysColumn();
+            });
         }
     }
 }

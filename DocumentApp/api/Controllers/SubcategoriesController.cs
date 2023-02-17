@@ -11,10 +11,10 @@ namespace api.Controllers
     [Route("/api/[controller]")]
     public class SubcategoriesController:ControllerBase
     {
-        private readonly ILogger<CategoriesController> _logger;
+        private readonly ILogger<SubcategoriesController> _logger;
         public ISubcategoriesRepository _subcategoryRepository { get; }
 
-        public SubcategoriesController(ISubcategoriesRepository subcategoryRepository,ILogger<CategoriesController> logger)
+        public SubcategoriesController(ISubcategoriesRepository subcategoryRepository,ILogger<SubcategoriesController> logger)
         {
             _subcategoryRepository = subcategoryRepository;
             _logger = logger;

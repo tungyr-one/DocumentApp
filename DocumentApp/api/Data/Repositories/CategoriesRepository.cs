@@ -30,7 +30,24 @@ namespace api.Data.Repositories
       public async Task<CategoryDb> GetCategoryByNameAsync(string catName)
       {
             return await _context.Categories
-            .SingleOrDefaultAsync(c => c.Name == catName);
+            .FirstOrDefaultAsync(c => c.Name == catName);
+      }
+
+      public void Create(CategoryDb newCategory)
+      {
+            _context.Categories
+            .Add(newCategory).State = EntityState.Added;
+      }
+
+      public void Delete(string name)
+      {
+            var categoryToDelete = GetCategoryByNameAsync(name).Result;
+            _context.Entry(categoryToDelete).State = EntityState.Deleted; 
+      }   
+
+      public async Task<bool> SaveAllAsync()
+      {
+            return await _context.SaveChangesAsync() > 0;
       }
    }
 }

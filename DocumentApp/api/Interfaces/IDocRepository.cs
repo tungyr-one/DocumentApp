@@ -15,7 +15,5 @@ namespace api.Interfaces
         void Create(DocDb doc);
         void Delete(int id);
         Task<bool> SaveAllAsync();
-
-
     }
 }

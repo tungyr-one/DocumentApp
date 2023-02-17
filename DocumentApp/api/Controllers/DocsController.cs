@@ -68,7 +68,8 @@ namespace api.Controllers
         {
             var docDb = await _docsRepository.GetDocAsync(id);
             _mapper.Map(DocUpdateDto, docDb);
-            docDb.Category = _categoriesRepository.GetCategoryByNameAsync(DocUpdateDto.CategoryName).Result;
+            var category = _categoriesRepository.GetCategoryByNameAsync(DocUpdateDto.CategoryName).Result;
+            docDb.Category = category;
             if(string.IsNullOrEmpty(DocUpdateDto.SubcategoryName))
             {
                 docDb.Subcategory = null;
@@ -76,7 +77,8 @@ namespace api.Controllers
             }
             else
             {
-                docDb.Subcategory = _subcategoriesRepository.GetSubcategoryByNameAsync(DocUpdateDto.SubcategoryName).Result;
+                var subcategory = category.Subcategories.FirstOrDefault(s => s.Name == DocUpdateDto.SubcategoryName);
+                docDb.Subcategory = subcategory;
             }
             
             _docsRepository.Update(docDb);

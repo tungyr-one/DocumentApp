@@ -3,5 +3,5 @@ import { Subcategory } from "./Subcategory";
 
 export interface NewCategory {
    name: string;
-   subcategories: string[];
+   subcategoryNames: string[];
 }
