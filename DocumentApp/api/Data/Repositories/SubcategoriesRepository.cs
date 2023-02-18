@@ -29,7 +29,7 @@ namespace api.Data.Repositories
         public async Task<SubcategoryDb> GetSubcategoryByNameAsync(string subName)
         {
             return await _context.Subcategories
-            .SingleOrDefaultAsync(s => s.Name == subName);
+            .FirstOrDefaultAsync(s => s.Name == subName);
         }
    }
 }

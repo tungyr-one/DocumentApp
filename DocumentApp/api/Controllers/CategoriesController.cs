@@ -7,6 +7,7 @@ using api.Interfaces;
 using api.Entities;
 using AutoMapper;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace api.Controllers
 {
@@ -15,55 +16,102 @@ namespace api.Controllers
     public class CategoriesController:ControllerBase
     {
         private readonly ILogger<CategoriesController> _logger;
-        public ICategoriesRepository _categoryRepository { get; }
+        public ICategoriesRepository _categoriesRepository { get; }
         public IMapper _mapper { get; }
 
         public CategoriesController(ICategoriesRepository categoryRepository,ILogger<CategoriesController> logger,
          IMapper mapper)
         {
             _mapper = mapper;
-            _categoryRepository = categoryRepository;
+            _categoriesRepository = categoryRepository;
             _logger = logger;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CategoryDto>> GetCategory(int id)
+        {
+            var category = await _categoriesRepository.GetCategoryAsync(id);
+            return Ok(_mapper.Map<CategoryDto>(category));
         }
 
         [HttpGet]
         public async Task<ActionResult<CategoryDto>> GetCategories()
         {
-            var categories = await _categoryRepository.GetCategoriesAsync();
+            var categories = await _categoriesRepository.GetCategoriesAsync();
             _logger.LogInformation("Get all categories.");
             return Ok(categories);
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateCategory(CategoryNewDto newCategory)
+        public async Task<ActionResult> CreateCategory(CategoryNewUpdateDto newCategory)
         {
             //TODO check if category exists already
-            var subcategoriesToAdd = new List<SubcategoryDb>();
             var categoryToDb = new CategoryDb {Name = newCategory.Name};        
-            _categoryRepository.Create(categoryToDb);
-            await _categoryRepository.SaveAllAsync();
+            _categoriesRepository.Create(categoryToDb);
+            await _categoriesRepository.SaveAllAsync();
 
-            var category = _categoryRepository.GetCategoryByNameAsync(newCategory.Name).Result;
+            var category = _categoriesRepository.GetCategoryByNameAsync(newCategory.Name).Result;
 
-            foreach(string subcategoryName in newCategory.SubcategoryNames)
+            for(int i = 0; i < 3; i++)
             {
-                if(!string.IsNullOrEmpty(subcategoryName))
+                if(!string.IsNullOrEmpty(newCategory.Subcategories[i]))
                 {
-                    subcategoriesToAdd.Add(new SubcategoryDb {Name = subcategoryName});
+                    categoryToDb.Subcategories[i] = new SubcategoryDb {Name = newCategory.Subcategories[i]};
                 }
-            }
-            category.Subcategories = subcategoriesToAdd;          
+            }         
 
-            if (await _categoryRepository.SaveAllAsync()) return Ok();
+            if (await _categoriesRepository.SaveAllAsync()) return Ok();
             return BadRequest("Failed to create category");
         }
-                
-        [HttpDelete("{name}")]
-        public async Task<ActionResult> DeleteCategory(string name)
-       {  
-            _categoryRepository.Delete(name);
 
-            if (await _categoryRepository.SaveAllAsync()) return Ok();
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateCategory(int id, CategoryNewUpdateDto categoryUpdateDto)
+        {
+            var categoryDb = await _categoriesRepository.GetCategoryAsync(id);
+            categoryDb.Name = categoryUpdateDto.Name;
+            int index = 0;
+            for(int i = 0; i < 3; i++)
+            {
+                if(!string.IsNullOrWhiteSpace(categoryUpdateDto.Subcategories[index]))
+                {
+                    if(categoryDb.Subcategories[i] != null)
+                    {
+                        if(categoryDb.Subcategories[i].Name != categoryUpdateDto.Subcategories[index])
+                        {
+                            categoryDb.Subcategories[i].Name = categoryUpdateDto.Subcategories[index];
+                        }
+                    }
+                    else
+                    {
+                        categoryDb.Subcategories[i] = new SubcategoryDb{ Name = categoryUpdateDto.Subcategories[index]};
+                    }
+                }
+                index++;
+            }
+            // foreach(SubcategoryDb subcategory in categoryDb.Subcategories)
+            // {
+            //     if(!string.IsNullOrWhiteSpace(categoryUpdateDto.Subcategories[index]))
+            //     {
+            //         if(subcategory.Name != categoryUpdateDto.Subcategories[index])
+            //         {
+            //             subcategory.Name = categoryUpdateDto.Subcategories[index];
+            //         }
+            //     }
+            //     index++;
+
+            // }           
+            _categoriesRepository.Update(categoryDb);
+            
+            if (await _categoriesRepository.SaveAllAsync()) return NoContent();
+            return BadRequest("Failed to update document");
+        }
+                
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCategory(int id)
+       {  
+            _categoriesRepository.Delete(id);
+
+            if (await _categoriesRepository.SaveAllAsync()) return Ok();
             return BadRequest("Failed to delete document");
         }  
     }

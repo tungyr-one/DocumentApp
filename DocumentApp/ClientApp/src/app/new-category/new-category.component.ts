@@ -1,4 +1,4 @@
-import { NewCategory } from './../_models/NewCategory';
+import { CategoryDto } from '../_models/CategoryDto';
 import { CategoryService } from './../_services/category.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -43,13 +43,13 @@ export class NewCategoryComponent implements OnInit{
     console.log('Valid?', form.valid);
     const values = {...this.newCategoryForm.value};
     console.log(values);
-    let subcats: Array<string> = [this.newCategoryForm.get('subcategoryNameOne')?.value, 
+    let subcategories: Array<string> = [this.newCategoryForm.get('subcategoryNameOne')?.value, 
     this.newCategoryForm.get('subcategoryNameTwo')?.value,  
     this.newCategoryForm.get('subcategoryNameThree')?.value];
-    console.log(subcats);
-    let newCategory:NewCategory = { 
+    console.log(subcategories);
+    let newCategory:CategoryDto = { 
       name: this.newCategoryForm.get('categoryName')?.value,
-      subcategoryNames: subcats
+      subcategories: subcategories
     }
     console.log(newCategory);
 

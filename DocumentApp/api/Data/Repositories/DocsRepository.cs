@@ -33,7 +33,7 @@ namespace api.Data.Repositories
             return await _context.Docs
             .Include(d => d.Category)
             .Include(d => d.Subcategory)              
-            .SingleOrDefaultAsync(d => d.Id == id);
+            .FirstOrDefaultAsync(d => d.Id == id);
         }
 
         public async Task<bool> SaveAllAsync()

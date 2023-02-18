@@ -12,14 +12,21 @@ namespace api.Data.Repositories
    public class CategoriesRepository : ICategoriesRepository
    {
 
-        private readonly DataContext _context;
-        private readonly IMapper _mapper;
+      private readonly DataContext _context;
+      private readonly IMapper _mapper;
 
-        public CategoriesRepository(DataContext context, IMapper mapper)
-        {
-            _context = context;
-            _mapper = mapper;
-        }
+      public CategoriesRepository(DataContext context, IMapper mapper)
+      {
+      _context = context;
+      _mapper = mapper;
+      }
+
+      public async Task<CategoryDb> GetCategoryAsync(int id)
+      {
+            return await _context.Categories.Include(c=> c.Subcategories)            
+            .FirstOrDefaultAsync(c => c.Id == id);
+      }
+
       public async Task<IEnumerable<CategoryDb>> GetCategoriesAsync()
       {
             return await _context.Categories
@@ -29,8 +36,9 @@ namespace api.Data.Repositories
 
       public async Task<CategoryDb> GetCategoryByNameAsync(string catName)
       {
-            return await _context.Categories
-            .FirstOrDefaultAsync(c => c.Name == catName);
+            //TODO remove all 'cat' names
+            return await _context.Categories.Where(c => c.Name == catName).Include(c => c.Subcategories)
+            .FirstOrDefaultAsync();
       }
 
       public void Create(CategoryDb newCategory)
@@ -39,9 +47,14 @@ namespace api.Data.Repositories
             .Add(newCategory).State = EntityState.Added;
       }
 
-      public void Delete(string name)
+      public void Update(CategoryDb category)
+      {            
+            _context.Entry(category).State = EntityState.Modified;
+      }
+
+      public void Delete(int id)
       {
-            var categoryToDelete = GetCategoryByNameAsync(name).Result;
+            var categoryToDelete = _context.Categories.Find(id);
             _context.Entry(categoryToDelete).State = EntityState.Deleted; 
       }   
 
@@ -49,5 +62,6 @@ namespace api.Data.Repositories
       {
             return await _context.SaveChangesAsync() > 0;
       }
+
    }
 }

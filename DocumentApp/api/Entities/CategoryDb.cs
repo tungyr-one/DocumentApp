@@ -13,7 +13,7 @@ namespace api.Entities
         public int Id { get; set; }
         public string Name { get; set; }  
         #nullable enable
-        public ICollection<SubcategoryDb>? Subcategories { get; set; }
+        public IList<SubcategoryDb>? Subcategories { get; set; } = new List<SubcategoryDb>(3);
         public ICollection<DocDb>? Docs { get; set; }
     }
 }

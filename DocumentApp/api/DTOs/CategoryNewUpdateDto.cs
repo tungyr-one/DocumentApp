@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace api.DTOs
 {
-    public class CategoryNewDto
+    public class CategoryNewUpdateDto
     {
         public string Name { get; set; }
-        public string[] SubcategoryNames { get; set; }
+        public string[] Subcategories { get; set; }
     }
 }

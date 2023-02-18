@@ -18,6 +18,7 @@ import { DocEditComponent } from './doc-edit/doc-edit.component';
 import { ToastrModule } from 'ngx-toastr';
 import { NewDocComponent } from './new-doc/new-doc.component';
 import { NewCategoryComponent } from './new-category/new-category.component';
+import { CategoryEditComponent } from './category-edit/category-edit.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { NewCategoryComponent } from './new-category/new-category.component';
     DocumentListComponent,
     DocEditComponent,
     NewDocComponent,
-    NewCategoryComponent
+    NewCategoryComponent,
+    CategoryEditComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

@@ -48,7 +48,7 @@ export class DocEditComponent implements OnInit{
   onSubmit(form: FormGroup) {
     console.log('Valid?', form.valid);
     const values = {...this.editForm.value};
-    console.log("onSubmit: " + this.editForm.get('subcategoryName')?.value);
+    console.log("onSubmit: ", this.editForm.get('subcategoryName')?.value);
 
     if(this.id)
     {
@@ -65,7 +65,6 @@ export class DocEditComponent implements OnInit{
   {
     if(this.id)
     {
-      console.log("this.id:" + this.id);
     this.docService.deleteDocument(this.id).subscribe({
       next: () => {
         this.router.navigateByUrl('')
@@ -84,8 +83,10 @@ export class DocEditComponent implements OnInit{
         ),
         //TODO make category display correct on loading
         // tap(doc=> this.editForm.controls['categoryName'].setValue(doc.categoryName)),
+        tap(doc=> console.log('loadDoc - doc.categoryName:', doc.categoryName)),
         tap(doc=> this.loadSubcategories(doc.categoryName)),
-        tap(doc=> console.log(doc)));
+        tap(()=> console.log('loadDoc - Subcategories:', this.Subcategories)),
+        );
     }
     else
     {
@@ -104,6 +105,7 @@ export class DocEditComponent implements OnInit{
 
   onChange() {
     const values = {...this.editForm.value};
+    console.log('onChange call', values);
     this.loadSubcategories(values.categoryName)
   }
 
@@ -121,6 +123,7 @@ export class DocEditComponent implements OnInit{
         if(category?.subcategories)
         {
             this.Subcategories = category?.subcategories;
+            console.log('loadSubcategories: ', this.Subcategories);
         }  
     }
   }

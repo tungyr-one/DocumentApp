@@ -32,6 +32,7 @@ export class DocumentListComponent implements OnInit
     this.docService.getDocuments().subscribe({
       next: (response: any) => {
           this.dataSource = new MatTableDataSource(response);
+          // console.log('doc-list loadDocs:', response)
           this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;     
       }
@@ -48,15 +49,25 @@ export class DocumentListComponent implements OnInit
     });
   }
 
-  deleteCategory(name:string)
+  deleteCategory(id:string)
   {
-    console.log("cat name:" + name);
-    this.CategoryService.deleteCategory(name).subscribe({
+    console.log("cat id:" + id);
+    this.CategoryService.deleteCategory(id).subscribe({
       next: () => {
         this.ngOnInit();
       }
     });
   }
+
+  // deleteCategory(name:string)
+  // {
+  //   console.log("cat name:" + name);
+  //   this.CategoryService.deleteCategory(name).subscribe({
+  //     next: () => {
+  //       this.ngOnInit();
+  //     }
+  //   });
+  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

@@ -1,7 +1,7 @@
 import { Doc } from "./Doc";
 import { Subcategory } from "./Subcategory";
 
-export interface NewCategory {
+export interface CategoryDto {
    name: string;
-   subcategoryNames: string[];
+   subcategories: string[];
 }

@@ -1,7 +1,7 @@
-<div class="container-mt5" style='text-align: center;'>
+<div *ngIf="doc$ | async; let document" class="container-mt5" style='text-align: center;'>
   <h2>Edit document</h2> 
   <form 
-    *ngIf="doc$ | async; let document"
+    *ngIf="Subcategories"
     [formGroup]="editForm" 
     (ngSubmit)="onSubmit(editForm)">
     <div class="mb-5">
@@ -45,7 +45,7 @@
           </select>
     </div>
     <p style="color:red">{{document.categoryName}}</p>
-    <div>
+    <div *ngIf="Subcategories">
       <label>Subcategory:</label>
       <select
             class="custom-select mb-3"

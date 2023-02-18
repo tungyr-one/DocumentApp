@@ -70,7 +70,7 @@ namespace api.Controllers
             _mapper.Map(DocUpdateDto, docDb);
             var category = _categoriesRepository.GetCategoryByNameAsync(DocUpdateDto.CategoryName).Result;
             docDb.Category = category;
-            if(string.IsNullOrEmpty(DocUpdateDto.SubcategoryName))
+            if(string.IsNullOrEmpty(DocUpdateDto.SubcategoryName) || DocUpdateDto.SubcategoryName == "None")
             {
                 docDb.Subcategory = null;
                 docDb.SubcategoryId = null;
