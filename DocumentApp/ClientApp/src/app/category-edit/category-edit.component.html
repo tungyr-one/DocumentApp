@@ -22,11 +22,10 @@
          Subcategory name:
          <input id="version" formControlName="subcategoriesNameOne" placeholder="Subcategory name">
        </label>
-       <div *ngIf="editCategoryForm.get('version')?.invalid && (editCategoryForm.get('version')?.dirty || editCategoryForm.get('version')?.touched)">
-         <p class="error">Please provide a subcategory.</p> 
+       <div *ngIf="(editCategoryForm.get('subcategoriesNameOne')?.dirty)">
        </div>
       </div>
-
+      {{category.subcategories[0]?.name}}
       <div>
         <label>
          Subcategory name:
@@ -36,7 +35,7 @@
          <p class="error">Please provide a subcategory.</p> 
        </div>
       </div>       
-
+      {{category.subcategories[1]?.name}}
       <div>
         <label>
          Subcategory name:
@@ -46,7 +45,7 @@
          <p class="error">Please provide a subcategory.</p> 
        </div>
       </div>
-       
+      {{category.subcategories[2]?.name}}
      </div>
      <div class="text-center">
        <button [disabled]="!editCategoryForm.valid" class="btn btn-success mr-5" type="submit">Save category</button>

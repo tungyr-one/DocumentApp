@@ -39,7 +39,7 @@ export class CategoryService {
 
   updateCategory(id:string, model:any){
     console.log('categoryService update category:', model)
-    return this.http.put(this.baseUrl + 'categories/'+ id, model)
+    return this.http.put(this.baseUrl + 'categories/' + id, model)
   }
 
   deleteCategory(id:string){

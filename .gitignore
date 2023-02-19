@@ -8,13 +8,10 @@
 *.sln.docstates
 *.bak
 
-appsettings.json
-DocumentApp/API/appsettings.json
 additional/
 DocumentApp/ClientApp/src/assets/
 DocumentApp/ClientApp/wwwroot/
 DocumentApp/api/Migrations
-DocumentApp/api/Properties/launchSettings.json
 DocumentApp/api/appsettings.Development.json
 DocumentApp/ClientApp/.editorconfig
 

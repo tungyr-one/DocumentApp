@@ -53,14 +53,14 @@ export class CategoryEditComponent {
     }
     console.log('updateCategory:', updateCategory);
 
-    if(this.id)
-    {
-        this.categoryService.updateCategory(this.id, updateCategory).subscribe({
-        next: () => {
-          this.router.navigateByUrl('');
-        },
-      });
-    }
+    // if(this.id)
+    // {
+    //     this.categoryService.updateCategory(this.id, updateCategory).subscribe({
+    //     next: () => {
+    //       this.router.navigateByUrl('');
+    //     },
+    //   });
+    // }
 
     
   }

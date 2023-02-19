@@ -65,25 +65,26 @@ namespace api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateCategory(int id, CategoryNewUpdateDto categoryUpdateDto)
+        public async Task<ActionResult> UpdateCategory(int id, CategoryNewUpdateDto updateCategory)
         {
             var categoryDb = await _categoriesRepository.GetCategoryAsync(id);
-            categoryDb.Name = categoryUpdateDto.Name;
+            _mapper.Map(updateCategory, categoryDb);
+            categoryDb.Name = updateCategory.Name;
             int index = 0;
             for(int i = 0; i < 3; i++)
             {
-                if(!string.IsNullOrWhiteSpace(categoryUpdateDto.Subcategories[index]))
+                if(!string.IsNullOrWhiteSpace(updateCategory.Subcategories[index]))
                 {
                     if(categoryDb.Subcategories[i] != null)
                     {
-                        if(categoryDb.Subcategories[i].Name != categoryUpdateDto.Subcategories[index])
+                        if(categoryDb.Subcategories[i].Name != updateCategory.Subcategories[index])
                         {
-                            categoryDb.Subcategories[i].Name = categoryUpdateDto.Subcategories[index];
+                            categoryDb.Subcategories[i].Name = updateCategory.Subcategories[index];
                         }
                     }
                     else
                     {
-                        categoryDb.Subcategories[i] = new SubcategoryDb{ Name = categoryUpdateDto.Subcategories[index]};
+                        categoryDb.Subcategories[i] = new SubcategoryDb{ Name = updateCategory.Subcategories[index]};
                     }
                 }
                 index++;

@@ -2,9 +2,9 @@ import { Doc } from 'src/app/_models/Doc';
 
 
 export interface Subcategory {
-   id: number;
+   id: number|null;
    name: string;
-   categoryId: number;
+   categoryId: number|null;
    categoryName: string;
-   docs: Doc[];
+   docs: Doc[]|null;
 }
