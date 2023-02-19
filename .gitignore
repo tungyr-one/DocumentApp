@@ -11,9 +11,11 @@
 additional/
 DocumentApp/ClientApp/src/assets/
 DocumentApp/ClientApp/wwwroot/
-DocumentApp/api/Migrations
 DocumentApp/api/appsettings.Development.json
 DocumentApp/ClientApp/.editorconfig
+DocumentApp/node_modules/
+DocumentApp/ClientApp/npm-debug.log
+DocumentApp/ClientApp/yarn-error.log
 
 
 
