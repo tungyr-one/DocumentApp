@@ -6,7 +6,6 @@ namespace api.Entities
     public class DocDb
     {
         [System.ComponentModel.DataAnnotations.Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }             
         public DateTime Created { get; set; }

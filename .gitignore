@@ -11,11 +11,11 @@
 additional/
 DocumentApp/ClientApp/src/assets/
 DocumentApp/ClientApp/wwwroot/
-DocumentApp/api/appsettings.Development.json
 DocumentApp/ClientApp/.editorconfig
-DocumentApp/node_modules/
+DocumentApp/ClientApp/node_modules
 DocumentApp/ClientApp/npm-debug.log
 DocumentApp/ClientApp/yarn-error.log
+DocumentApp/node_modules
 
 
 
@@ -134,7 +134,7 @@ $tf/
 .history/*
 
 # Miscellaneous
-/ClientApp/.angular/cache
+DocumentApp/ClientApp/.angular/cache
 /ClientApp/.sass-cache/
 /connect.lock
 /coverage

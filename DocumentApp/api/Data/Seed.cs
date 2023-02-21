@@ -16,12 +16,11 @@ namespace api.Data
             var categoryData = await System.IO.File.ReadAllTextAsync("Data/seed/categorySeed.json");
             var subcategoryData = await System.IO.File.ReadAllTextAsync("Data/seed/subcategorySeed.json");
             var docData = await System.IO.File.ReadAllTextAsync("Data/seed/docSeed.json");
-            Console.WriteLine(categoryData);
 
             var categories = JsonSerializer.Deserialize<List<CategoryDb>>(categoryData);
             var subcategories = JsonSerializer.Deserialize<List<SubcategoryDb>>(subcategoryData);
             var docs = JsonSerializer.Deserialize<List<DocDb>>(docData);
-            Console.WriteLine("categories: ", categories);
+            
             foreach (var category in categories)
             {
                 context.Categories.Add(category);
