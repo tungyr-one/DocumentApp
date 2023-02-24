@@ -10,7 +10,6 @@ namespace api.DTOs
         public string Name { get; set; }             
         public string Version { get; set; }
         public string CategoryName { get; set; }
-        public string SubcategoryName { get; set; }        
         public string Text { get; set; }
     }
 }

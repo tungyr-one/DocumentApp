@@ -14,6 +14,7 @@ namespace api.Interfaces
         void Create(CategoryDb cateogory);
         void Delete(int id);
         void Update(CategoryDb cateogory);
+        Task<bool> CategoryExists(string name);
         Task<bool> SaveAllAsync();
 
     }

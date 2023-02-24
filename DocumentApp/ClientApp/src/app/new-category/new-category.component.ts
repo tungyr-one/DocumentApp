@@ -3,9 +3,7 @@ import { CategoryService } from './../_services/category.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Category } from '../_models/Category';
-import { Subcategory } from '../_models/Subcategory';
 import { DocService } from '../_services/doc.service';
-import { SubcategoryService } from '../_services/subcategory.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -17,12 +15,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class NewCategoryComponent implements OnInit{
   newCategoryForm: FormGroup;
   Categories:Category[] = [];
-  Subcategories:Subcategory[] = [];
   isChecked:boolean = true;
 
   constructor(private docService:DocService, 
     private categoryService:CategoryService, 
-    private subcatService:SubcategoryService, 
     private toastr: ToastrService,
     private fb: FormBuilder, 
     private route: ActivatedRoute,
@@ -30,7 +26,6 @@ export class NewCategoryComponent implements OnInit{
 
   ngOnInit(): void {
     this.loadCategories();
-    this.loadSubcategories();
     this.newCategoryForm = this.fb.group({
       categoryName: ['!exampleCat', [Validators.required]],
       subcategoryNameOne: ['!exsubcat1'],
@@ -40,18 +35,14 @@ export class NewCategoryComponent implements OnInit{
   }
 
   onSubmit(form: FormGroup) {
-    console.log('Valid?', form.valid);
     const values = {...this.newCategoryForm.value};
-    console.log(values);
     let subcategories: Array<string> = [this.newCategoryForm.get('subcategoryNameOne')?.value, 
     this.newCategoryForm.get('subcategoryNameTwo')?.value,  
     this.newCategoryForm.get('subcategoryNameThree')?.value];
-    console.log(subcategories);
     let newCategory:CategoryDto = { 
       name: this.newCategoryForm.get('categoryName')?.value,
-      subcategories: subcategories
+      children: subcategories
     }
-    console.log(newCategory);
 
     this.categoryService.createCategory(newCategory).subscribe({
       next: () => {
@@ -69,15 +60,6 @@ export class NewCategoryComponent implements OnInit{
     })
   }
 
-  loadSubcategories(){
-    this.subcatService.getSubcategories().subscribe({
-      next: response => {
-          this.Subcategories = response;
-      }
-    })
-  }
-
-  //TODO:warn user he may lose data
   cancel(){
     this.router.navigateByUrl('');
   }

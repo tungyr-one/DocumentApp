@@ -18,7 +18,6 @@ export class DocService {
   {
     return this.http.get<Doc[]>(this.baseUrl + 'docs').pipe(
       map((docs:Doc[]) => {
-        console.log('docs service getDocuments:', docs)
         return docs;
       }))
   }
@@ -29,7 +28,6 @@ export class DocService {
     if (doc != undefined) return of(doc);
     return this.http.get<Doc>(this.baseUrl + 'docs/' + id).pipe(
       map((doc:Doc) => {
-        console.log(doc);
         return doc;
       }));
   }
@@ -40,7 +38,6 @@ export class DocService {
   }
 
   updateDocument(id:string, model:any){
-    console.log('docService update doc:', model)
     return this.http.put(this.baseUrl + 'docs/'+ id, model)
   }
 

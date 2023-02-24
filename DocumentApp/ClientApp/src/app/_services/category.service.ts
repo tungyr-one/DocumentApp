@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, of } from 'rxjs';
+import { map} from 'rxjs';
 import { environment } from '../environments/environment';
 import { Category } from '../_models/Category';
 
@@ -16,18 +16,14 @@ export class CategoryService {
   getCategories(){
     return this.http.get<Category[]>(this.baseUrl + 'categories').pipe(
       map(response => {
-        this.categories = response;
-      return this.categories;
-    }))
+        return response;
+    }));
   }
 
   getCategory(id:string)
   {
-    // const category = this.categories.find(x => x.id === +id);
-    // if (category != undefined) return of(category);
     return this.http.get<Category>(this.baseUrl + 'categories/' + id).pipe(
       map((category:Category) => {
-        // console.log('CategoryService getCategory:', category);
         return category;
       }));
   }
@@ -38,7 +34,6 @@ export class CategoryService {
   }
 
   updateCategory(id:string, model:any){
-    console.log('categoryService update category:', model)
     return this.http.put(this.baseUrl + 'categories/' + id, model)
   }
 

@@ -8,8 +8,10 @@ namespace api.DTOs
     public class CategoryDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }             
-        public SubcategoryDto[] Subcategories { get; set; }
-        public DocDto[] Docs { get; set; }
+        public string Name { get; set; }
+        #nullable enable    
+        public int? ParentId { get; set; }
+        public IList<CategoryDto>? Children { get; set; }         
+        public DocDto[]? Docs { get; set; }
     }
 }

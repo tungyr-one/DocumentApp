@@ -16,8 +16,8 @@ namespace api.Controllers
     public class CategoriesController:ControllerBase
     {
         private readonly ILogger<CategoriesController> _logger;
-        public ICategoriesRepository _categoriesRepository { get; }
-        public IMapper _mapper { get; }
+        private ICategoriesRepository _categoriesRepository { get; }
+        private IMapper _mapper { get; }
 
         public CategoriesController(ICategoriesRepository categoryRepository,ILogger<CategoriesController> logger,
          IMapper mapper)
@@ -45,20 +45,24 @@ namespace api.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateCategory(CategoryNewUpdateDto newCategory)
         {
-            //TODO check if category exists already
-            var categoryToDb = new CategoryDb {Name = newCategory.Name};        
+            var subcategories = new List<CategoryDb>();
+            var categoryToDb = new CategoryDb() {Name = newCategory.Name};        
             _categoriesRepository.Create(categoryToDb);
             await _categoriesRepository.SaveAllAsync();
 
-            var category = _categoriesRepository.GetCategoryByNameAsync(newCategory.Name).Result;
-
-            for(int i = 0; i < 3; i++)
+            foreach(string childName in newCategory.Children)
             {
-                if(!string.IsNullOrEmpty(newCategory.Subcategories[i]))
+                if(!string.IsNullOrEmpty(childName))
                 {
-                    categoryToDb.Subcategories[i] = new SubcategoryDb {Name = newCategory.Subcategories[i]};
+                    subcategories.Add(new CategoryDb() 
+                    {
+                        Name = childName,
+                        ParentId = categoryToDb.Id
+                    });
                 }
             }         
+
+            categoryToDb.Children = subcategories;
 
             if (await _categoriesRepository.SaveAllAsync()) return Ok();
             return BadRequest("Failed to create category");
@@ -73,34 +77,9 @@ namespace api.Controllers
             int index = 0;
             for(int i = 0; i < 3; i++)
             {
-                if(!string.IsNullOrWhiteSpace(updateCategory.Subcategories[index]))
-                {
-                    if(categoryDb.Subcategories[i] != null)
-                    {
-                        if(categoryDb.Subcategories[i].Name != updateCategory.Subcategories[index])
-                        {
-                            categoryDb.Subcategories[i].Name = updateCategory.Subcategories[index];
-                        }
-                    }
-                    else
-                    {
-                        categoryDb.Subcategories[i] = new SubcategoryDb{ Name = updateCategory.Subcategories[index]};
-                    }
-                }
-                index++;
-            }
-            // foreach(SubcategoryDb subcategory in categoryDb.Subcategories)
-            // {
-            //     if(!string.IsNullOrWhiteSpace(categoryUpdateDto.Subcategories[index]))
-            //     {
-            //         if(subcategory.Name != categoryUpdateDto.Subcategories[index])
-            //         {
-            //             subcategory.Name = categoryUpdateDto.Subcategories[index];
-            //         }
-            //     }
-            //     index++;
 
-            // }           
+            }
+       
             _categoriesRepository.Update(categoryDb);
             
             if (await _categoriesRepository.SaveAllAsync()) return NoContent();

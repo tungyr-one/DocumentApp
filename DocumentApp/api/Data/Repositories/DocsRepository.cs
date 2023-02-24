@@ -21,8 +21,7 @@ namespace api.Data.Repositories
         public async Task<IEnumerable<DocDb>> GetDocsAsync()
         {
             var docsDb = await _context.Docs
-            .Include(d => d.Category)
-            .Include(d => d.Subcategory)              
+            .Include(d => d.Category)        
             .ToListAsync();
 
             return docsDb;
@@ -31,8 +30,7 @@ namespace api.Data.Repositories
         public async Task<DocDb> GetDocAsync(int id)
         {
             return await _context.Docs
-            .Include(d => d.Category)
-            .Include(d => d.Subcategory)              
+            .Include(d => d.Category)           
             .FirstOrDefaultAsync(d => d.Id == id);
         }
 

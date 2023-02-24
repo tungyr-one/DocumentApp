@@ -7,8 +7,6 @@ import { Observable, tap } from 'rxjs';
 import { Doc } from 'src/app/_models/Doc';
 import { DocService } from '../_services/doc.service';
 import { CategoryService } from '../_services/category.service';
-import { Subcategory } from '../_models/Subcategory';
-import { SubcategoryService } from '../_services/subcategory.service';
 
 @Component({
   selector: 'app-doc-edit',
@@ -20,11 +18,12 @@ export class DocEditComponent implements OnInit{
   id:string|null;
   doc$:Observable<Doc>;
   Categories:Category[] = [];
-  Subcategories:Subcategory[] = [];
+  CategoryList:string[] = [];
+  DocCategoryName:string;
+  prefix = "-- ";
 
   constructor(private docService:DocService, 
-    private catService:CategoryService, 
-    private subcatService:SubcategoryService, 
+    private categoriesService:CategoryService,
     private toastr: ToastrService,
     private fb: FormBuilder, 
     private route: ActivatedRoute,
@@ -32,24 +31,50 @@ export class DocEditComponent implements OnInit{
     }
 
   ngOnInit() {  
-    this.loadDoc();
     this.loadCategories();
+    this.loadDoc();
     this.editForm = this.fb.group({
       name: ['', Validators.required],
       version: ['', [Validators.required]],
       author: ['', [Validators.required]],
       categoryName: ['', [Validators.required]],
-      subcategoryName: [''],
       text: ['', [Validators.required, Validators.minLength(15)]],
     });
-    // this.editForm.controls['categoryName'].setValue('cate', {onlySelf: true});
+  }
+  
+  loadDoc(){
+    this.id = this.route.snapshot.paramMap.get('id');
+    if(this.id !== null)
+    {
+      this.doc$ = this.docService.getDocument(this.id)
+      .pipe(
+        tap(doc=> 
+        this.editForm.patchValue(doc)
+        ),
+        tap(doc=> this.loadDocCategory(doc.categoryName)),
+        );
+    }
+    else
+    {
+      this.toastr.error('Unable to load document data');
+    }
+  }
+
+  loadCategories(){
+    this.categoriesService.getCategories()
+    .pipe(
+      tap(categories => this.Categories = categories),
+      tap(categories => this.makeCategoriesList(categories))
+      ).subscribe();
   }
 
   onSubmit(form: FormGroup) {
-    console.log('Valid?', form.valid);
     const values = {...this.editForm.value};
-    console.log("onSubmit: ", this.editForm.get('subcategoryName')?.value);
-
+    
+    if(values.categoryName.substring(0,3) == this.prefix)
+    {
+      values.categoryName = values.categoryName.replace(this.prefix, "");
+    }
     if(this.id)
     {
         this.docService.updateDocument(this.id, values).subscribe({
@@ -60,7 +85,6 @@ export class DocEditComponent implements OnInit{
     }
   }
 
-  //TODO:warn user about deletion
   deleteDoc()
   {
     if(this.id)
@@ -73,62 +97,39 @@ export class DocEditComponent implements OnInit{
     }    
   }
 
-  loadDoc(){
-    this.id = this.route.snapshot.paramMap.get('id');
-    if(this.id !== null)
-    {
-      this.doc$ = this.docService.getDocument(this.id)
-      .pipe(tap(doc=> 
-        this.editForm.patchValue(doc)
-        ),
-        //TODO make category display correct on loading
-        // tap(doc=> this.editForm.controls['categoryName'].setValue(doc.categoryName)),
-        tap(doc=> console.log('loadDoc - doc.categoryName:', doc.categoryName)),
-        tap(doc=> this.loadSubcategories(doc.categoryName)),
-        tap(()=> console.log('loadDoc - Subcategories:', this.Subcategories)),
-        );
-    }
-    else
-    {
-      this.toastr.error('Unable to load document data');
-    }
-  }
-
-  loadCategories(){
-    this.catService.getCategories().subscribe({
-      next: response => {
-          this.Categories = response;
-          // console.log(this.Categories);
-      }
-    })
-  }
-
-  onChange() {
-    const values = {...this.editForm.value};
-    console.log('onChange call', values);
-    this.loadSubcategories(values.categoryName)
-  }
-
-  loadSubcategories(categoryName:string){
-    const category = this.Categories.find((obj) => {
+  loadDocCategory(categoryName:string){
+    let docCategory = this.Categories.find((obj) => {
       return obj.name === categoryName;
     });
-    if(category?.subcategories === undefined)
+
+    if(docCategory?.parentId)
     {
-      this.editForm.controls['subcategoryName'].setValue('None');
-      this.Subcategories = [];
+      this.DocCategoryName = this.prefix + docCategory.name;
     }
     else
     {
-        if(category?.subcategories)
-        {
-            this.Subcategories = category?.subcategories;
-            console.log('loadSubcategories: ', this.Subcategories);
-        }  
+      if(docCategory)
+      this.DocCategoryName = docCategory?.name;
     }
   }
-
-  //TODO:warn user he may lose data
+ 
+ makeCategoriesList(categories:Category[])
+ {
+  let CategoryList:string[] = []
+  categories.forEach(category => {
+    if(category.parentId == null)
+    {
+      this.CategoryList.push(category.name)
+      if(category.children)
+      {
+        category.children.forEach(subcategory => {
+        this.CategoryList.push(this.prefix + subcategory.name)
+      });
+      }      
+    }
+  });
+}
+ 
   cancel(){
     this.router.navigateByUrl('');
   }

@@ -9,11 +9,11 @@ namespace api.Entities
     public class CategoryDb
     {
         [System.ComponentModel.DataAnnotations.Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }  
         #nullable enable
-        public IList<SubcategoryDb>? Subcategories { get; set; } = new List<SubcategoryDb>(3);
+        public int? ParentId { get; set; }
+        public IList<CategoryDb>? Children { get; set; }
         public ICollection<DocDb>? Docs { get; set; }
     }
 }

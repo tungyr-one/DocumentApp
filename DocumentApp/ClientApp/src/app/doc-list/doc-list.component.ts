@@ -14,7 +14,7 @@ import { DocService } from '../_services/doc.service';
 export class DocumentListComponent implements OnInit
 {
   docs: Doc[] = [];
-  displayedColumns: string[] = ['name', 'created', 'version', 'author', 'category', 'subcategory'];
+  displayedColumns: string[] = ['name', 'created', 'version', 'author', 'category'];
   dataSource: MatTableDataSource<Doc>;
 
   @ViewChild(MatPaginator) paginator:MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);;
@@ -32,7 +32,6 @@ export class DocumentListComponent implements OnInit
     this.docService.getDocuments().subscribe({
       next: (response: any) => {
           this.dataSource = new MatTableDataSource(response);
-          // console.log('doc-list loadDocs:', response)
           this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;     
       }
@@ -41,7 +40,6 @@ export class DocumentListComponent implements OnInit
 
   deleteDoc(id:string)
   {
-    console.log("id:" + id);
     this.docService.deleteDocument(id).subscribe({
       next: () => {
         this.ngOnInit();
@@ -51,23 +49,12 @@ export class DocumentListComponent implements OnInit
 
   deleteCategory(id:string)
   {
-    console.log("cat id:" + id);
     this.CategoryService.deleteCategory(id).subscribe({
       next: () => {
         this.ngOnInit();
       }
     });
   }
-
-  // deleteCategory(name:string)
-  // {
-  //   console.log("cat name:" + name);
-  //   this.CategoryService.deleteCategory(name).subscribe({
-  //     next: () => {
-  //       this.ngOnInit();
-  //     }
-  //   });
-  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

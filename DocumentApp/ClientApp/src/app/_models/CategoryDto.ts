@@ -1,7 +1,7 @@
-import { Doc } from "./Doc";
-import { Subcategory } from "./Subcategory";
 
 export interface CategoryDto {
+   id?:number;
    name: string;
-   subcategories: string[];
+   parentId?: number;
+   children?: string[];
 }

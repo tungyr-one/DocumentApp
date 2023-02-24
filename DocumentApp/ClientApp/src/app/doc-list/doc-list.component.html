@@ -37,7 +37,7 @@
 
     <ng-container matColumnDef="category">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Category </th>
-      <td mat-cell *matCellDef="let row"> {{row.categoryName}} 
+      <td mat-cell *matCellDef="let row"> {{row.category.name}} 
         <div>
           <div class="inlineOpen">
             <a routerLink="/categories/edit/{{row.categoryId}}"><button class="btn btn-primary btn-sm mr-2">Edit</button></a>
@@ -49,11 +49,6 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="subcategory">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Subcategory </th>
-      <td mat-cell *matCellDef="let row"> {{row.subcategoryName}}</td>
-    </ng-container>
-
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
@@ -62,5 +57,6 @@
     </tr>
   </table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator> -->
+  <mat-paginator [pageSizeOptions]="[100]" aria-label="Select page of users"></mat-paginator>
 </div>

@@ -17,18 +17,15 @@ namespace api.Controllers
     {
         private readonly ILogger<DocsController> _logger;
         private readonly IMapper _mapper;         
-        public IDocsRepository _docsRepository { get; }
+        private IDocsRepository _docsRepository { get; }
         private readonly ICategoriesRepository _categoriesRepository;
-        private readonly ISubcategoriesRepository _subcategoriesRepository;
 
         public DocsController(IDocsRepository docsRepository,
             ICategoriesRepository categoriesRepository,
-            ISubcategoriesRepository subcategoriesRepository,
             ILogger<DocsController> logger,
             IMapper mapper)
         {
             _categoriesRepository = categoriesRepository;
-            _subcategoriesRepository = subcategoriesRepository;
             _docsRepository = docsRepository;            
             _logger = logger;
             _mapper = mapper;
@@ -52,10 +49,8 @@ namespace api.Controllers
         public async Task<ActionResult> CreateDoc(DocNewDto newDoc)
         {
             var docToDb = _mapper.Map<DocDb>(newDoc);
-            var category = _categoriesRepository.GetCategoryByNameAsync(newDoc.CategoryName).Result;
-            var subcategory = _subcategoriesRepository.GetSubcategoryByNameAsync(newDoc.SubcategoryName).Result;
+            var category = await _categoriesRepository.GetCategoryByNameAsync(newDoc.CategoryName);
             docToDb.Category = category;
-            docToDb.Subcategory = subcategory;
 
             _docsRepository.Create(docToDb);
 
@@ -68,18 +63,8 @@ namespace api.Controllers
         {
             var docDb = await _docsRepository.GetDocAsync(id);
             _mapper.Map(DocUpdateDto, docDb);
-            var category = _categoriesRepository.GetCategoryByNameAsync(DocUpdateDto.CategoryName).Result;
+            var category = await _categoriesRepository.GetCategoryByNameAsync(DocUpdateDto.CategoryName);
             docDb.Category = category;
-            if(string.IsNullOrEmpty(DocUpdateDto.SubcategoryName) || DocUpdateDto.SubcategoryName == "None")
-            {
-                docDb.Subcategory = null;
-                docDb.SubcategoryId = null;
-            }
-            else
-            {
-                var subcategory = category.Subcategories.FirstOrDefault(s => s.Name == DocUpdateDto.SubcategoryName);
-                docDb.Subcategory = subcategory;
-            }
             
             _docsRepository.Update(docDb);
             

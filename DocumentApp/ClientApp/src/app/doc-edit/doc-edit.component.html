@@ -1,7 +1,6 @@
 <div *ngIf="doc$ | async; let document" class="container-mt5" style='text-align: center;'>
   <h2>Edit document</h2> 
   <form 
-    *ngIf="Subcategories"
     [formGroup]="editForm" 
     (ngSubmit)="onSubmit(editForm)">
     <div class="mb-5">
@@ -31,33 +30,21 @@
         <p class="error">Please provide an author.</p> 
       </div>
     </div>
+
     <div>
-      <label>Category:</label>
+      <label>Category: </label>
       <select
             class="custom-select mb-3"
             formControlName="categoryName"
-            (change)="onChange()"
-          >
-            <!-- <option  value="">Choose Category</option> -->
-            <option *ngFor="let category of Categories" [ngValue]="category.name">
-              {{category.name}}
+         
+            >            
+            <option *ngFor="let category of CategoryList"
+            [selected]="category == DocCategoryName">
+              {{category}}
             </option>
           </select>
     </div>
-    <p style="color:red">{{document.categoryName}}</p>
-    <div *ngIf="Subcategories">
-      <label>Subcategory:</label>
-      <select
-            class="custom-select mb-3"
-            formControlName="subcategoryName"
-          >
-            <option *ngFor="let subcategory of Subcategories" [ngValue]="subcategory.name">
-              {{subcategory.name}}
-            </option>
-            <option  value="">None</option>
-          </select>
-    </div>
-    <p style="color:red">subcategoryName: {{document.subcategoryName}}</p>
+
     <div>
       <label>
         Text:    

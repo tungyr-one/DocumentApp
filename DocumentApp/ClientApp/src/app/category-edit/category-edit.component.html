@@ -1,51 +1,50 @@
 <div *ngIf="category$ | async; let category" class="container-mt5" style='text-align: center;'>
    <h2>Edit category</h2> 
    <form 
-      *ngIf="Categories"
      [formGroup]="editCategoryForm" 
      (ngSubmit)="onSubmit(editCategoryForm)">
      <div class="mb-5">
        <label>
          Category name:
-         <input id="name" formControlName="name" placeholder="Name">
+         <input id="parentName" formControlName="parentName" placeholder="Category name">
        </label>
        <div *ngIf="editCategoryForm.get('name')?.invalid && (editCategoryForm.get('name')?.dirty || editCategoryForm.get('name')?.touched)" class="error-field">
          <p class="error">Please provide a name.</p> 
        </div>
+       <button (click)="applyChanges('parentName')" class="btn btn-primary btn-sm ml-2" >Apply</button>
      </div>
      <div>
       <label> Subcategories</label><br>
      </div>        
      <div>
+
       <div>
         <label>
          Subcategory name:
-         <input id="version" formControlName="subcategoriesNameOne" placeholder="Subcategory name">
+         <input id="subcategoriesNameOne" formControlName="subcategoriesNameOne" placeholder="Subcategory name">
+       </label>
+       <div *ngIf="(editCategoryForm.get('subcategoriesNameTwo')?.dirty)">
+        <p class="error">Please provide a name.</p> 
+       </div>
+       <button (click)="applyChanges('parentName')" class="btn btn-primary btn-sm ml-2" >Apply</button>
+      </div>  
+      <div>
+        <label>
+         Subcategory name:
+         <input id="subcategoriesNameTwo" formControlName="subcategoriesNameTwo" placeholder="Subcategory name">
        </label>
        <div *ngIf="(editCategoryForm.get('subcategoriesNameOne')?.dirty)">
        </div>
-      </div>
-      {{category.subcategories[0]?.name}}
+      </div>  
       <div>
         <label>
          Subcategory name:
-         <input id="version" formControlName="subcategoriesNameTwo" placeholder="Subcategory name">
+         <input id="subcategoriesNameThree" formControlName="subcategoriesNameThree" placeholder="Subcategory name">
        </label>
-       <div *ngIf="editCategoryForm.get('version')?.invalid && (editCategoryForm.get('version')?.dirty || editCategoryForm.get('version')?.touched)">
-         <p class="error">Please provide a subcategory.</p> 
+       <div *ngIf="(editCategoryForm.get('subcategoriesNameThree')?.dirty)">
        </div>
-      </div>       
-      {{category.subcategories[1]?.name}}
-      <div>
-        <label>
-         Subcategory name:
-         <input id="version" formControlName="subcategoriesNameThree" placeholder="Subcategory name">
-       </label>
-       <div *ngIf="editCategoryForm.get('version')?.invalid && (editCategoryForm.get('version')?.dirty || editCategoryForm.get('version')?.touched)">
-         <p class="error">Please provide a subcategory.</p> 
-       </div>
-      </div>
-      {{category.subcategories[2]?.name}}
+      </div>  
+
      </div>
      <div class="text-center">
        <button [disabled]="!editCategoryForm.valid" class="btn btn-success mr-5" type="submit">Save category</button>
