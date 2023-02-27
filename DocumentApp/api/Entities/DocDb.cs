@@ -3,6 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api.Entities
 {
+    ///<summary>
+    ///<para>
+    ///This is DocDb model
+    ///</para>
+    ///<summary>
     public class DocDb
     {
         [System.ComponentModel.DataAnnotations.Key]

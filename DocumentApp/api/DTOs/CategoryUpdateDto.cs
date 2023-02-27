@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace api.DTOs
 {
-    public class CategoryNewUpdateDto
+    public class CategoryUpdateDto
     {
         public string Name { get; set; }
         public int? ParentId { get; set; }

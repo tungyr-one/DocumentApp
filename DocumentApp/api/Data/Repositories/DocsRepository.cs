@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using api.DTOs;
 using api.Entities;
 using api.Interfaces;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Data.Repositories
@@ -18,14 +14,6 @@ namespace api.Data.Repositories
         {
             _context = context;
         }
-        public async Task<IEnumerable<DocDb>> GetDocsAsync()
-        {
-            var docsDb = await _context.Docs
-            .Include(d => d.Category)        
-            .ToListAsync();
-
-            return docsDb;
-        }
 
         public async Task<DocDb> GetDocAsync(int id)
         {
@@ -34,9 +22,13 @@ namespace api.Data.Repositories
             .FirstOrDefaultAsync(d => d.Id == id);
         }
 
-        public async Task<bool> SaveAllAsync()
+        public async Task<IEnumerable<DocDb>> GetDocsAsync()
         {
-            return await _context.SaveChangesAsync() > 0;
+            var docsDb = await _context.Docs
+            .Include(d => d.Category)        
+            .ToListAsync();
+
+            return docsDb;
         }
 
         public void Create(DocDb doc)
@@ -53,6 +45,11 @@ namespace api.Data.Repositories
         {
             var docToDelete = _context.Docs.Find(id);
             _context.Entry(docToDelete).State = EntityState.Deleted; 
-        }                  
+        }     
+
+        public async Task<bool> SaveAllAsync()
+        {
+            return await _context.SaveChangesAsync() > 0;
+        }
     }
 }

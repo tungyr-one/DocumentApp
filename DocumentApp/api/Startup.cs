@@ -26,7 +26,7 @@ namespace DocumentApp
 
             services.AddControllers().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );;
+            );
             services.AddCors();
 }
 
@@ -42,7 +42,7 @@ namespace DocumentApp
                 app.UseHsts();
             }
 
-           app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins(config.GetSection("AppLocalAddress").Value));
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
