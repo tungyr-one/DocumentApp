@@ -64,13 +64,7 @@ namespace api.Services
       public async Task<bool> UpdateAsync(int id, CategoryUpdateDto categoryUpdate)
       {
           var categoryDb = await _categoriesRepository.GetCategoryAsync(id);
-            _mapper.Map(categoryUpdate, categoryDb);
-            categoryDb.Name = categoryUpdate.Name;
-            for(int i = 0; i < 3; i++)
-            {
-
-            }
-       
+            _mapper.Map(categoryUpdate, categoryDb);      
             _categoriesRepository.Update(categoryDb);
             
             if (await _categoriesRepository.SaveAllAsync()) return true;

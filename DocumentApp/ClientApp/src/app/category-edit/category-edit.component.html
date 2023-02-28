@@ -1,53 +1,20 @@
 <div *ngIf="category$ | async; let category" class="container-mt5" style='text-align: center;'>
-   <h2>Edit category</h2> 
-   <form 
-     [formGroup]="editCategoryForm" 
-     (ngSubmit)="onSubmit(editCategoryForm)">
+   <h2>Edit category</h2>
+   <form
+     (ngSubmit)="onSubmit()">
+
      <div class="mb-5">
        <label>
          Category name:
-         <input id="parentName" formControlName="parentName" placeholder="Category name">
+         <input [(ngModel)]="Category.name" name="CategoryName" #ctrl="ngModel" required placeholder="Category name" required>
        </label>
-       <div *ngIf="editCategoryForm.get('name')?.invalid && (editCategoryForm.get('name')?.dirty || editCategoryForm.get('name')?.touched)" class="error-field">
-         <p class="error">Please provide a name.</p> 
-       </div>
-       <button (click)="applyChanges('parentName')" class="btn btn-primary btn-sm ml-2" >Apply</button>
      </div>
-     <div>
-      <label> Subcategories</label><br>
-     </div>        
-     <div>
 
-      <div>
-        <label>
-         Subcategory name:
-         <input id="subcategoriesNameOne" formControlName="subcategoriesNameOne" placeholder="Subcategory name">
-       </label>
-       <div *ngIf="(editCategoryForm.get('subcategoriesNameTwo')?.dirty)">
-        <p class="error">Please provide a name.</p> 
-       </div>
-       <button (click)="applyChanges('parentName')" class="btn btn-primary btn-sm ml-2" >Apply</button>
-      </div>  
-      <div>
-        <label>
-         Subcategory name:
-         <input id="subcategoriesNameTwo" formControlName="subcategoriesNameTwo" placeholder="Subcategory name">
-       </label>
-       <div *ngIf="(editCategoryForm.get('subcategoriesNameOne')?.dirty)">
-       </div>
-      </div>  
-      <div>
-        <label>
-         Subcategory name:
-         <input id="subcategoriesNameThree" formControlName="subcategoriesNameThree" placeholder="Subcategory name">
-       </label>
-       <div *ngIf="(editCategoryForm.get('subcategoriesNameThree')?.dirty)">
-       </div>
-      </div>  
-
-     </div>
      <div class="text-center">
-       <button [disabled]="!editCategoryForm.valid" class="btn btn-success mr-5" type="submit">Save category</button>
+       <button [disabled]="!ctrl.valid" class="btn btn-success mr-5" type="submit">Save category</button>
        <button class="btn btn-default ml-5" (click)="cancel()" type="button">Cancel</button>
      </div>
        </form>
+
+
+
