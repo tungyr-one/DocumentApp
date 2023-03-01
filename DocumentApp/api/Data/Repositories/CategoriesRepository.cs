@@ -23,20 +23,22 @@ namespace api.Data.Repositories
 
       public async Task<CategoryDb> GetCategoryAsync(int id)
       {
-            return await _context.Categories.Include(c=> c.Children)            
+            return await _context.Categories.AsNoTracking()
+            .Include(c=> c.Children)            
             .FirstOrDefaultAsync(c => c.Id == id);
       }
 
       public async Task<IEnumerable<CategoryDb>> GetCategoriesAsync()
       {
-            return await _context.Categories
-            .Include(d => d.Docs)
+            return await _context.Categories.AsNoTracking()
+            .Include(c=> c.Children)
             .ToListAsync();
       }
 
       public async Task<CategoryDb> GetCategoryByNameAsync(string categoryName)
       {
-            return await _context.Categories.Where(c => c.Name == categoryName).Include(c => c.Docs)
+            return await _context.Categories
+            .Where(c => c.Name == categoryName)
             .FirstOrDefaultAsync();
       }
 

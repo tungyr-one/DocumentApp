@@ -18,10 +18,10 @@ export class NewDocComponent implements OnInit{
   CategoryList:string[] = [];
   prefix = "-- ";
 
-  constructor(private docService:DocService, 
-    private categoriesService:CategoryService, 
+  constructor(private docService:DocService,
+    private categoriesService:CategoryService,
     private toastr: ToastrService,
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router) { }
 
@@ -32,14 +32,14 @@ export class NewDocComponent implements OnInit{
       version: ['1.0', [Validators.required]],
       author: ['Victor', [Validators.required]],
       categoryName: ['', [Validators.required]],
-      text: ['Please ensure the versions of these two packages exactly match.', 
+      text: ['Please ensure the versions of these two packages exactly match.',
       [Validators.required, Validators.minLength(15)]],
     });
   }
 
   onSubmit(form: FormGroup) {
     const values = {...this.newDocForm.value};
-    
+
     if(values.categoryName.substring(0,3) == this.prefix)
     {
       values.categoryName = values.categoryName.replace(this.prefix, "");
@@ -49,7 +49,7 @@ export class NewDocComponent implements OnInit{
       next: () => {
         this.router.navigateByUrl('');
       },
-    });    
+    });
   }
 
   loadCategories(){
@@ -71,7 +71,7 @@ export class NewDocComponent implements OnInit{
          category.children.forEach(subcategory => {
          this.CategoryList.push(this.prefix + subcategory.name)
         });
-       }      
+       }
      }
    });
  }

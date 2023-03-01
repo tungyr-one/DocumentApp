@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace api.Entities
 {
+    ///<summary>
+    ///Category model for DB
+    ///<summary>
     public class CategoryDb
     {
-        [System.ComponentModel.DataAnnotations.Key]
         public int Id { get; set; }
         public string Name { get; set; }  
         #nullable enable

@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace api.DTOs
 {
+    ///<summary>
+    ///Category model for transfer data to frontend
+    ///<summary>
     public class CategoryDto
     {
         public int Id { get; set; }

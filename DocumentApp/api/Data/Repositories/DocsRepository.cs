@@ -17,14 +17,14 @@ namespace api.Data.Repositories
 
         public async Task<DocDb> GetDocAsync(int id)
         {
-            return await _context.Docs
+            return await _context.Docs.AsNoTracking()
             .Include(d => d.Category)           
             .FirstOrDefaultAsync(d => d.Id == id);
         }
 
         public async Task<IEnumerable<DocDb>> GetDocsAsync()
         {
-            var docsDb = await _context.Docs
+            var docsDb = await _context.Docs.AsNoTracking()
             .Include(d => d.Category)        
             .ToListAsync();
 

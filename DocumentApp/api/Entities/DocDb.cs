@@ -4,13 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace api.Entities
 {
     ///<summary>
-    ///<para>
-    ///This is DocDb model
-    ///</para>
+    ///Document model for DB
     ///<summary>
     public class DocDb
     {
-        [System.ComponentModel.DataAnnotations.Key]
         public int Id { get; set; }
         public string Name { get; set; }             
         public DateTime Created { get; set; }
