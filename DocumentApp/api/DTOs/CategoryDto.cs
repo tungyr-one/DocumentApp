@@ -15,6 +15,5 @@ namespace api.DTOs
         #nullable enable    
         public int? ParentId { get; set; }
         public IList<CategoryDto>? Children { get; set; }         
-        public DocDto[]? Docs { get; set; }
     }
 }

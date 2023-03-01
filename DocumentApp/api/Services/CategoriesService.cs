@@ -43,13 +43,13 @@ namespace api.Services
             _categoriesRepository.Create(categoryToDb);
             await _categoriesRepository.SaveAllAsync();
 
-            foreach(string childName in newCategory.Children)
+            foreach(CategoryUpdateDto child in newCategory.Children)
             {
-                if(!string.IsNullOrEmpty(childName))
+                if(!string.IsNullOrEmpty(child.Name))
                 {
                     subcategories.Add(new CategoryDb() 
                     {
-                        Name = childName,
+                        Name = child.Name,
                         ParentId = categoryToDb.Id
                     });
                 }

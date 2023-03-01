@@ -1,4 +1,3 @@
-import { CategoryDto } from '../_models/CategoryDto';
 import { CategoryService } from './../_services/category.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -17,10 +16,10 @@ export class NewCategoryComponent implements OnInit{
   Categories:Category[] = [];
   isChecked:boolean = true;
 
-  constructor(private docService:DocService, 
-    private categoryService:CategoryService, 
+  constructor(private docService:DocService,
+    private categoryService:CategoryService,
     private toastr: ToastrService,
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router) { }
 
@@ -36,12 +35,15 @@ export class NewCategoryComponent implements OnInit{
 
   onSubmit(form: FormGroup) {
     const values = {...this.newCategoryForm.value};
-    let subcategories: Array<string> = [this.newCategoryForm.get('subcategoryNameOne')?.value, 
-    this.newCategoryForm.get('subcategoryNameTwo')?.value,  
-    this.newCategoryForm.get('subcategoryNameThree')?.value];
-    let newCategory:CategoryDto = { 
+    let categoryChildren:Category[] = [
+      {name:this.newCategoryForm.get('subcategoryNameOne')?.value},
+      {name:this.newCategoryForm.get('subcategoryNameTwo')?.value},
+      {name:this.newCategoryForm.get('subcategoryNameThree')?.value},
+    ];
+
+    let newCategory:Category = {
       name: this.newCategoryForm.get('categoryName')?.value,
-      children: subcategories
+      children:categoryChildren
     }
 
     this.categoryService.createCategory(newCategory).subscribe({
@@ -49,7 +51,7 @@ export class NewCategoryComponent implements OnInit{
         this.router.navigateByUrl('');
       },
     });
-    
+
   }
 
   loadCategories(){

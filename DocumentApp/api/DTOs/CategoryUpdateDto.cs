@@ -12,6 +12,6 @@ namespace api.DTOs
     {
         public string Name { get; set; }
         public int? ParentId { get; set; }
-        public string[]? Children { get; set; }
+        public CategoryUpdateDto[]? Children { get; set; }
     }
 }
