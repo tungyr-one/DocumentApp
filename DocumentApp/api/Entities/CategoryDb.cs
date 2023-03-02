@@ -16,6 +16,5 @@ namespace api.Entities
         #nullable enable
         public int? ParentId { get; set; }
         public IList<CategoryDb>? Children { get; set; }
-        public ICollection<DocDb>? Docs { get; set; }
     }
 }

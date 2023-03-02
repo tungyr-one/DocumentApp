@@ -11,6 +11,7 @@ namespace api.DTOs
     public class CategoryUpdateDto
     {
         public string Name { get; set; }
+        #nullable enable
         public int? ParentId { get; set; }
         public CategoryUpdateDto[]? Children { get; set; }
     }
