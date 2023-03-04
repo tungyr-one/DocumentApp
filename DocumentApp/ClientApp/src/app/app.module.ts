@@ -19,6 +19,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NewDocComponent } from './new-doc/new-doc.component';
 import { NewCategoryComponent } from './new-category/new-category.component';
 import { CategoryEditComponent } from './category-edit/category-edit.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { CategoryEditComponent } from './category-edit/category-edit.component';
     ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass:'toast-bottom-right'
-    })
+    }),
+    NgbModule
 
   ],
   providers: [],
