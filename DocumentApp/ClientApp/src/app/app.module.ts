@@ -15,11 +15,12 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { DocEditComponent } from './doc-edit/doc-edit.component';
-import { ToastrModule } from 'ngx-toastr';
+import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { NewDocComponent } from './new-doc/new-doc.component';
 import { NewCategoryComponent } from './new-category/new-category.component';
 import { CategoryEditComponent } from './category-edit/category-edit.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -44,12 +45,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MatTableModule,
     MatInputModule,
     MatFormFieldModule,
-    FormsModule,   
+    FormsModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass:'toast-bottom-right'
     }),
-    NgbModule
+    ToastContainerModule,
+    NgbModule,
+    FontAwesomeModule
 
   ],
   providers: [],

@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { CategoryService } from './../_services/category.service';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
@@ -20,25 +21,26 @@ export class DocumentListComponent implements OnInit
   @ViewChild(MatPaginator) paginator:MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);;
   @ViewChild(MatSort) sort:MatSort = new MatSort();
 
-  constructor(public docService: DocService, public CategoryService:CategoryService) {
+  constructor(private docService: DocService, private CategoryService:CategoryService,
+    private toastrService:ToastrService) {
     this.dataSource = new MatTableDataSource();
   }
 
-  ngOnInit(): void {   
+  ngOnInit(): void {
     this.loadDocs();
   }
 
-  loadDocs() {    
+  loadDocs() {
     this.docService.getDocuments().subscribe({
       next: (response: any) => {
           this.dataSource = new MatTableDataSource(response);
           this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;     
+        this.dataSource.sort = this.sort;
       }
     })
   }
 
-  deleteDoc(id:string)
+  deleteDoc(id:number)
   {
     this.docService.deleteDocument(id).subscribe({
       next: () => {
@@ -47,7 +49,7 @@ export class DocumentListComponent implements OnInit
     });
   }
 
-  deleteCategory(id:string)
+  deleteCategory(id:number)
   {
     this.CategoryService.deleteCategory(id).subscribe({
       next: () => {

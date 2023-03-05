@@ -15,22 +15,22 @@ import { CategoryService } from '../_services/category.service';
 })
 export class DocEditComponent implements OnInit{
   editForm: FormGroup;
-  id:string|null;
+  id:number;
   doc$:Observable<Doc>;
   Categories:Category[] = [];
   CategoryList:string[] = [];
   DocCategoryName:string;
   prefix = "-- ";
 
-  constructor(private docService:DocService, 
+  constructor(private docService:DocService,
     private categoriesService:CategoryService,
     private toastr: ToastrService,
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router) { 
+    private router: Router) {
     }
 
-  ngOnInit() {  
+  ngOnInit() {
     this.loadCategories();
     this.loadDoc();
     this.editForm = this.fb.group({
@@ -41,14 +41,14 @@ export class DocEditComponent implements OnInit{
       text: ['', [Validators.required, Validators.minLength(15)]],
     });
   }
-  
+
   loadDoc(){
-    this.id = this.route.snapshot.paramMap.get('id');
+    this.id = +this.route.snapshot.paramMap.get('id')!;
     if(this.id !== null)
     {
       this.doc$ = this.docService.getDocument(this.id)
       .pipe(
-        tap(doc=> 
+        tap(doc=>
         this.editForm.patchValue(doc)
         ),
         tap(doc=> this.loadDocCategory(doc.categoryName)),
@@ -70,7 +70,7 @@ export class DocEditComponent implements OnInit{
 
   onSubmit(form: FormGroup) {
     const values = {...this.editForm.value};
-    
+
     if(values.categoryName.substring(0,3) == this.prefix)
     {
       values.categoryName = values.categoryName.replace(this.prefix, "");
@@ -78,10 +78,10 @@ export class DocEditComponent implements OnInit{
     if(this.id)
     {
         this.docService.updateDocument(this.id, values).subscribe({
-              next: () => {
-                this.router.navigateByUrl('')
-              }
-            })
+          next: () => {
+            this.router.navigateByUrl('')
+          }
+        })
     }
   }
 
@@ -94,7 +94,7 @@ export class DocEditComponent implements OnInit{
         this.router.navigateByUrl('')
       }
     });
-    }    
+    }
   }
 
   loadDocCategory(categoryName:string){
@@ -112,7 +112,7 @@ export class DocEditComponent implements OnInit{
       this.DocCategoryName = docCategory?.name;
     }
   }
- 
+
  makeCategoriesList(categories:Category[])
  {
   let CategoryList:string[] = []
@@ -125,11 +125,11 @@ export class DocEditComponent implements OnInit{
         category.children.forEach(subcategory => {
         this.CategoryList.push(this.prefix + subcategory.name)
       });
-      }      
+      }
     }
   });
 }
- 
+
   cancel(){
     this.router.navigateByUrl('');
   }

@@ -44,13 +44,13 @@ export class NewCategoryComponent implements OnInit{
 
     if(this.newCategoryForm.get('categoryName')?.value.substring(0,3) == this.prefix)
     {
-      this.toastr.warning("Name of category can't start from '--' sign!");
+      this.toastr.warning("Name of category can't start from '--' sign!", 'Achtung!');
       return;
     }
 
     categoryChildren.forEach(child => {
       if(child.name.substring(0,3) == this.prefix)
-      this.toastr.warning("Name of category can't start from '--' sign!");
+      this.toastr.error("Name of category can't start from '--' sign!", 'Achtung!');
       return;
     });
 

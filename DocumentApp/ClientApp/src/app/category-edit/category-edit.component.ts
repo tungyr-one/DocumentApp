@@ -11,7 +11,7 @@ import {  Observable,  tap } from 'rxjs';
   styleUrls: ['./category-edit.component.css']
 })
 export class CategoryEditComponent {
-  id:string;
+  id:number;
   category$: Observable<Category>;
   Category: Category;
 
@@ -25,7 +25,7 @@ export class CategoryEditComponent {
   }
 
 loadCategory(){
-    this.id = this.route.snapshot.paramMap.get('id')!;
+    this.id = +this.route.snapshot.paramMap.get('id')!;
     if(this.id !== null)
     {
       this.category$ = this.categoryService.getCategory(this.id)

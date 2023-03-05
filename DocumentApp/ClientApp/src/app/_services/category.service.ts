@@ -20,7 +20,7 @@ export class CategoryService {
     }));
   }
 
-  getCategory(id:string)
+  getCategory(id:number)
   {
     return this.http.get<Category>(this.baseUrl + 'categories/' + id).pipe(
       map((category:Category) => {
@@ -33,11 +33,11 @@ export class CategoryService {
     return this.http.post(this.baseUrl + 'categories/', model)
   }
 
-  updateCategory(id:string, model:any){
+  updateCategory(id:number, model:any){
     return this.http.put(this.baseUrl + 'categories/' + id, model)
   }
 
-  deleteCategory(id:string){
+  deleteCategory(id:number){
     return this.http.delete(this.baseUrl + 'categories/'+ (+id))
   }
 }
