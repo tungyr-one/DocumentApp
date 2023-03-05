@@ -18,7 +18,7 @@ export class DocEditComponent implements OnInit{
   id:number;
   doc$:Observable<Doc>;
   Categories:Category[] = [];
-  CategoryList:string[] = [];
+  CategoriesNames:string[] = [];
   DocCategoryName:string;
   prefix = "-- ";
 
@@ -40,6 +40,7 @@ export class DocEditComponent implements OnInit{
       categoryName: ['', [Validators.required]],
       text: ['', [Validators.required, Validators.minLength(15)]],
     });
+    this.categoriesService.categoriesNamesWithPrefix = this.CategoriesNames;
   }
 
   loadDoc(){
@@ -51,7 +52,7 @@ export class DocEditComponent implements OnInit{
         tap(doc=>
         this.editForm.patchValue(doc)
         ),
-        tap(doc=> this.loadDocCategory(doc.categoryName)),
+        tap(doc => this.DocCategoryName = this.categoriesService.addPrefixToDocCategoryName(doc.categoryName)!),
         );
     }
     else
@@ -63,8 +64,7 @@ export class DocEditComponent implements OnInit{
   loadCategories(){
     this.categoriesService.getCategories()
     .pipe(
-      tap(categories => this.Categories = categories),
-      tap(categories => this.makeCategoriesList(categories))
+      tap(categories => this.Categories = categories)
       ).subscribe();
   }
 
@@ -78,10 +78,10 @@ export class DocEditComponent implements OnInit{
     if(this.id)
     {
         this.docService.updateDocument(this.id, values).subscribe({
-          next: () => {
-            this.router.navigateByUrl('')
-          }
-        })
+              next: () => {
+                this.router.navigateByUrl('')
+              }
+            })
     }
   }
 
@@ -112,23 +112,6 @@ export class DocEditComponent implements OnInit{
       this.DocCategoryName = docCategory?.name;
     }
   }
-
- makeCategoriesList(categories:Category[])
- {
-  let CategoryList:string[] = []
-  categories.forEach(category => {
-    if(category.parentId == null)
-    {
-      this.CategoryList.push(category.name)
-      if(category.children)
-      {
-        category.children.forEach(subcategory => {
-        this.CategoryList.push(this.prefix + subcategory.name)
-      });
-      }
-    }
-  });
-}
 
   cancel(){
     this.router.navigateByUrl('');

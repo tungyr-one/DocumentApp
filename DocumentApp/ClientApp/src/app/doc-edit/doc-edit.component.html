@@ -12,7 +12,7 @@
         <p class="error">Please provide a name.</p>
       </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-5">
       <label>
         Version:
         <input id="version" formControlName="version" placeholder="Doc version" readonly>
@@ -38,7 +38,7 @@
             formControlName="categoryName"
 
             >
-            <option *ngFor="let category of CategoryList"
+            <option *ngFor="let category of CategoriesNames"
             [selected]="category == DocCategoryName">
               {{category}}
             </option>

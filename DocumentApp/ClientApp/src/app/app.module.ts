@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from  '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from  '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { HomeComponent } from './home/home.component';
@@ -19,6 +19,8 @@ import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { NewDocComponent } from './new-doc/new-doc.component';
 import { NewCategoryComponent } from './new-category/new-category.component';
 import { CategoryEditComponent } from './category-edit/category-edit.component';
+import { LoadingInterceptor } from './_interceptors/loading.interceptor';
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -50,12 +52,15 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     ToastrModule.forRoot({
       positionClass:'toast-bottom-right'
     }),
+    NgxSpinnerModule,
     ToastContainerModule,
     NgbModule,
     FontAwesomeModule
 
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass:LoadingInterceptor, multi:true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
