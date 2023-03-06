@@ -47,8 +47,12 @@ export class NewDocComponent implements OnInit{
 
     this.docService.createDocument(values).subscribe({
       next: () => {
+        this.toastr.success('Document saved');
         this.router.navigateByUrl('');
       },
+      error:() => {
+        this.toastr.error('Something went wrong!', 'Oops!');
+      }
     });
   }
 

@@ -38,24 +38,8 @@ namespace api.Services
 
       public async Task<bool> CreateAsync(CategoryUpdateDto newCategory)
       {
-         var subcategories = new List<CategoryDb>();
             var categoryToDb = new CategoryDb() {Name = newCategory.Name};        
             _categoriesRepository.Create(categoryToDb);
-            await _categoriesRepository.SaveAllAsync();
-
-            foreach(CategoryUpdateDto child in newCategory.Children)
-            {
-                if(!string.IsNullOrEmpty(child.Name))
-                {
-                    subcategories.Add(new CategoryDb() 
-                    {
-                        Name = child.Name,
-                        ParentId = categoryToDb.Id
-                    });
-                }
-            }         
-
-            categoryToDb.Children = subcategories;
 
             if (await _categoriesRepository.SaveAllAsync()) return true;
             return false;

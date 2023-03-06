@@ -1,43 +1,43 @@
 <div class="container-mt5" style='text-align: center;'>
-  <h2>New document</h2> 
-  <form 
+  <h2>New document</h2>
+  <form
       *ngIf="Categories"
-     [formGroup]="newDocForm" 
+     [formGroup]="newDocForm"
      (ngSubmit)="onSubmit(newDocForm)">
-     <div class="mb-5">
+     <div class="mb-2">
        <label>
          Name:
          <input id="name" formControlName="name" placeholder="Document name">
        </label>
        <div *ngIf="newDocForm.get('name')?.invalid && (newDocForm.get('name')?.dirty || newDocForm.get('name')?.touched)" class="error-field">
-         <p class="error">Please provide a name.</p> 
+         <p class="error">Please provide a name.</p>
        </div>
      </div>
-     <div class="mt-5">
+     <div class="mt-2">
        <label>
          Version:
          <input id="version" formControlName="version" placeholder="Doc version">
        </label>
        <div *ngIf="newDocForm.get('version')?.invalid && (newDocForm.get('version')?.dirty || newDocForm.get('version')?.touched)">
-         <p class="error">Please provide a version.</p> 
+         <p class="error">Please provide a version.</p>
        </div>
      </div>
-     <div>
+     <div class="mt-2">
        <label>
          Author:
          <input id="author" formControlName="author" placeholder="Doc author">
        </label>
        <div *ngIf="newDocForm.get('author')?.invalid && (newDocForm.get('author')?.dirty || newDocForm.get('author')?.touched)">
-         <p class="error">Please provide an author.</p> 
+         <p class="error">Please provide an author.</p>
        </div>
      </div>
-     <div>
+     <div  class="mt-2">
       <label>Category: </label>
       <select
             class="custom-select mb-3"
             formControlName="categoryName"
-         
-            >            
+
+            >
             <option *ngFor="let category of CategoryList" [value]="category">
               {{category}}
             </option>
@@ -46,14 +46,14 @@
 
     <div>
       <label>
-        Text:    
+        Text:
       </label>
       <div>
         <textarea  id="text" formControlName="text" placeholder="Doc text" rows="15" cols="50"></textarea>
       </div>
-        
+
       <div *ngIf="newDocForm.get('text')?.invalid && (newDocForm.get('text')?.dirty || newDocForm.get('text')?.touched)">
-        <p class="error">Please provide a text.</p> 
+        <p class="error">Please provide a text.</p>
       </div>
     </div>
     <div class="text-center">

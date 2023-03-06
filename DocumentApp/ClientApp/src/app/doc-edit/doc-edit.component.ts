@@ -79,7 +79,11 @@ export class DocEditComponent implements OnInit{
     {
         this.docService.updateDocument(this.id, values).subscribe({
               next: () => {
-                this.router.navigateByUrl('')
+                this.toastr.success('Document saved');
+                this.router.navigateByUrl('');
+              },
+              error:() => {
+                this.toastr.error('Something went wrong!', 'Oops!');
               }
             })
     }

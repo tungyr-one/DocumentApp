@@ -50,7 +50,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FormsModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
-      positionClass:'toast-bottom-right'
+      positionClass:'toast-top-left'
     }),
     NgxSpinnerModule,
     ToastContainerModule,

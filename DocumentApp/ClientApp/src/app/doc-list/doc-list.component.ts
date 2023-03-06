@@ -45,6 +45,7 @@ export class DocumentListComponent implements OnInit
     this.docService.deleteDocument(id).subscribe({
       next: () => {
         this.ngOnInit();
+        this.toastrService.success('Document deleted');
       }
     });
   }
