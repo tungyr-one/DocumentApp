@@ -1,0 +1,12 @@
+<div>
+  <label class="m-1">Manage category:</label>
+              <select
+                    class="custom-select ml-2"
+                    [(ngModel)]="currentCategoryName">
+                    <option *ngFor="let category of CategoriesNames">
+                      {{category}}
+                    </option>
+                </select>
+                <button class="btn btn-primary btn-sm m-1" (click)="editCategory()">Edit</button>
+                <button class="btn btn-warning btn-sm" (click)="deleteCategory()">Delete</button>
+</div>

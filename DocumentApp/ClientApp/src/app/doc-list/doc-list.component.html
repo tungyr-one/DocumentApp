@@ -1,7 +1,15 @@
-<mat-form-field>
+<div>
+  <div style="display: inline-block;">
+      <mat-form-field>
   <mat-label>Filter</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
 </mat-form-field>
+  </div>
+  <div style="display: inline-block; float:right;">
+    <app-manage-category></app-manage-category>
+  </div>
+</div>
+
 
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" matSort>

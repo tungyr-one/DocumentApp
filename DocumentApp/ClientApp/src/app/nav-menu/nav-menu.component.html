@@ -1,19 +1,11 @@
 <header>
   <nav
-    class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
+    id='nav' class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3"
   >
     <div class="container">
+
       <a class="navbar-brand" [routerLink]="['/']">DocumentApp</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div
-        class="navbar-collapse collapse d-sm-inline-flex justify-content-end"
-        [ngClass]="{ show: isExpanded }"
-      >
+      <div>
         <ul class="navbar-nav flex-grow">
           <li
             class="nav-item"
@@ -25,21 +17,6 @@
           </li>
           <li class="nav-item" >
             <a class="nav-link text-dark" [routerLink]="['/docs/new']">New document</a>
-          </li>
-          <li class="nav-item">
-
-            <div>
-              <label>Manage category: </label>
-              <select
-                    class="custom-select mb-3"
-                    [(ngModel)]="currentCategoryName">
-                    <option *ngFor="let category of CategoriesNames">
-                      {{category}}
-                    </option>
-                </select>
-                <button class="btn btn-primary btn-sm" (click)="editCategory()">Edit</button>
-                <button class="btn btn-warning btn-sm" (click)="deleteCategory()">Delete</button>
-            </div>
           </li>
         </ul>
       </div>
