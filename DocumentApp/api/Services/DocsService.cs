@@ -43,7 +43,7 @@ namespace api.Services
       public async Task<bool> CreateAsync(DocNewDto newDoc)
       {
          var docToDb = _mapper.Map<DocDb>(newDoc);
-         var category = await _categoriesRepository.GetCategoryByNameAsync(newDoc.CategoryName);
+         var category = await _categoriesRepository.GetCategoryAsync(newDoc.CategoryId);
          docToDb.Category = category;
 
          _docsRepository.Create(docToDb);

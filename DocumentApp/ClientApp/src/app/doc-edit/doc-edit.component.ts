@@ -40,7 +40,6 @@ export class DocEditComponent implements OnInit{
       categoryName: ['', [Validators.required]],
       text: ['', [Validators.required, Validators.minLength(15)]],
     });
-    this.categoriesService.categoriesNamesWithPrefix = this.CategoriesNames;
   }
 
   loadDoc(){
@@ -49,10 +48,10 @@ export class DocEditComponent implements OnInit{
     {
       this.doc$ = this.docService.getDocument(this.id)
       .pipe(
-        tap(doc=>
-        this.editForm.patchValue(doc)
-        ),
-        tap(doc => this.DocCategoryName = this.categoriesService.addPrefixToDocCategoryName(doc.categoryName)!),
+        tap({next: (doc)=>{
+          this.editForm.patchValue(doc),
+          this.DocCategoryName = this.categoriesService.addPrefixToDocCategoryName(doc.categoryName)!
+        }})
         );
     }
     else
@@ -64,8 +63,13 @@ export class DocEditComponent implements OnInit{
   loadCategories(){
     this.categoriesService.getCategories()
     .pipe(
-      tap(categories => this.Categories = categories)
-      ).subscribe();
+      tap({
+        next: (categories) => {
+          this.Categories = categories;
+          this.CategoriesNames = this.categoriesService.categoriesNamesWithPrefix;
+        }}
+      )
+    ).subscribe();
   }
 
   onSubmit(form: FormGroup) {

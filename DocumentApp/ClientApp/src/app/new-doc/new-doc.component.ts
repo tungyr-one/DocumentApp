@@ -15,8 +15,15 @@ import { tap } from 'rxjs';
 export class NewDocComponent implements OnInit{
   newDocForm: FormGroup;
   Categories:Category[] = [];
-  CategoryList:string[] = [];
+  categoryId:number;
+  CategoriesNames:string[] = [];
   prefix = "-- ";
+
+
+  selectedItem()
+  {
+    console.log(this.categoryId);
+  }
 
   constructor(private docService:DocService,
     private categoriesService:CategoryService,
@@ -59,27 +66,14 @@ export class NewDocComponent implements OnInit{
   loadCategories(){
     this.categoriesService.getCategories()
     .pipe(
-      tap(categories => this.Categories = categories),
-      tap(categories => this.makeCategoriesList(categories))
-      ).subscribe();
+      tap({
+        next: (categories) => {
+          this.Categories = categories;
+          this.CategoriesNames = this.categoriesService.categoriesNamesWithPrefix;
+        }}
+      )
+    ).subscribe();
   }
-
-  makeCategoriesList(categories:Category[])
-  {
-   categories.forEach(category => {
-     if(category.parentId == null)
-     {
-       this.CategoryList.push(category.name)
-       if(category.children)
-       {
-         category.children.forEach(subcategory => {
-         this.CategoryList.push(this.prefix + subcategory.name)
-        });
-       }
-     }
-   });
- }
-
 
   cancel(){
     this.router.navigateByUrl('');

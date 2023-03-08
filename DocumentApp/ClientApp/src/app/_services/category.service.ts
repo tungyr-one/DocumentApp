@@ -30,7 +30,6 @@ export class CategoryService {
   }
 
   getCategories(){
-    this.categoriesNamesWithPrefix = [];
     return this.http.get<Category[]>(this.baseUrl + 'categories').pipe(
       map(response => {
         return response;
@@ -76,6 +75,7 @@ export class CategoryService {
 
   makeOrderedListWithPrefixes():Observable<string[]>
   {
+    this.categoriesNamesWithPrefix = [];
     this.categories.forEach(category => {
       if(category.parentId == null)
       {

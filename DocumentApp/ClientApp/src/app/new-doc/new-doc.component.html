@@ -31,17 +31,69 @@
          <p class="error">Please provide an author.</p>
        </div>
      </div>
-     <div  class="mt-2">
+     <div  class="d-flex justify-content-center mt-2">
       <label>Category: </label>
-      <select
+      <!-- <select
             class="custom-select mb-3"
             formControlName="categoryName"
-
             >
-            <option *ngFor="let category of CategoryList" [value]="category">
+            <option *ngFor="let category of CategoriesNames" [value]="category">
               {{category}}
             </option>
-          </select>
+          </select> -->
+
+      <!-- <select
+            class="custom-select mb-3"
+            formControlName="categoryName"
+            >
+            <optgroup *ngFor="let category of Categories" label="{{category.name}}">
+              <option *ngFor="let subcategory of category.children" [value]="subcategory.name">
+              {{subcategory.name}}
+              </option>
+            </optgroup>
+
+          </select> -->
+
+                      <!-- <ng-select [items]="Categories"
+                      bindLabel="name"
+                      bindValue="id"
+                      [(ngModel)]="categoryId" [ngModelOptions]="{standalone: true}"
+                      (change)="selectedItem()"
+                      style="width: 180px;">
+                      </ng-select> -->
+
+
+
+
+                      <!--Using ng-option and for loop-->
+                <ng-select [(ngModel)]="categoryId"
+                [ngModelOptions]="{standalone: true}"
+                style="width: 180px;"
+                (change)="selectedItem()">
+                  <ng-option *ngFor="let category of Categories" [value]="category.id">
+                    {{category.name}}
+                  </ng-option>
+                </ng-select>
+
+
+
+
+          <!-- <ng-select [items]="accounts"
+           bindLabel="name"
+           groupBy="country"
+           [multiple]="true"
+           [compareWith]="compareAccounts"
+           [selectableGroup]="true"
+           [(ngModel)]="selectedAccount">
+    <ng-template ng-optgroup-tmp let-item="item">
+        {{item.country || 'Unnamed group'}}
+    </ng-template>
+</ng-select>
+
+<br>
+<small>Selected: {{selectedAccount | json}}</small>
+<hr> -->
+
     </div>
 
     <div>
@@ -49,7 +101,7 @@
         Text:
       </label>
       <div>
-        <textarea  id="text" formControlName="text" placeholder="Doc text" rows="15" cols="50"></textarea>
+        <textarea  id="text" formControlName="text" placeholder="Doc text" rows="15" cols="150"></textarea>
       </div>
 
       <div *ngIf="newDocForm.get('text')?.invalid && (newDocForm.get('text')?.dirty || newDocForm.get('text')?.touched)">
