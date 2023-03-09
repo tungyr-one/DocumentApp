@@ -30,7 +30,7 @@ export class NewDocComponent implements OnInit{
     this.loadCategories();
     this.newDocForm = this.fb.group({
       name: ['!Test doc', Validators.required],
-      version: ['1.0', [Validators.required]],
+      version: ['1', [Validators.required]],
       author: ['Victor', [Validators.required]],
       categoryName: ['', [Validators.required]],
       text: ['Please ensure the versions of these two packages exactly match.',
