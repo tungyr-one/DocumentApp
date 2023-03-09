@@ -48,8 +48,7 @@ namespace api.Services
 
          _docsRepository.Create(docToDb);
 
-         if (await _docsRepository.SaveAllAsync()) return true;
-         return false;
+         return await _docsRepository.SaveAllAsync();
       }
 
       public async Task<bool> UpdateAsync(int id, DocUpdateDto docUpdate)
@@ -61,15 +60,13 @@ namespace api.Services
 
          _docsRepository.Update(docDb);
 
-         if (await _docsRepository.SaveAllAsync()) return true;
-         return false;
+         return await _docsRepository.SaveAllAsync();
       }
 
       public async Task<bool> DeleteAsync(int id)
       {
          _docsRepository.Delete(id);
-         if (await _docsRepository.SaveAllAsync()) return true;
-         return false;
+         return await _docsRepository.SaveAllAsync();
       }
    }
 }

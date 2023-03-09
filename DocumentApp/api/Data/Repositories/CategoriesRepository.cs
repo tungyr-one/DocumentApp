@@ -75,9 +75,9 @@ namespace api.Data.Repositories
             return await _context.SaveChangesAsync() > 0;
       }
 
-      async Task<bool> ICategoriesRepository.CategoryExists(string categoryName)
+      async Task<bool> ICategoriesRepository.CategoryExists(int categoryId)
       {
-          return await _context.Categories.AnyAsync(c => c.Name == categoryName);
+          return await _context.Categories.AnyAsync(c => c.Id == categoryId);
       }
    }
 }
