@@ -3,7 +3,7 @@
   <form
     [formGroup]="editForm"
     (ngSubmit)="onSubmit(editForm)">
-    <div class="mb-5">
+    <div>
       <label>
         Name:
         <input id="name" formControlName="name" placeholder="Document name">
@@ -12,7 +12,7 @@
         <p class="error">Please provide a name.</p>
       </div>
     </div>
-    <div class="mt-5">
+    <div class="mt-2">
       <label>
         Version:
         <input id="version" formControlName="version" placeholder="Doc version" readonly>
@@ -21,7 +21,7 @@
         <p class="error">Please provide a version.</p>
       </div>
     </div>
-    <div>
+    <div class="mt-2">
       <label>
         Author:
         <input id="author" formControlName="author" placeholder="Doc author">
@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="mt-2">
       <label>Category: </label>
       <select
             class="custom-select mb-3"
@@ -49,8 +49,8 @@
       <label>
         Text:
       </label>
-      <div>
-        <textarea  id="text" formControlName="text" placeholder="Doc text" rows="15" cols="50"></textarea>
+      <div class="mt-2">
+        <textarea  id="text" formControlName="text" placeholder="Doc text" rows="15" cols="150"></textarea>
       </div>
 
       <div *ngIf="editForm.get('text')?.invalid && (editForm.get('text')?.dirty || editForm.get('text')?.touched)">

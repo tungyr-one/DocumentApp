@@ -31,14 +31,13 @@
          <p class="error">Please provide an author.</p>
        </div>
      </div>
-     <div  class="mt-2">
+     <div  class="d-flex justify-content-center mt-2">
       <label>Category: </label>
       <select
             class="custom-select mb-3"
             formControlName="categoryName"
-
             >
-            <option *ngFor="let category of CategoryList" [value]="category">
+            <option *ngFor="let category of CategoriesNames" [value]="category">
               {{category}}
             </option>
           </select>
@@ -49,7 +48,7 @@
         Text:
       </label>
       <div>
-        <textarea  id="text" formControlName="text" placeholder="Doc text" rows="15" cols="50"></textarea>
+        <textarea  id="text" formControlName="text" placeholder="Doc text" rows="15" cols="150"></textarea>
       </div>
 
       <div *ngIf="newDocForm.get('text')?.invalid && (newDocForm.get('text')?.dirty || newDocForm.get('text')?.touched)">

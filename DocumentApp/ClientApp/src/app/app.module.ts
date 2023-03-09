@@ -24,6 +24,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ManageCategoryComponent } from './manage-category/manage-category.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+
 
 @NgModule({
   declarations: [
@@ -57,7 +59,8 @@ import { ManageCategoryComponent } from './manage-category/manage-category.compo
     NgxSpinnerModule,
     ToastContainerModule,
     NgbModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    NgSelectModule
 
   ],
   providers: [

@@ -35,12 +35,6 @@ export class CategoryEditComponent {
     });
   }
 
-  applyChanges(category:string){
-
-  }
-
-
-
   onSubmit() {
     if(this.id)
     {

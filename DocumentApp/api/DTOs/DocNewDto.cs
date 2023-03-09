@@ -14,7 +14,7 @@ namespace api.DTOs
         public DateTime Created { get; set; }
         public string Version { get; set; }
         public string Author { get; set; }
-        public string CategoryName { get; set; }        
+        public int CategoryId { get; set; }              
         public string Text { get; set; }
     }
 }
