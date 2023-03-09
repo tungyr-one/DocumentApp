@@ -16,8 +16,7 @@ namespace api.Helpers
             CreateMap<DocUpdateDto, DocDb>();
             CreateMap<DocNewDto, DocDb>();
             CreateMap<CategoryDb, CategoryDto>().ReverseMap();
-            CreateMap<SubcategoryDb, SubcategoryDto>().ReverseMap();
-            CreateMap<CategoryNewUpdateDto, CategoryDb>();
+            CreateMap<CategoryUpdateDto, CategoryDb>();
         }
     }
 }

@@ -1,57 +1,20 @@
 <div class="container-mt5" style='text-align: center;'>
-  <h2>New category</h2> 
-   <form 
+  <h2>New category</h2>
+   <form
       *ngIf="Categories"
-     [formGroup]="newCategoryForm" 
+     [formGroup]="newCategoryForm"
      (ngSubmit)="onSubmit(newCategoryForm)">
-     <div class="mb-5">
+     <div class="mb-2">
        <label>
          Category name:
          <input id="name" formControlName="categoryName" placeholder="Category name">
        </label>
        <div *ngIf="newCategoryForm.get('name')?.invalid && (newCategoryForm.get('name')?.dirty || newCategoryForm.get('name')?.touched)" class="error-field">
-         <p class="error">Please provide a name.</p> 
+         <p class="error">Please provide a name.</p>
        </div>
-     </div>
-     <div>
-      <input type="checkbox" (change)="isChecked =! isChecked" class="form-check-input" id="exampleCheck1" [checked] = true >
-      <label for="addSubcategory"> Add subcategory</label><br>
-     </div>        
-     <div *ngIf="isChecked">
-      <div>
-        <label>
-         Subcategory name:
-         <input id="version" formControlName="subcategoryNameOne" placeholder="Subcategory name">
-       </label>
-       <div *ngIf="newCategoryForm.get('version')?.invalid && (newCategoryForm.get('version')?.dirty || newCategoryForm.get('version')?.touched)">
-         <p class="error">Please provide a subcategory.</p> 
-       </div>
-      </div>
-
-      <div>
-        <label>
-         Subcategory name:
-         <input id="version" formControlName="subcategoryNameTwo" placeholder="Subcategory name">
-       </label>
-       <div *ngIf="newCategoryForm.get('version')?.invalid && (newCategoryForm.get('version')?.dirty || newCategoryForm.get('version')?.touched)">
-         <p class="error">Please provide a subcategory.</p> 
-       </div>
-      </div>       
-
-      <div>
-        <label>
-         Subcategory name:
-         <input id="version" formControlName="subcategoryNameThree" placeholder="Subcategory name">
-       </label>
-       <div *ngIf="newCategoryForm.get('version')?.invalid && (newCategoryForm.get('version')?.dirty || newCategoryForm.get('version')?.touched)">
-         <p class="error">Please provide a subcategory.</p> 
-       </div>
-      </div>
-       
      </div>
      <div class="text-center">
        <button [disabled]="!newCategoryForm.valid" class="btn btn-success mr-5" type="submit">Save category</button>
        <button class="btn btn-default ml-5" (click)="cancel()" type="button">Cancel</button>
      </div>
        </form>
- 

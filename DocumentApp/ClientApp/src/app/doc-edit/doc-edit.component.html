@@ -1,73 +1,60 @@
 <div *ngIf="doc$ | async; let document" class="container-mt5" style='text-align: center;'>
-  <h2>Edit document</h2> 
-  <form 
-    *ngIf="Subcategories"
-    [formGroup]="editForm" 
+  <h2>Edit document</h2>
+  <form
+    [formGroup]="editForm"
     (ngSubmit)="onSubmit(editForm)">
-    <div class="mb-5">
+    <div>
       <label>
         Name:
         <input id="name" formControlName="name" placeholder="Document name">
       </label>
       <div *ngIf="editForm.get('name')?.invalid && (editForm.get('name')?.dirty || editForm.get('name')?.touched)" class="error-field">
-        <p class="error">Please provide a name.</p> 
+        <p class="error">Please provide a name.</p>
       </div>
     </div>
-    <div class="mt-5">
+    <div class="mt-2">
       <label>
         Version:
         <input id="version" formControlName="version" placeholder="Doc version" readonly>
       </label>
       <div *ngIf="editForm.get('version')?.invalid && (editForm.get('version')?.dirty || editForm.get('version')?.touched)">
-        <p class="error">Please provide a version.</p> 
+        <p class="error">Please provide a version.</p>
       </div>
     </div>
-    <div>
+    <div class="mt-2">
       <label>
         Author:
         <input id="author" formControlName="author" placeholder="Doc author">
       </label>
       <div *ngIf="editForm.get('author')?.invalid && (editForm.get('author')?.dirty || editForm.get('author')?.touched)">
-        <p class="error">Please provide an author.</p> 
+        <p class="error">Please provide an author.</p>
       </div>
     </div>
-    <div>
-      <label>Category:</label>
+
+    <div class="mt-2">
+      <label>Category: </label>
       <select
             class="custom-select mb-3"
             formControlName="categoryName"
-            (change)="onChange()"
-          >
-            <!-- <option  value="">Choose Category</option> -->
-            <option *ngFor="let category of Categories" [ngValue]="category.name">
-              {{category.name}}
+
+            >
+            <option *ngFor="let category of CategoriesNames"
+            [selected]="category == DocCategoryName">
+              {{category}}
             </option>
           </select>
     </div>
-    <p style="color:red">{{document.categoryName}}</p>
-    <div *ngIf="Subcategories">
-      <label>Subcategory:</label>
-      <select
-            class="custom-select mb-3"
-            formControlName="subcategoryName"
-          >
-            <option *ngFor="let subcategory of Subcategories" [ngValue]="subcategory.name">
-              {{subcategory.name}}
-            </option>
-            <option  value="">None</option>
-          </select>
-    </div>
-    <p style="color:red">subcategoryName: {{document.subcategoryName}}</p>
+
     <div>
       <label>
-        Text:    
+        Text:
       </label>
-      <div>
-        <textarea  id="text" formControlName="text" placeholder="Doc text" rows="15" cols="50"></textarea>
+      <div class="mt-2">
+        <textarea  id="text" formControlName="text" placeholder="Doc text" rows="15" cols="150"></textarea>
       </div>
-        
+
       <div *ngIf="editForm.get('text')?.invalid && (editForm.get('text')?.dirty || editForm.get('text')?.touched)">
-        <p class="error">Please provide a text.</p> 
+        <p class="error">Please provide a text.</p>
       </div>
     </div>
     <div class="text-center">

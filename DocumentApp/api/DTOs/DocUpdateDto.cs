@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 
 namespace api.DTOs
 {
+    ///<summary>
+    ///Document update model for getting data from frontend
+    ///<summary>
     public class DocUpdateDto
     {
         public string Name { get; set; }             
         public string Version { get; set; }
         public string CategoryName { get; set; }
-        public string SubcategoryName { get; set; }        
         public string Text { get; set; }
     }
 }

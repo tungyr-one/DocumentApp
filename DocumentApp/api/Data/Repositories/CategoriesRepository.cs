@@ -23,21 +23,22 @@ namespace api.Data.Repositories
 
       public async Task<CategoryDb> GetCategoryAsync(int id)
       {
-            return await _context.Categories.Include(c=> c.Subcategories)            
+            return await _context.Categories.AsNoTracking()
+            .Include(c=> c.Children)            
             .FirstOrDefaultAsync(c => c.Id == id);
       }
 
       public async Task<IEnumerable<CategoryDb>> GetCategoriesAsync()
       {
-            return await _context.Categories
-            .Include(d => d.Subcategories)
+            return await _context.Categories.AsNoTracking()
+            .Include(c=> c.Children)
             .ToListAsync();
       }
 
-      public async Task<CategoryDb> GetCategoryByNameAsync(string catName)
+      public async Task<CategoryDb> GetCategoryByNameAsync(string categoryName)
       {
-            //TODO remove all 'cat' names
-            return await _context.Categories.Where(c => c.Name == catName).Include(c => c.Subcategories)
+            return await _context.Categories
+            .Where(c => c.Name == categoryName)
             .FirstOrDefaultAsync();
       }
 
@@ -54,6 +55,17 @@ namespace api.Data.Repositories
 
       public void Delete(int id)
       {
+            foreach(var doc in _context.Docs.Where(d => d.Category.Id == id))
+            {
+                 _context.Docs.Remove(doc);
+            }
+
+            foreach(var subcategory in _context.Categories.Where(d => d.ParentId == id))
+            {
+                 _context.Categories.Remove(subcategory);
+            }
+            _context.SaveChanges();
+
             var categoryToDelete = _context.Categories.Find(id);
             _context.Entry(categoryToDelete).State = EntityState.Deleted; 
       }   
@@ -63,5 +75,9 @@ namespace api.Data.Repositories
             return await _context.SaveChangesAsync() > 0;
       }
 
+      async Task<bool> ICategoriesRepository.CategoryExists(int categoryId)
+      {
+          return await _context.Categories.AnyAsync(c => c.Id == categoryId);
+      }
    }
 }

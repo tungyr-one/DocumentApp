@@ -2,11 +2,10 @@ import { CategoryService } from './../_services/category.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Category } from '../_models/Category';
-import { Subcategory } from '../_models/Subcategory';
 import { DocService } from '../_services/doc.service';
-import { SubcategoryService } from '../_services/subcategory.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-new-doc',
@@ -16,70 +15,60 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class NewDocComponent implements OnInit{
   newDocForm: FormGroup;
   Categories:Category[] = [];
-  Subcategories:Subcategory[] = [];
+  categoryId:number;
+  CategoriesNames:string[] = [];
+  prefix = "-- ";
 
-  constructor(private docService:DocService, 
-    private catService:CategoryService, 
-    private subcatService:SubcategoryService, 
+  constructor(private docService:DocService,
+    private categoriesService:CategoryService,
     private toastr: ToastrService,
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit(): void {
     this.loadCategories();
-    //TODO remove consistent values
     this.newDocForm = this.fb.group({
       name: ['!Test doc', Validators.required],
-      version: ['0.1', [Validators.required]],
+      version: ['1.0', [Validators.required]],
       author: ['Victor', [Validators.required]],
       categoryName: ['', [Validators.required]],
-      subcategoryName: [''],
-      text: ['I had run into similar situation, the scenario was ',
-       [Validators.required, Validators.minLength(15)]],
+      text: ['Please ensure the versions of these two packages exactly match.',
+      [Validators.required, Validators.minLength(15)]],
     });
   }
 
   onSubmit(form: FormGroup) {
-    console.log('Valid?', form.valid);
     const values = {...this.newDocForm.value};
-    console.log(values);
+
+    if(values.categoryName.substring(0,3) == this.prefix)
+    {
+      values.categoryName = values.categoryName.replace(this.prefix, "");
+    }
 
     this.docService.createDocument(values).subscribe({
       next: () => {
+        this.toastr.success('Document saved');
         this.router.navigateByUrl('');
       },
-    });    
+      error:() => {
+        this.toastr.error('Something went wrong!', 'Oops!');
+      }
+    });
   }
 
   loadCategories(){
-    this.catService.getCategories().subscribe({
-      next: response => {
-          this.Categories = response;
-      }
-    })
+    this.categoriesService.getCategories()
+    .pipe(
+      tap({
+        next: (categories) => {
+          this.Categories = categories;
+          this.CategoriesNames = this.categoriesService.categoriesNamesWithPrefix;
+        }}
+      )
+    ).subscribe();
   }
 
-  onChange() {
-    const values = {...this.newDocForm.value};
-    const category = this.Categories.find((obj) => {
-      return obj.name === values.categoryName;
-    });
-    if(category?.subcategories === undefined)
-    {
-      this.newDocForm.controls['subcategoryName'].setValue('None');
-      this.Subcategories = [];
-    }
-    else
-    {
-        if(category?.subcategories)
-        {
-            this.Subcategories = category?.subcategories;
-        }  
-    }
-  }
-
-  //TODO:warn user he may lose data
   cancel(){
     this.router.navigateByUrl('');
   }

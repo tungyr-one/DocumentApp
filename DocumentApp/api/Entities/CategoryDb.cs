@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace api.Entities
 {
+    ///<summary>
+    ///Category model for DB
+    ///<summary>
     public class CategoryDb
     {
-        [System.ComponentModel.DataAnnotations.Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }  
         #nullable enable
-        public IList<SubcategoryDb>? Subcategories { get; set; } = new List<SubcategoryDb>(3);
-        public ICollection<DocDb>? Docs { get; set; }
+        public int? ParentId { get; set; }
+        public IList<CategoryDb>? Children { get; set; }
     }
 }

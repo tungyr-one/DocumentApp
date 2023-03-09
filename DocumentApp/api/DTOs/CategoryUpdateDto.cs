@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 namespace api.DTOs
 {
     ///<summary>
-    ///Category model for transfer data to frontend
+    ///Category update model for getting data from frontend
     ///<summary>
-    public class CategoryDto
+    public class CategoryUpdateDto
     {
-        public int Id { get; set; }
         public string Name { get; set; }
-        #nullable enable    
+        #nullable enable
         public int? ParentId { get; set; }
-        public IList<CategoryDto>? Children { get; set; }         
+        public CategoryUpdateDto[]? Children { get; set; }
     }
 }

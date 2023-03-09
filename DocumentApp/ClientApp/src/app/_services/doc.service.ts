@@ -9,7 +9,7 @@ import { environment } from '../environments/environment';
 })
 export class DocService {
   baseUrl = environment.apiUrl;
-  docs: Doc[] = [];  
+  docs: Doc[] = [];
 
   constructor(private http: HttpClient) {
   }
@@ -18,18 +18,16 @@ export class DocService {
   {
     return this.http.get<Doc[]>(this.baseUrl + 'docs').pipe(
       map((docs:Doc[]) => {
-        console.log('docs service getDocuments:', docs)
         return docs;
       }))
   }
 
-  getDocument(id:string)
+  getDocument(id:number)
   {
     const doc = this.docs.find(x => x.id === +id);
     if (doc != undefined) return of(doc);
     return this.http.get<Doc>(this.baseUrl + 'docs/' + id).pipe(
       map((doc:Doc) => {
-        console.log(doc);
         return doc;
       }));
   }
@@ -39,12 +37,11 @@ export class DocService {
     return this.http.post(this.baseUrl + 'docs/', model)
   }
 
-  updateDocument(id:string, model:any){
-    console.log('docService update doc:', model)
+  updateDocument(id:number, model:any){
     return this.http.put(this.baseUrl + 'docs/'+ id, model)
   }
 
-  deleteDocument(id:string){
+  deleteDocument(id:number){
     return this.http.delete(this.baseUrl + 'docs/'+ id)
   }
 }

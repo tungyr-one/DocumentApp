@@ -32,8 +32,10 @@ namespace DocumentApp
                 var logger = services.GetRequiredService<ILogger<Program>>();
                 logger.LogError(ex, "An error occured during migration.");
             }
-
-            await host.RunAsync();
+            finally
+            {
+                await host.RunAsync();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

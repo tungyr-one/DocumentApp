@@ -26,22 +26,15 @@ namespace DocumentApp
 
             services.AddControllers().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );;
-
-            // services.AddSwaggerGen(c =>
-            // {
-            //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
-            // });
+            );
             services.AddCors();
 }
 
- public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+ public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration config)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                // app.UseSwagger();
-                // app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
             }
             else
             {
@@ -49,7 +42,7 @@ namespace DocumentApp
                 app.UseHsts();
             }
 
-           app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins(config.GetSection("AppLocalAddress").Value));
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseEndpoints(endpoints =>

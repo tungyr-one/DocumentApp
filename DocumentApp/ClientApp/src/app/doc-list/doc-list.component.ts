@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { CategoryService } from './../_services/category.service';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
@@ -14,60 +15,51 @@ import { DocService } from '../_services/doc.service';
 export class DocumentListComponent implements OnInit
 {
   docs: Doc[] = [];
-  displayedColumns: string[] = ['name', 'created', 'version', 'author', 'category', 'subcategory'];
+  displayedColumns: string[] = ['name', 'created', 'version', 'author', 'category'];
   dataSource: MatTableDataSource<Doc>;
+    CategoriesNames:string[] = [];
+  currentCategoryName:string;
 
   @ViewChild(MatPaginator) paginator:MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);;
   @ViewChild(MatSort) sort:MatSort = new MatSort();
 
-  constructor(public docService: DocService, public CategoryService:CategoryService) {
+  constructor(private docService: DocService, private CategoryService:CategoryService,
+    private toastrService:ToastrService) {
     this.dataSource = new MatTableDataSource();
   }
 
-  ngOnInit(): void {   
+  ngOnInit(): void {
     this.loadDocs();
   }
 
-  loadDocs() {    
+  loadDocs() {
     this.docService.getDocuments().subscribe({
       next: (response: any) => {
           this.dataSource = new MatTableDataSource(response);
-          // console.log('doc-list loadDocs:', response)
           this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;     
+        this.dataSource.sort = this.sort;
       }
     })
   }
 
-  deleteDoc(id:string)
+  deleteDoc(id:number)
   {
-    console.log("id:" + id);
     this.docService.deleteDocument(id).subscribe({
       next: () => {
         this.ngOnInit();
+        this.toastrService.success('Document deleted');
       }
     });
   }
 
-  deleteCategory(id:string)
+  deleteCategory(id:number)
   {
-    console.log("cat id:" + id);
     this.CategoryService.deleteCategory(id).subscribe({
       next: () => {
         this.ngOnInit();
       }
     });
   }
-
-  // deleteCategory(name:string)
-  // {
-  //   console.log("cat name:" + name);
-  //   this.CategoryService.deleteCategory(name).subscribe({
-  //     next: () => {
-  //       this.ngOnInit();
-  //     }
-  //   });
-  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

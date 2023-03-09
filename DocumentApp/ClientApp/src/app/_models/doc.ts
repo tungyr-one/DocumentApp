@@ -1,3 +1,4 @@
+import { Category } from './Category';
 export interface Doc {
    id: number;
    name: string;
@@ -5,8 +6,7 @@ export interface Doc {
    version: string;
    author: string;
    categoryId: number;
-   subcategoryId: number;
    categoryName: string;
-   subcategoryName: string;
+   category:Category;
    text: string;
 }
