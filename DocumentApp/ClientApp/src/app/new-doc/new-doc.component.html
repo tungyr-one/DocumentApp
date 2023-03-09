@@ -33,26 +33,80 @@
      </div>
      <div  class="d-flex justify-content-center mt-2">
       <label>Category: </label>
+
+      <!-- <mat-form-field>
+          <mat-select formControlName="categoryName">
+          <mat-option>-- None --</mat-option>
+          <mat-optgroup *ngFor="let category of Categories" [label]="category.name">
+          <mat-option *ngFor="let subcategory of category.children" [value]="subcategory.id">
+            {{subcategory.name}}
+          </mat-option>
+        </mat-optgroup>
+      </mat-select>
+      </mat-form-field> -->
+
+
+
       <!-- <select
             class="custom-select mb-3"
             formControlName="categoryName"
             >
-            <option *ngFor="let category of CategoriesNames" [value]="category">
+            <option class="ng-select" *ngFor="let category of CategoriesNames" [value]="category">
               {{category}}
             </option>
           </select> -->
 
-      <!-- <select
+
+
+          <!-- <ngx-mat-tree-select-input-ngmodel
+          (selectionChanged)="onSelectionChange()"
+          [(select)]="selectedCategory"
+          [options]="options"
+          [heading] = "'Sub Categories of'"
+          [placeholder]="'Select Category'"
+          >
+  </ngx-mat-tree-select-input-ngmodel> -->
+
+
+
+
+          <!-- <mat-form-field>
+            <mat-label>Select an option</mat-label>
+            <mat-tree-select formControlName="categoryName" [dataSource]="CategoriesTree">
+              <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+                <button mat-icon-button disabled></button>
+                {{node.name}}
+              </mat-tree-node>
+              <mat-tree-node *matTreeNodeDef="let node; when: hasChild">
+                <button mat-icon-button matTreeNodeToggle
+                        [attr.aria-label]="'toggle ' + node.name">
+                  <mat-icon>
+                    {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                  </mat-icon>
+                </button>
+                {{node.name}}
+                <mat-tree-node-toggle></mat-tree-node-toggle>
+              </mat-tree-node>
+            </mat-tree-select>
+          </mat-form-field> -->
+
+        <select
             class="custom-select mb-3"
             formControlName="categoryName"
+            [(ngModel)]="selectedCategory"
+            (change)="onSelectionChange()"
             >
             <optgroup *ngFor="let category of Categories" label="{{category.name}}">
-              <option *ngFor="let subcategory of category.children" [value]="subcategory.name">
+              <option class="parent" [value]="category.id">
+                {{category.name}}
+              </option>
+              <option class="child" *ngFor="let subcategory of category.children" [value]="subcategory.id">
               {{subcategory.name}}
               </option>
             </optgroup>
 
-          </select> -->
+          </select>
+
 
                       <!-- <ng-select [items]="Categories"
                       bindLabel="name"
@@ -66,31 +120,28 @@
 
 
                       <!--Using ng-option and for loop-->
-                <ng-select [(ngModel)]="categoryId"
+                <!-- <ng-select [(ngModel)]="categoryId"
                 [ngModelOptions]="{standalone: true}"
                 style="width: 180px;"
                 (change)="selectedItem()">
                   <ng-option *ngFor="let category of Categories" [value]="category.id">
                     {{category.name}}
                   </ng-option>
-                </ng-select>
+                </ng-select> -->
 
 
-
-
-          <!-- <ng-select [items]="accounts"
+          <!-- <ng-select [items]="Categories"
            bindLabel="name"
-           groupBy="country"
+           groupBy="parentId"
            [multiple]="true"
-           [compareWith]="compareAccounts"
            [selectableGroup]="true"
-           [(ngModel)]="selectedAccount">
-    <ng-template ng-optgroup-tmp let-item="item">
-        {{item.country || 'Unnamed group'}}
+           [(ngModel)]="selectedCategory">
+    <ng-template class="ng-select" ng-optgroup-tmp let-item="item">
+        {{item.parentId || 'Unnamed group'}}
     </ng-template>
-</ng-select>
+</ng-select> -->
 
-<br>
+<!-- <br>
 <small>Selected: {{selectedAccount | json}}</small>
 <hr> -->
 

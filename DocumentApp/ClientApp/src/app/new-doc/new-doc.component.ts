@@ -6,6 +6,8 @@ import { DocService } from '../_services/doc.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tap } from 'rxjs';
+import { TreeData } from 'mat-tree-select-input';
+import {MatTreeModule} from '@angular/material/tree';
 
 @Component({
   selector: 'app-new-doc',
@@ -20,9 +22,30 @@ export class NewDocComponent implements OnInit{
   prefix = "-- ";
 
 
-  selectedItem()
+  options: TreeData[] = []
+
+
+  constructTreeData(data: any) {
+    return data.map((item: any) => {
+      let children = [];
+
+      if (item.Children && item.Children.length) {
+        children = this.constructTreeData(item.Children);
+      }
+
+      return {
+        name: item.name,
+        value: item.id,
+        children: children,
+      };
+    });
+  }
+
+  selectedCategory:string;
+
+  onSelectionChange()
   {
-    console.log(this.categoryId);
+    console.log('selectedCategory:', this.selectedCategory);
   }
 
   constructor(private docService:DocService,
@@ -69,6 +92,8 @@ export class NewDocComponent implements OnInit{
       tap({
         next: (categories) => {
           this.Categories = categories;
+          console.log(categories);
+          this.options = this.constructTreeData(categories);
           this.CategoriesNames = this.categoriesService.categoriesNamesWithPrefix;
         }}
       )

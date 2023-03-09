@@ -1,0 +1,12 @@
+.ng-select::before
+{
+  content: "-- ";
+}
+
+.parent{
+  font-weight: 500;
+}
+
+.child{
+
+}
