@@ -50,8 +50,6 @@ export class NewDocComponent implements OnInit{
 
     const values = {...this.newDocForm.value, categoryId: category?.id};
 
-    console.log(values);
-
     this.docService.createDocument(values).subscribe({
       next: () => {
         this.toastr.success('Document saved');

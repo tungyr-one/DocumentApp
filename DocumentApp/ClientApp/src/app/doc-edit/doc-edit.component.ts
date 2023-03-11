@@ -49,7 +49,6 @@ export class DocEditComponent implements OnInit{
       this.doc$ = this.docService.getDocument(this.id)
       .pipe(
         tap({next: (doc)=>{
-          console.log('doc edit load doc: ', doc);
           this.editForm.patchValue(doc, {emitEvent: false, onlySelf: true}),
           this.DocCategoryName = this.categoriesService.addPrefixToDocCategoryName(doc.categoryName)!
         }})
@@ -75,8 +74,6 @@ export class DocEditComponent implements OnInit{
 
   onSubmit(form: FormGroup) {
     const values = {...this.editForm.value};
-    console.log('values:', values);
-    console.log('dirty?:', this.editForm.dirty);
 
     if(this.editForm.dirty)
     {
