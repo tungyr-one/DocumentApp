@@ -20,7 +20,6 @@ export class DocEditComponent implements OnInit{
   Categories:Category[] = [];
   CategoriesNames:string[] = [];
   DocCategoryName:string;
-  ValuesChanged:boolean;
   prefix = "-- ";
 
   constructor(private docService:DocService,
@@ -36,17 +35,11 @@ export class DocEditComponent implements OnInit{
     this.loadDoc();
     this.editForm = this.fb.group({
       name: ['', Validators.required],
-      version: ['', Validators.required],
+      version: [''],
       author: ['', [Validators.required]],
       categoryName: ['', [Validators.required]],
       text: ['', [Validators.required, Validators.minLength(15)]],
     });
-
-    // this.editForm.valueChanges.subscribe(() => {
-    //   console.log('Form values changed!');
-    //   this.ValuesChanged = true;
-    // });
-
   }
 
   loadDoc(){
@@ -56,7 +49,8 @@ export class DocEditComponent implements OnInit{
       this.doc$ = this.docService.getDocument(this.id)
       .pipe(
         tap({next: (doc)=>{
-          this.editForm.patchValue(doc),
+          console.log('doc edit load doc: ', doc);
+          this.editForm.patchValue(doc, {emitEvent: false, onlySelf: true}),
           this.DocCategoryName = this.categoriesService.addPrefixToDocCategoryName(doc.categoryName)!
         }})
         );
@@ -81,11 +75,13 @@ export class DocEditComponent implements OnInit{
 
   onSubmit(form: FormGroup) {
     const values = {...this.editForm.value};
+    console.log('values:', values);
+    console.log('dirty?:', this.editForm.dirty);
 
     if(this.editForm.dirty)
     {
-      // let newVersion = ++values.version;
-      // this.editForm.controls['version'].setValue(newVersion);
+      let newVersion = ++values.version;
+      this.editForm.controls['version'].setValue(newVersion);
 
       if(values.categoryName.substring(0,3) == this.prefix)
       {

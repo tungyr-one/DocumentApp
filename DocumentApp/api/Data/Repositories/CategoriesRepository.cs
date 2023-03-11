@@ -23,7 +23,7 @@ namespace api.Data.Repositories
 
       public async Task<CategoryDb> GetCategoryAsync(int id)
       {
-            return await _context.Categories.AsNoTracking()
+            return await _context.Categories
             .Include(c=> c.Children)            
             .FirstOrDefaultAsync(c => c.Id == id);
       }

@@ -33,7 +33,8 @@ namespace api.Data.Repositories
 
         public void Create(DocDb doc)
         {
-           _context.Add(doc).State = EntityState.Added;
+           _context.Docs.
+           Add(doc).State = EntityState.Added;
         }
 
          public void Update(DocDb doc)

@@ -39,17 +39,22 @@ export class NewDocComponent implements OnInit{
   }
 
   onSubmit(form: FormGroup) {
-    const values = {...this.newDocForm.value};
+    let categoryName = this.newDocForm.controls['categoryName'].value;
 
-    if(values.categoryName.substring(0,3) == this.prefix)
+    if(categoryName.substring(0,3) == this.prefix)
     {
-      values.categoryName = values.categoryName.replace(this.prefix, "");
+      categoryName = categoryName.replace(this.prefix, "");
     }
+
+    let category = this.Categories.find((category) => category.name === categoryName);
+
+    const values = {...this.newDocForm.value, categoryId: category?.id};
+
+    console.log(values);
 
     this.docService.createDocument(values).subscribe({
       next: () => {
         this.toastr.success('Document saved');
-        this.router.navigateByUrl('');
       },
       error:() => {
         this.toastr.error('Something went wrong!', 'Oops!');
