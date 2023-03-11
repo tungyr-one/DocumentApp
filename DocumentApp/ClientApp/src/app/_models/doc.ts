@@ -3,7 +3,7 @@ export interface Doc {
    id: number;
    name: string;
    created: Date;
-   version: string;
+   version: number;
    author: string;
    categoryId: number;
    categoryName: string;

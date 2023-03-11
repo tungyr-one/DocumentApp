@@ -17,9 +17,6 @@
         Version:
         <input id="version" formControlName="version" placeholder="Doc version" readonly>
       </label>
-      <div *ngIf="editForm.get('version')?.invalid && (editForm.get('version')?.dirty || editForm.get('version')?.touched)">
-        <p class="error">Please provide a version.</p>
-      </div>
     </div>
     <div class="mt-2">
       <label>

@@ -29,6 +29,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatTreeSelectInputModule } from 'mat-tree-select-input';
 
+import { NgSelectModule } from '@ng-select/ng-select';
+
 
 @NgModule({
   declarations: [
@@ -66,7 +68,8 @@ import { MatTreeSelectInputModule } from 'mat-tree-select-input';
     NgSelectModule,
     MatSelectModule,
     MatTreeModule,
-    MatTreeSelectInputModule
+    MatTreeSelectInputModule,
+    NgSelectModule
 
   ],
   providers: [

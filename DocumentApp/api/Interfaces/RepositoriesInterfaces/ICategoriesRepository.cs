@@ -41,7 +41,7 @@ namespace api.Interfaces
       ///<summary>
       /// Checks if category exists
       ///</summary>
-      Task<bool> CategoryExists(string name);
+      Task<bool> CategoryExists(int id);
 
       ///<summary>
       /// Saves all changes to database

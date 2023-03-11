@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { tap, Observable } from 'rxjs';
 import { Category } from '../_models/Category';
 import { CategoryService } from '../_services/category.service';
@@ -18,7 +19,9 @@ export class ManageCategoryComponent implements OnInit {
   prefix = "-- ";
 
   constructor(private categoriesService:CategoryService,
-    private router: Router){}
+    private router: Router,
+    private toastr: ToastrService
+    ){}
 
     ngOnInit(){
       this.loadCategories();
@@ -51,6 +54,10 @@ export class ManageCategoryComponent implements OnInit {
       if(id)
       this.categoriesService.deleteCategory(id).subscribe({
         next: () => {
+          this.toastr.success('Category deleted');
+        },
+        error:() => {
+          this.toastr.error('Something went wrong!', 'Oops!');
         }
       });
     }

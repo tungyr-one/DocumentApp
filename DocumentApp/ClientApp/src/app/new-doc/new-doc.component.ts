@@ -59,7 +59,7 @@ export class NewDocComponent implements OnInit{
     this.loadCategories();
     this.newDocForm = this.fb.group({
       name: ['!Test doc', Validators.required],
-      version: ['1.0', [Validators.required]],
+      version: ['1'],
       author: ['Victor', [Validators.required]],
       categoryName: ['', [Validators.required]],
       text: ['Please ensure the versions of these two packages exactly match.',
@@ -68,17 +68,20 @@ export class NewDocComponent implements OnInit{
   }
 
   onSubmit(form: FormGroup) {
-    const values = {...this.newDocForm.value};
+    let categoryName = this.newDocForm.controls['categoryName'].value;
 
-    if(values.categoryName.substring(0,3) == this.prefix)
+    if(categoryName.substring(0,3) == this.prefix)
     {
-      values.categoryName = values.categoryName.replace(this.prefix, "");
+      categoryName = categoryName.replace(this.prefix, "");
     }
+
+    let category = this.Categories.find((category) => category.name === categoryName);
+
+    const values = {...this.newDocForm.value, categoryId: category?.id};
 
     this.docService.createDocument(values).subscribe({
       next: () => {
         this.toastr.success('Document saved');
-        this.router.navigateByUrl('');
       },
       error:() => {
         this.toastr.error('Something went wrong!', 'Oops!');

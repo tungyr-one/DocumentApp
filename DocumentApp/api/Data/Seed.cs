@@ -14,13 +14,14 @@ namespace api.Data
       {
          if (await context.Docs.AnyAsync()) return;
          
-         if (File.Exists("Data/seed/categorySeed.json"))
+         if (File.Exists("Data/seed.json"))
          {
-            var categoryData = await System.IO.File.ReadAllTextAsync("Data/seed/categorySeed.json");
-            var categories = JsonSerializer.Deserialize<List<CategoryDb>>(categoryData);
-            foreach (var category in categories)
+            var data = await System.IO.File.ReadAllTextAsync("Data/seed.json");
+            var entities = JsonSerializer.Deserialize<List<CategoryDb>>(data);
+            Console.WriteLine("ENTITIES:" + entities);
+            foreach (var entity in entities)
             {
-                context.Categories.Add(category);
+                context.Categories.Add(entity);
             }
 
             await context.SaveChangesAsync();

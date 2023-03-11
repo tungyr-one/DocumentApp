@@ -41,8 +41,7 @@ namespace api.Services
             var categoryToDb = new CategoryDb() {Name = newCategory.Name};        
             _categoriesRepository.Create(categoryToDb);
 
-            if (await _categoriesRepository.SaveAllAsync()) return true;
-            return false;
+            return await _categoriesRepository.SaveAllAsync();
       }
 
       public async Task<bool> UpdateAsync(int id, CategoryUpdateDto categoryUpdate)
@@ -51,16 +50,14 @@ namespace api.Services
             _mapper.Map(categoryUpdate, categoryDb);      
             _categoriesRepository.Update(categoryDb);
             
-            if (await _categoriesRepository.SaveAllAsync()) return true;
-            return false;
+            return await _categoriesRepository.SaveAllAsync();
       }
 
       public async Task<bool> DeleteAsync(int id)
       {
           _categoriesRepository.Delete(id);
 
-            if (await _categoriesRepository.SaveAllAsync()) return true;
-            return false;
+          return await _categoriesRepository.SaveAllAsync();
       }
    }
 }
