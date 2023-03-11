@@ -20,6 +20,7 @@ export class DocEditComponent implements OnInit{
   Categories:Category[] = [];
   CategoriesNames:string[] = [];
   DocCategoryName:string;
+  ValuesChanged:boolean;
   prefix = "-- ";
 
   constructor(private docService:DocService,
@@ -35,11 +36,17 @@ export class DocEditComponent implements OnInit{
     this.loadDoc();
     this.editForm = this.fb.group({
       name: ['', Validators.required],
-      version: ['', [Validators.required]],
+      version: ['', Validators.required],
       author: ['', [Validators.required]],
       categoryName: ['', [Validators.required]],
       text: ['', [Validators.required, Validators.minLength(15)]],
     });
+
+    // this.editForm.valueChanges.subscribe(() => {
+    //   console.log('Form values changed!');
+    //   this.ValuesChanged = true;
+    // });
+
   }
 
   loadDoc(){
@@ -75,22 +82,32 @@ export class DocEditComponent implements OnInit{
   onSubmit(form: FormGroup) {
     const values = {...this.editForm.value};
 
-    if(values.categoryName.substring(0,3) == this.prefix)
+    if(this.editForm.dirty)
     {
-      values.categoryName = values.categoryName.replace(this.prefix, "");
-    }
-    if(this.id)
-    {
+      // let newVersion = ++values.version;
+      // this.editForm.controls['version'].setValue(newVersion);
+
+      if(values.categoryName.substring(0,3) == this.prefix)
+      {
+        values.categoryName = values.categoryName.replace(this.prefix, "");
+      }
+      if(this.id)
+      {
         this.docService.updateDocument(this.id, values).subscribe({
               next: () => {
                 this.toastr.success('Document saved');
-                this.router.navigateByUrl('');
               },
               error:() => {
                 this.toastr.error('Something went wrong!', 'Oops!');
               }
             })
+        }
     }
+    else
+    {
+      this.toastr.info('No changes found');
+    }
+
   }
 
   deleteDoc()

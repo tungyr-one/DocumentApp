@@ -10,8 +10,8 @@ using api.Data;
 namespace DocumentApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230309172340_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230311084302_InitialMigrations")]
+    partial class InitialMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
