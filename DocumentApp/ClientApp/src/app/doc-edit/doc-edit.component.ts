@@ -49,9 +49,8 @@ export class DocEditComponent implements OnInit{
       this.doc$ = this.docService.getDocument(this.id)
       .pipe(
         tap({next: (doc)=>{
-          console.log('doc edit load doc: ', doc);
           this.editForm.patchValue(doc, {emitEvent: false, onlySelf: true}),
-          this.DocCategoryName = this.categoriesService.addPrefixToDocCategoryName(doc.categoryName)!
+          this.DocCategoryName = this.categoriesService.addPrefixToDocCategoryName(doc.category.name)!
         }})
         );
     }
@@ -74,19 +73,22 @@ export class DocEditComponent implements OnInit{
   }
 
   onSubmit(form: FormGroup) {
-    const values = {...this.editForm.value};
-    console.log('values:', values);
-    console.log('dirty?:', this.editForm.dirty);
-
     if(this.editForm.dirty)
     {
+      let categoryName = this.editForm.controls['categoryName'].value;
+
+      if(categoryName.substring(0,3) == this.prefix)
+      {
+        categoryName = categoryName.replace(this.prefix, "");
+      }
+
+      let category = this.Categories.find((category) => category.name === categoryName);
+
+      const values = {...this.editForm.value, categoryId: category?.id};
+
       let newVersion = ++values.version;
       this.editForm.controls['version'].setValue(newVersion);
 
-      if(values.categoryName.substring(0,3) == this.prefix)
-      {
-        values.categoryName = values.categoryName.replace(this.prefix, "");
-      }
       if(this.id)
       {
         this.docService.updateDocument(this.id, values).subscribe({
