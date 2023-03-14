@@ -1,7 +1,7 @@
+import { Category } from './../_models/Category';
 import { CategoryService } from './../_services/category.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Category } from '../_models/Category';
 import { DocService } from '../_services/doc.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,31 +22,69 @@ export class NewDocComponent implements OnInit{
   prefix = "-- ";
 
 
-  options: TreeData[] = []
+
+  // options: TreeData[] = []
+
+  options: TreeData[] = [
+    {
+      name: 'Electronics',
+      value: 'Electronics',
+      children: [
+        {
+          name: 'Phones',
+          value: 'Phones',
+          children: [
+            {
+              name: 'Iphones',
+              value: 'Iphones',
+              children: []
+
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      name: 'Web Development',
+      value: 'Web Development',
+      children: [
+        {
+          name: 'Frontend Development',
+          value: 'Frontend Development',
+          children: [
+            {
+              name: 'Angular',
+              value: 'Angular',
+              children: []
 
 
-  constructTreeData(data: any) {
-    return data.map((item: any) => {
-      let children = [];
+            },
+            {
+              name: 'React',
+              value: 'React',
+              children: []
 
-      if (item.Children && item.Children.length) {
-        children = this.constructTreeData(item.Children);
-      }
 
-      return {
-        name: item.name,
-        value: item.id,
-        children: children,
-      };
-    });
-  }
+            }
+          ]
+        }
+      ]
+    },
+  ]
+
+
+
 
   selectedCategory:string;
 
-  onSelectionChange()
+  onSelectionChanged()
   {
-    console.log('selectedCategory:', this.selectedCategory);
+    // console.log('selectedCategory:', this.selectedCategory);
+    console.log( this.newDocForm.controls['categoryName'].value);
   }
+
+
 
   constructor(private docService:DocService,
     private categoriesService:CategoryService,
@@ -67,15 +105,46 @@ export class NewDocComponent implements OnInit{
     });
   }
 
+  constructTreeData(data:Category[]){
+    return data.map(
+      (item:any)=>{
+        let o:any = {
+          name: item.name,
+          id: item.id,
+          children: item.children.length ? this.constructTreeData(item.children) : []
+        }
+        return o
+      }
+    )
+  }
+
+  filter(array: TreeData[], text: string) {
+
+    const getNodes = (result:any, object:any) => {
+      if ( object.name.toLowerCase().startsWith(text)) {
+          result.push(object);
+          return result;
+      }
+      if (Array.isArray(object.children)) {
+        const children = object.children.reduce(getNodes, []);
+        if (children.length) result.push({ ...object, children });
+      }
+      return result;
+    };
+
+    this.options = array.reduce(getNodes, []);
+  }
+
   onSubmit(form: FormGroup) {
-    let categoryName = this.newDocForm.controls['categoryName'].value;
+    let category = this.newDocForm.controls['categoryName'].value;
+    console.log('category:', category);
 
-    if(categoryName.substring(0,3) == this.prefix)
-    {
-      categoryName = categoryName.replace(this.prefix, "");
-    }
+    // if(category.name.substring(0,3) == this.prefix)
+    // {
+    //   category.name = category.name.replace(this.prefix, "");
+    // }
 
-    let category = this.Categories.find((category) => category.name === categoryName);
+    // let category = this.Categories.find((category) => category.name === category);
 
     const values = {...this.newDocForm.value, categoryId: category?.id};
 
@@ -95,8 +164,8 @@ export class NewDocComponent implements OnInit{
       tap({
         next: (categories) => {
           this.Categories = categories;
-          console.log(categories);
-          this.options = this.constructTreeData(categories);
+          const filteredArray = categories.filter(item => item.parentId === null);
+          this.options = this.constructTreeData(filteredArray);
           this.CategoriesNames = this.categoriesService.categoriesNamesWithPrefix;
         }}
       )

@@ -31,63 +31,7 @@
      <div  class="d-flex justify-content-center mt-2">
       <label>Category: </label>
 
-      <!-- <mat-form-field>
-          <mat-select formControlName="categoryName">
-          <mat-option>-- None --</mat-option>
-          <mat-optgroup *ngFor="let category of Categories" [label]="category.name">
-          <mat-option *ngFor="let subcategory of category.children" [value]="subcategory.id">
-            {{subcategory.name}}
-          </mat-option>
-        </mat-optgroup>
-      </mat-select>
-      </mat-form-field> -->
-
-
-
-      <!-- <select
-            class="custom-select mb-3"
-            formControlName="categoryName"
-            >
-            <option class="ng-select" *ngFor="let category of CategoriesNames" [value]="category">
-              {{category}}
-            </option>
-          </select> -->
-
-
-
-          <!-- <ngx-mat-tree-select-input-ngmodel
-          (selectionChanged)="onSelectionChange()"
-          [(select)]="selectedCategory"
-          [options]="options"
-          [heading] = "'Sub Categories of'"
-          [placeholder]="'Select Category'"
-          >
-  </ngx-mat-tree-select-input-ngmodel> -->
-
-
-
-
-          <!-- <mat-form-field>
-            <mat-label>Select an option</mat-label>
-            <mat-tree-select formControlName="categoryName" [dataSource]="CategoriesTree">
-              <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
-                <button mat-icon-button disabled></button>
-                {{node.name}}
-              </mat-tree-node>
-              <mat-tree-node *matTreeNodeDef="let node; when: hasChild">
-                <button mat-icon-button matTreeNodeToggle
-                        [attr.aria-label]="'toggle ' + node.name">
-                  <mat-icon>
-                    {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-                  </mat-icon>
-                </button>
-                {{node.name}}
-                <mat-tree-node-toggle></mat-tree-node-toggle>
-              </mat-tree-node>
-            </mat-tree-select>
-          </mat-form-field> -->
-
-        <select
+        <!-- <select
             class="custom-select mb-3"
             formControlName="categoryName"
             [(ngModel)]="selectedCategory"
@@ -102,45 +46,25 @@
               </option>
             </optgroup>
 
-          </select>
+          </select> -->
 
 
-                      <!-- <ng-select [items]="Categories"
-                      bindLabel="name"
-                      bindValue="id"
-                      [(ngModel)]="categoryId" [ngModelOptions]="{standalone: true}"
-                      (change)="selectedItem()"
-                      style="width: 180px;">
-                      </ng-select> -->
+          <ngx-mat-tree-select-input
+          (selectionChanged)="onSelectionChanged()"
+          [controlName]="'categoryName'"
+          [options]="options"
+          [placeholder]="'Select category'">
+
+          <input
+            #searchInput
+            placeholder="Search"
+            (keydown)="$event.stopPropagation()"
+            (keyup)="filter(options,searchInput.value)"
+          >
+
+        </ngx-mat-tree-select-input>
 
 
-
-
-                      <!--Using ng-option and for loop-->
-                <!-- <ng-select [(ngModel)]="categoryId"
-                [ngModelOptions]="{standalone: true}"
-                style="width: 180px;"
-                (change)="selectedItem()">
-                  <ng-option *ngFor="let category of Categories" [value]="category.id">
-                    {{category.name}}
-                  </ng-option>
-                </ng-select> -->
-
-
-          <!-- <ng-select [items]="Categories"
-           bindLabel="name"
-           groupBy="parentId"
-           [multiple]="true"
-           [selectableGroup]="true"
-           [(ngModel)]="selectedCategory">
-    <ng-template class="ng-select" ng-optgroup-tmp let-item="item">
-        {{item.parentId || 'Unnamed group'}}
-    </ng-template>
-</ng-select> -->
-
-<!-- <br>
-<small>Selected: {{selectedAccount | json}}</small>
-<hr> -->
 
     </div>
 
