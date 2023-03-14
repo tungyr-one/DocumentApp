@@ -20,58 +20,8 @@ export class NewDocComponent implements OnInit{
   categoryId:number;
   CategoriesNames:string[] = [];
   prefix = "-- ";
-
-
-
-  // options: TreeData[] = []
-
-  options: TreeData[] = [
-    {
-      name: 'Electronics',
-      value: 'Electronics',
-      children: [
-        {
-          name: 'Phones',
-          value: 'Phones',
-          children: [
-            {
-              name: 'Iphones',
-              value: 'Iphones',
-              children: []
-
-            }
-          ]
-        }
-      ]
-    },
-
-    {
-      name: 'Web Development',
-      value: 'Web Development',
-      children: [
-        {
-          name: 'Frontend Development',
-          value: 'Frontend Development',
-          children: [
-            {
-              name: 'Angular',
-              value: 'Angular',
-              children: []
-
-
-            },
-            {
-              name: 'React',
-              value: 'React',
-              children: []
-
-
-            }
-          ]
-        }
-      ]
-    },
-  ]
+  options: TreeData[] = [];
+  initialOptions: TreeData[] = [];
 
 
 
@@ -99,7 +49,7 @@ export class NewDocComponent implements OnInit{
       name: ['!Test doc', Validators.required],
       version: ['1'],
       author: ['Victor', [Validators.required]],
-      categoryName: ['', [Validators.required]],
+      category: ['', [Validators.required]],
       text: ['Please ensure the versions of these two packages exactly match.',
       [Validators.required, Validators.minLength(15)]],
     });
@@ -118,35 +68,44 @@ export class NewDocComponent implements OnInit{
     )
   }
 
-  filter(array: TreeData[], text: string) {
+  // filter(array: TreeData[], text: string) {
+  filter(text: string) {
+  // console.log('filter:', array,text);
+  let array = this.options;
 
-    const getNodes = (result:any, object:any) => {
+    const getNodes = (result:any, object:any) =>
+    {
       if ( object.name.toLowerCase().startsWith(text)) {
           result.push(object);
+          // console.log('result: ', result);
           return result;
       }
+
       if (Array.isArray(object.children)) {
         const children = object.children.reduce(getNodes, []);
+        // console.log('children: ', children);
         if (children.length) result.push({ ...object, children });
       }
+      console.log('result 2: ', result);
       return result;
     };
 
     this.options = array.reduce(getNodes, []);
+
+    console.log('options: ', this.options);
+  }
+
+  reloadCategorySelect()
+  {
+    this.options = this.initialOptions;
   }
 
   onSubmit(form: FormGroup) {
-    let category = this.newDocForm.controls['categoryName'].value;
-    console.log('category:', category);
+    let category = this.newDocForm.controls['category'].value;
+    console.log(category);
+    const values = {...this.newDocForm.value, categoryId:category.id};
 
-    // if(category.name.substring(0,3) == this.prefix)
-    // {
-    //   category.name = category.name.replace(this.prefix, "");
-    // }
-
-    // let category = this.Categories.find((category) => category.name === category);
-
-    const values = {...this.newDocForm.value, categoryId: category?.id};
+    console.log(values);
 
     this.docService.createDocument(values).subscribe({
       next: () => {
@@ -166,6 +125,7 @@ export class NewDocComponent implements OnInit{
           this.Categories = categories;
           const filteredArray = categories.filter(item => item.parentId === null);
           this.options = this.constructTreeData(filteredArray);
+          this.initialOptions = this.options;
           this.CategoriesNames = this.categoriesService.categoriesNamesWithPrefix;
         }}
       )

@@ -51,18 +51,20 @@
 
           <ngx-mat-tree-select-input
           (selectionChanged)="onSelectionChanged()"
-          [controlName]="'categoryName'"
+          [controlName]="'category'"
           [options]="options"
           [placeholder]="'Select category'">
 
-          <input
+          <!-- <input
             #searchInput
             placeholder="Search"
             (keydown)="$event.stopPropagation()"
-            (keyup)="filter(options,searchInput.value)"
-          >
-
+            (keyup)="filter(searchInput.value)"
+          > -->
         </ngx-mat-tree-select-input>
+        <!-- <button type="button" matSuffix mat-icon-button aria-label="Refresh" (click)="reloadCategorySelect()">
+          <span class="material-icons">refresh</span>
+        </button> -->
 
 
 

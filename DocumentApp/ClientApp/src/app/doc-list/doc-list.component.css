@@ -1,7 +1,7 @@
 .inlineOpen {
    display: inline;
    height:100%;
-   width:100%;   
+   width:100%;
    font-size: medium;
  }
 
@@ -9,13 +9,13 @@
    display: inline;
    height:100%;
    width:100%;
-   color:darkorange; 
+   color:darkorange;
    font-size: medium;
  }
 
  .docName {
    font-size: large;
-   color:greenyellow; 
+   color:darkgreen;
    font-weight: bold;
    margin-bottom: 15%;
  }
