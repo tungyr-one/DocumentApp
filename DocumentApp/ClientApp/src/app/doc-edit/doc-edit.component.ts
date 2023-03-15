@@ -7,6 +7,7 @@ import { Observable, tap } from 'rxjs';
 import { Doc } from 'src/app/_models/Doc';
 import { DocService } from '../_services/doc.service';
 import { CategoryService } from '../_services/category.service';
+import { TreeData } from 'mat-tree-select-input';
 
 @Component({
   selector: 'app-doc-edit',
@@ -21,6 +22,8 @@ export class DocEditComponent implements OnInit{
   CategoriesNames:string[] = [];
   DocCategoryName:string;
   prefix = "-- ";
+
+  options: TreeData[] = [];
 
   constructor(private docService:DocService,
     private categoriesService:CategoryService,
@@ -37,10 +40,24 @@ export class DocEditComponent implements OnInit{
       name: ['', Validators.required],
       version: [''],
       author: ['', [Validators.required]],
-      categoryName: ['', [Validators.required]],
+      category: ['', [Validators.required]],
       text: ['', [Validators.required, Validators.minLength(15)]],
     });
   }
+
+  constructTreeData(data:Category[]){
+    return data.map(
+      (item:any)=>{
+        let o:any = {
+          name: item.name,
+          id: item.id,
+          children: item.children.length ? this.constructTreeData(item.children) : []
+        }
+        return o
+      }
+    )
+  }
+
 
   loadDoc(){
     this.id = +this.route.snapshot.paramMap.get('id')!;
@@ -50,7 +67,13 @@ export class DocEditComponent implements OnInit{
       .pipe(
         tap({next: (doc)=>{
           this.editForm.patchValue(doc, {emitEvent: false, onlySelf: true}),
-          this.DocCategoryName = this.categoriesService.addPrefixToDocCategoryName(doc.categoryName)!
+          // this.DocCategoryName = this.categoriesService.addPrefixToDocCategoryName(doc.categoryName)!
+          console.log('load doc :', doc);
+          console.log('load doc options :', this.options);
+          // let docCategory = this.options.find(x => x.name === doc.category.name);
+          let docCategory = this.searchTreeData(doc.category.name!, this.options );
+          console.log('load doc category :', docCategory);
+          this.editForm.controls['category'].setValue(docCategory);
         }})
         );
     }
@@ -60,12 +83,71 @@ export class DocEditComponent implements OnInit{
     }
   }
 
+  // searchCategoryById(id: number, categories: object[]): object | null {
+  //   for (const category of categories) {
+  //     console.log(category);
+  //     if (category.id === id) {
+  //       return category;
+  //     } else if (category.children.length > 0) {
+  //       const result = this.searchCategoryById(id, category.children);
+  //       if (result) {
+  //         return result;
+  //       }
+  //     }
+  //   }
+  //   return null;
+  // }
+
+  searchTreeData(name: string, options: TreeData[]): TreeData | null {
+    for (const option of options) {
+      if (option.name === name) {
+        return option;
+      } else if (option.children.length > 0) {
+        const result = this.searchTreeData(name, option.children);
+        if (result) {
+          return result;
+        }
+      }
+    }
+    return null;
+  }
+
+  // filter(array: TreeData[], id: number) {
+  //   // console.log('filter:', array,text);
+
+  //   let res:any;
+
+
+  //     const getNodes = (result:any, object:any) =>
+  //       {
+  //         if (object.id === id) {
+
+  //           return object;
+  //         }
+
+  //         if (Array.isArray(object.children)) {
+  //           const result:any = getNodes(object.children, id);
+  //           console.log('result: ', result);
+  //           if (result === null)
+  //           return result;
+  //         }
+  //         console.log('result 2: ', result);
+  //         return result;
+  //       };
+
+  //       array.forEach(category => {
+  //         getNodes(res, category);
+  //       });
+  //   }
+
   loadCategories(){
     this.categoriesService.getCategories()
     .pipe(
       tap({
         next: (categories) => {
           this.Categories = categories;
+          const filteredArray = categories.filter(item => item.parentId === null);
+          this.options = this.constructTreeData(filteredArray);
           this.CategoriesNames = this.categoriesService.categoriesNamesWithPrefix;
         }}
       )
