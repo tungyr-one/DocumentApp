@@ -1,7 +1,7 @@
 <div class="container-mt5" style='text-align: center;'>
   <h2>New document</h2>
   <form
-      *ngIf="Categories"
+      *ngIf="options"
      [formGroup]="newDocForm"
      (ngSubmit)="onSubmit(newDocForm)">
      <div class="mb-2">
@@ -22,14 +22,14 @@
      <div class="mt-2">
        <label>
          Author:
-         <input id="author" formControlName="author" placeholder="Doc author">
+         <input class="formInput" id="author" formControlName="author" placeholder="Doc author">
        </label>
        <div *ngIf="newDocForm.get('author')?.invalid && (newDocForm.get('author')?.dirty || newDocForm.get('author')?.touched)">
          <p class="error">Please provide an author.</p>
        </div>
      </div>
-     <div  class="d-flex justify-content-center mt-2">
-      <label>Category: </label>
+     <div  class="d-flex justify-content-center mt-2 align-items-center">
+      <label class="mr-2">Category: </label>
 
         <!-- <select
             class="custom-select mb-3"
@@ -48,21 +48,41 @@
 
           </select> -->
 
-
           <ngx-mat-tree-select-input
           (selectionChanged)="onSelectionChanged()"
-          [controlName]="'category'"
+          (click)="onSelectionChanged()"
           [options]="options"
-          [placeholder]="'Select category'">
+          [placeholder]="'Select category'"
+          [controlName]="'category'"
+          >
 
-          <!-- <input
+          <input
             #searchInput
             placeholder="Search"
             (keydown)="$event.stopPropagation()"
-            (keyup)="filter(searchInput.value)"
-          > -->
+            (keyup)="filter(options, searchInput.value)"
+          >
         </ngx-mat-tree-select-input>
-        <!-- <button type="button" matSuffix mat-icon-button aria-label="Refresh" (click)="reloadCategorySelect()">
+        <button type="button" matSuffix mat-icon-button aria-label="Refresh" (click)="reloadCategorySelect()">
+          <span class="material-icons">refresh</span>
+        </button>
+
+
+
+<!--
+          <ngx-mat-tree-select-input-ngmodel
+          [(select)]="selectedCategory"
+          (selectionChanged)="onSelectionChanged()"
+          (click)="onSelectionChanged()"
+          [options]="options"
+          [placeholder]="'Select category'" >
+
+          <mat-option>
+            <ngx-mat-select-search ngModel (ngModelChange)="filterMyOptions($event)"></ngx-mat-select-search>
+          </mat-option>
+
+        </ngx-mat-tree-select-input-ngmodel>
+        <button type="button" matSuffix mat-icon-button aria-label="Refresh" (click)="reloadCategorySelect()">
           <span class="material-icons">refresh</span>
         </button> -->
 

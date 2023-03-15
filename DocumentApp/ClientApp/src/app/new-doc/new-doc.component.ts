@@ -1,7 +1,7 @@
 import { Category } from './../_models/Category';
 import { CategoryService } from './../_services/category.service';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DocService } from '../_services/doc.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,26 +16,12 @@ import {MatTreeModule} from '@angular/material/tree';
 })
 export class NewDocComponent implements OnInit{
   newDocForm: FormGroup;
-  Categories:Category[] = [];
-  categoryId:number;
-  CategoriesNames:string[] = [];
-  prefix = "-- ";
   options: TreeData[] = [];
   initialOptions: TreeData[] = [];
-
-
-
-
   selectedCategory:string;
 
-  onSelectionChanged()
-  {
-    // console.log('selectedCategory:', this.selectedCategory);
-    console.log( this.newDocForm.controls['categoryName'].value);
-  }
-
-
-
+  @ViewChild('searchInput', { static: false }) searchInputRef: ElementRef;
+  
   constructor(private docService:DocService,
     private categoriesService:CategoryService,
     private toastr: ToastrService,
@@ -68,44 +54,82 @@ export class NewDocComponent implements OnInit{
     )
   }
 
+
   // filter(array: TreeData[], text: string) {
-  filter(text: string) {
+
+  //   const getNodes = (result:any, object:any) => {
+  //     if ( object.name.toLowerCase().startsWith(text)) {
+  //         result.push(object);
+  //         return result;
+  //     }
+  //     if (Array.isArray(object.children)) {
+  //       const children = object.children.reduce(getNodes, []);
+  //       if (children.length) result.push({ ...object, children });
+  //     }
+  //     object.name = '0000000';
+  //     result.push({ ...object});
+  //     return result;
+  //   };
+
+  //   this.options = array.reduce(getNodes, []);
+
+  // }
+
+
+  filter(array: TreeData[], text: string) {
   // console.log('filter:', array,text);
-  let array = this.options;
-
-    const getNodes = (result:any, object:any) =>
+    if(text !== "")
     {
-      if ( object.name.toLowerCase().startsWith(text)) {
-          result.push(object);
-          // console.log('result: ', result);
+      const getNodes = (result:any, object:any) =>
+        {
+          if ( object.name.toLowerCase().startsWith(text.toLowerCase())) {
+              result.push(object);
+              console.log('result: ', result);
+              return result;
+          }
+
+          if (Array.isArray(object.children)) {
+            const children = object.children.reduce(getNodes, []);
+            // console.log('children: ', children);
+            if (children.length) result.push({...object, children});
+          }
+          // console.log('result 2: ', result);
           return result;
+        };
+
+        this.options = array.reduce(getNodes, []);
+
+        console.log('options: ', this.options);
       }
-
-      if (Array.isArray(object.children)) {
-        const children = object.children.reduce(getNodes, []);
-        // console.log('children: ', children);
-        if (children.length) result.push({ ...object, children });
+      else
+      {
+        this.options = this.initialOptions;
       }
-      console.log('result 2: ', result);
-      return result;
-    };
+  }
 
-    this.options = array.reduce(getNodes, []);
-
-    console.log('options: ', this.options);
+  onSelectionChanged()
+  {
+    console.log('selectedCategory:', this.selectedCategory);
+    // console.log(this.newDocForm.controls['category'].value);
   }
 
   reloadCategorySelect()
   {
+    console.log('this.searchInputRef. reload:', this.searchInputRef.nativeElement.value);
+    console.log('this.options reload:', this.options);
+    console.log(this.newDocForm.controls['category'].value);
     this.options = this.initialOptions;
+    this.newDocForm.get('category')?.reset();
+    this.searchInputRef.nativeElement.value = '';
+
   }
 
   onSubmit(form: FormGroup) {
     let category = this.newDocForm.controls['category'].value;
-    console.log(category);
+    console.log('category onSubmit: ', category);
     const values = {...this.newDocForm.value, categoryId:category.id};
 
-    console.log(values);
+    console.log('values onSubmit: ',values);
 
     this.docService.createDocument(values).subscribe({
       next: () => {
@@ -122,11 +146,10 @@ export class NewDocComponent implements OnInit{
     .pipe(
       tap({
         next: (categories) => {
-          this.Categories = categories;
           const filteredArray = categories.filter(item => item.parentId === null);
           this.options = this.constructTreeData(filteredArray);
+          console.log('loadCategories options: ', this.options);
           this.initialOptions = this.options;
-          this.CategoriesNames = this.categoriesService.categoriesNamesWithPrefix;
         }}
       )
     ).subscribe();

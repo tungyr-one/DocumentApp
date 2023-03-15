@@ -35,6 +35,7 @@ export class DocumentListComponent implements OnInit
   loadDocs() {
     this.docService.getDocuments().subscribe({
       next: (response: any) => {
+        console.log(response);
           this.dataSource = new MatTableDataSource(response);
           this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;

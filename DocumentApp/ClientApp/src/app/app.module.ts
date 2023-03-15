@@ -24,11 +24,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ManageCategoryComponent } from './manage-category/manage-category.component';
-import { NgSelectModule } from '@ng-select/ng-select';
-import { MatSelectModule } from '@angular/material/select';
-import { MatTreeModule } from '@angular/material/tree';
 import { MatTreeSelectInputModule } from 'mat-tree-select-input';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -64,11 +60,7 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
     ToastContainerModule,
     NgbModule,
     FontAwesomeModule,
-    NgSelectModule,
-    MatSelectModule,
-    MatTreeModule,
-    MatTreeSelectInputModule,
-    MatIconModule
+    MatTreeSelectInputModule
 
   ],
   providers: [
