@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TreeData } from 'mat-tree-select-input';
 import { ToastrService } from 'ngx-toastr';
 import { tap, Observable } from 'rxjs';
 import { Category } from '../_models/Category';
@@ -11,20 +13,20 @@ import { CategoryService } from '../_services/category.service';
   styleUrls: ['./manage-category.component.css']
 })
 export class ManageCategoryComponent implements OnInit {
-  Categories:Category[] = [];
-  categories$: Observable<string[]>;
-  categoryId:number;
-  CategoriesNames:string[] = [];
-  currentCategoryName:string;
-  prefix = "-- ";
+  categoriesSelectOptions: TreeData[] = [];
+  categoryForm: FormGroup;
 
   constructor(private categoriesService:CategoryService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private fb: FormBuilder
     ){}
 
     ngOnInit(){
       this.loadCategories();
+      this.categoryForm = this.fb.group({
+        category: [''],
+      });
 
       this.categoriesService.categoriesChangedEvent
       .subscribe(() => {
@@ -36,23 +38,26 @@ export class ManageCategoryComponent implements OnInit {
       this.categoriesService.getCategories()
       .pipe(
         tap({
-          next: (categories) => {
-            this.Categories = categories;
-            this.currentCategoryName = categories[0].name;
-            this.CategoriesNames = this.categoriesService.categoriesNamesWithPrefix;
+          next: () => {
+            this.categoriesSelectOptions = this.categoriesService.categoriesOptions;
           }}
         )
       ).subscribe();
     }
 
     editCategory(){
-      this.router.navigateByUrl('/categories/edit/' + this.getCategoryId());
+      let formCategory = this.categoryForm.controls['category'].value;
+      if(formCategory.value)
+      {
+        this.router.navigateByUrl('/categories/edit/' + formCategory.value);
+      }
     }
 
     deleteCategory(){
-      let id = this.getCategoryId();
-      if(id)
-      this.categoriesService.deleteCategory(id).subscribe({
+      let formCategory = this.categoryForm.controls['category'].value;
+      if(formCategory.value)
+      {
+        this.categoriesService.deleteCategory(formCategory.value).subscribe({
         next: () => {
           this.toastr.success('Category deleted');
         },
@@ -60,19 +65,7 @@ export class ManageCategoryComponent implements OnInit {
           this.toastr.error('Something went wrong!', 'Oops!');
         }
       });
-    }
-
-    getCategoryId()
-    {
-      let categorName = this.currentCategoryName;
-      if(categorName.substring(0,3) == this.prefix)
-      {
-        categorName = categorName.replace(this.prefix, "");
       }
-      let category = this.Categories.find((obj) => {
-        return obj.name === categorName;
-      });
-      return category?.id;
     }
   }
 

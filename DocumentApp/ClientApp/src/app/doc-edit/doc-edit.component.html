@@ -42,11 +42,10 @@
           </select> -->
 
           <ngx-mat-tree-select-input
-          [options]="options"
+          [options]="categoriesSelectOptions"
           [placeholder]="'Select category'"
           [controlName]="'category'"
           >
-
         </ngx-mat-tree-select-input>
     </div>
 
@@ -68,4 +67,5 @@
       <button class="btn btn-default ml-5" (click)="cancel()" type="button">Cancel</button>
     </div>
       </form>
-      <p>{{options | json}}</p>
+
+      <!-- <p>{{options | json}}</p> -->

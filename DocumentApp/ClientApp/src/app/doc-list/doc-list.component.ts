@@ -22,13 +22,18 @@ export class DocumentListComponent implements OnInit
   @ViewChild(MatPaginator) paginator:MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);;
   @ViewChild(MatSort) sort:MatSort = new MatSort();
 
-  constructor(private docService: DocService, private CategoryService:CategoryService,
+  constructor(private docService: DocService, private categoriesService:CategoryService,
     private toastrService:ToastrService) {
     this.dataSource = new MatTableDataSource();
   }
 
   ngOnInit(): void {
     this.loadDocs();
+
+    this.categoriesService.categoriesChangedEvent
+    .subscribe(() => {
+         this.loadDocs();
+    });
   }
 
   loadDocs() {
@@ -54,7 +59,7 @@ export class DocumentListComponent implements OnInit
 
   deleteCategory(id:number)
   {
-    this.CategoryService.deleteCategory(id).subscribe({
+    this.categoriesService.deleteCategory(id).subscribe({
       next: () => {
         this.ngOnInit();
       }

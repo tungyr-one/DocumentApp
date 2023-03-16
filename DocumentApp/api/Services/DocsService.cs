@@ -55,7 +55,7 @@ namespace api.Services
       {
          var docDb = await _docsRepository.GetDocAsync(id);
          _mapper.Map(docUpdate, docDb);
-         var category = await _categoriesRepository.GetCategoryByNameAsync(docUpdate.CategoryName);
+         var category = await _categoriesRepository.GetCategoryAsync(docUpdate.CategoryId);
          docDb.Category = category;
 
          _docsRepository.Update(docDb);

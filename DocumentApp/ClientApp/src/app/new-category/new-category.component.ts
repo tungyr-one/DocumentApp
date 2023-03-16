@@ -15,7 +15,6 @@ export class NewCategoryComponent implements OnInit{
   newCategoryForm: FormGroup;
   Categories:Category[] = [];
   isChecked:boolean = true;
-  prefix = "-- ";
 
   constructor(private docService:DocService,
     private categoryService:CategoryService,
@@ -34,12 +33,6 @@ export class NewCategoryComponent implements OnInit{
   onSubmit(form: FormGroup) {
     const values = {...this.newCategoryForm.value};
     let categoryName = this.newCategoryForm.get('categoryName')?.value;
-
-    if(categoryName.substring(0,3) == this.prefix)
-    {
-      this.toastr.warning("Name of category can't start from '--' sign!", 'Achtung!');
-      return;
-    }
 
     let newCategory:Category = {
       name: categoryName

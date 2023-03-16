@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { TreeData } from 'mat-tree-select-input';
-import {MatTreeModule} from '@angular/material/tree';
+
 
 @Component({
   selector: 'app-new-doc',
@@ -16,7 +16,7 @@ import {MatTreeModule} from '@angular/material/tree';
 })
 export class NewDocComponent implements OnInit{
   newDocForm: FormGroup;
-  options: TreeData[] = [];
+  categoriesSelectOptions: TreeData[] = [];
   initialOptions: TreeData[] = [];
   selectedCategory:string;
 
@@ -41,18 +41,6 @@ export class NewDocComponent implements OnInit{
     });
   }
 
-  constructTreeData(data:Category[]){
-    return data.map(
-      (item:any)=>{
-        let o:any = {
-          name: item.name,
-          value: item.id,
-          children: item.children.length ? this.constructTreeData(item.children) : []
-        }
-        return o
-      }
-    )
-  }
 
 
   // filter(array: TreeData[], text: string) {
@@ -97,13 +85,13 @@ export class NewDocComponent implements OnInit{
           return result;
         };
 
-        this.options = array.reduce(getNodes, []);
+        this.categoriesSelectOptions = array.reduce(getNodes, []);
 
-        console.log('options: ', this.options);
+        console.log('options: ', this.categoriesSelectOptions);
       }
       else
       {
-        this.options = this.initialOptions;
+        this.categoriesSelectOptions = this.initialOptions;
       }
   }
 
@@ -116,20 +104,17 @@ export class NewDocComponent implements OnInit{
   reloadCategorySelect()
   {
     console.log('this.searchInputRef. reload:', this.searchInputRef.nativeElement.value);
-    console.log('this.options reload:', this.options);
+    console.log('this.options reload:', this.categoriesSelectOptions);
     console.log(this.newDocForm.controls['category'].value);
-    this.options = this.initialOptions;
+    this.categoriesSelectOptions = this.initialOptions;
     this.newDocForm.get('category')?.reset();
     this.searchInputRef.nativeElement.value = '';
 
   }
 
   onSubmit(form: FormGroup) {
-    let category = this.newDocForm.controls['category'].value;
-    console.log('category onSubmit: ', category);
-    const values = {...this.newDocForm.value, categoryId:category.id};
-
-    console.log('values onSubmit: ',values);
+    let formCategory = this.newDocForm.controls['category'].value;
+    const values = {...this.newDocForm.value, categoryId:formCategory.value};
 
     this.docService.createDocument(values).subscribe({
       next: () => {
@@ -145,11 +130,11 @@ export class NewDocComponent implements OnInit{
     this.categoriesService.getCategories()
     .pipe(
       tap({
-        next: (categories) => {
-          const filteredArray = categories.filter(item => item.parentId === null);
-          this.options = this.constructTreeData(filteredArray);
-          console.log('loadCategories options: ', this.options);
-          this.initialOptions = this.options;
+        next: () => {
+          this.categoriesSelectOptions = this.categoriesService.categoriesOptions;
+          console.log('loadCategories options: ', this.categoriesSelectOptions);
+          //remove
+          this.initialOptions = this.categoriesSelectOptions;
         }}
       )
     ).subscribe();

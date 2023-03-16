@@ -1,7 +1,7 @@
 <div class="container-mt5" style='text-align: center;'>
   <h2>New document</h2>
   <form
-      *ngIf="options"
+      *ngIf="categoriesSelectOptions"
      [formGroup]="newDocForm"
      (ngSubmit)="onSubmit(newDocForm)">
      <div class="mb-2">
@@ -51,7 +51,7 @@
           <ngx-mat-tree-select-input
           (selectionChanged)="onSelectionChanged()"
           (click)="onSelectionChanged()"
-          [options]="options"
+          [options]="categoriesSelectOptions"
           [placeholder]="'Select category'"
           [controlName]="'category'"
           >
@@ -59,7 +59,7 @@
           <input
             #searchInput
             placeholder="Search"
-            (keyup)="filter(options, searchInput.value)"
+            (keyup)="filter(categoriesSelectOptions, searchInput.value)"
           >
         </ngx-mat-tree-select-input>
         <button type="button" matSuffix mat-icon-button aria-label="Refresh" (click)="reloadCategorySelect()">

@@ -18,12 +18,7 @@ export class DocEditComponent implements OnInit{
   editForm: FormGroup;
   id:number;
   doc$:Observable<Doc>;
-  Categories:Category[] = [];
-  CategoriesNames:string[] = [];
-  DocCategoryName:string;
-  prefix = "-- ";
-
-  options: TreeData[] = [];
+  categoriesSelectOptions: TreeData[] = [];
 
   constructor(private docService:DocService,
     private categoriesService:CategoryService,
@@ -45,20 +40,16 @@ export class DocEditComponent implements OnInit{
     });
   }
 
-  constructTreeData(data:Category[]){
-    return data.map(
-      (item:any)=>{
-        let o:any = {
-          name: item.name,
-          value: item.id,
-          children: item.children.length ? this.constructTreeData(item.children) : []
-        }
-        console.log('o:', o);
-        return o
-      }
-    )
+  loadCategories(){
+    this.categoriesService.getCategories()
+    .pipe(
+      tap({
+        next: () => {
+          this.categoriesSelectOptions = this.categoriesService.categoriesOptions;
+        }}
+      )
+    ).subscribe();
   }
-
 
   loadDoc(){
     this.id = +this.route.snapshot.paramMap.get('id')!;
@@ -68,7 +59,8 @@ export class DocEditComponent implements OnInit{
       .pipe(
         tap({next: (doc)=>{
           this.editForm.patchValue(doc, {emitEvent: false, onlySelf: true});
-          let docCategory = this.searchCategoryById(doc.category.id!, this.options );
+          // add resolver!
+          let docCategory = this.searchCategoryById(doc.category.id!, this.categoriesSelectOptions);
           this.editForm.controls['category'].setValue(docCategory);
         }})
         );
@@ -78,12 +70,6 @@ export class DocEditComponent implements OnInit{
       this.toastr.error('Unable to load document data');
     }
   }
-
-  // interface CategoryData {
-  //   name: string;
-  //   id: number;
-  //   children: CategoryData[];
-  // }
 
   searchCategoryById(id: number, categories: TreeData[]): TreeData | null {
     for (const category of categories) {
@@ -145,36 +131,13 @@ export class DocEditComponent implements OnInit{
   //       });
   //   }
 
-  loadCategories(){
-    this.categoriesService.getCategories()
-    .pipe(
-      tap({
-        next: (categories) => {
-          this.Categories = categories;
-          const filteredArray = categories.filter(item => item.parentId === null);
-          this.options = this.constructTreeData(filteredArray);
-          this.CategoriesNames = this.categoriesService.categoriesNamesWithPrefix;
-        }}
-      )
-    ).subscribe();
-  }
-
   onSubmit(form: FormGroup) {
-    const values = {...this.editForm.value};
-    console.log(values);
-
     if(this.editForm.dirty)
     {
-      let categoryName = this.editForm.controls['categoryName'].value;
+      let formCategory = this.editForm.controls['category'].value;
+      const values = {...this.editForm.value, categoryId: formCategory.value};
 
-      if(categoryName.substring(0,3) == this.prefix)
-      {
-        categoryName = categoryName.replace(this.prefix, "");
-      }
-
-      let category = this.Categories.find((category) => category.name === categoryName);
-
-      const values = {...this.editForm.value, categoryId: category?.id};
+      console.log(values);
 
       let newVersion = ++values.version;
       this.editForm.controls['version'].setValue(newVersion);
@@ -207,22 +170,6 @@ export class DocEditComponent implements OnInit{
         this.router.navigateByUrl('')
       }
     });
-    }
-  }
-
-  loadDocCategory(categoryName:string){
-    let docCategory = this.Categories.find((obj) => {
-      return obj.name === categoryName;
-    });
-
-    if(docCategory?.parentId)
-    {
-      this.DocCategoryName = this.prefix + docCategory.name;
-    }
-    else
-    {
-      if(docCategory)
-      this.DocCategoryName = docCategory?.name;
     }
   }
 
