@@ -165,6 +165,17 @@ export class DocEditComponent implements OnInit{
 
     if(this.editForm.dirty)
     {
+      let categoryName = this.editForm.controls['categoryName'].value;
+
+      if(categoryName.substring(0,3) == this.prefix)
+      {
+        categoryName = categoryName.replace(this.prefix, "");
+      }
+
+      let category = this.Categories.find((category) => category.name === categoryName);
+
+      const values = {...this.editForm.value, categoryId: category?.id};
+
       let newVersion = ++values.version;
       this.editForm.controls['version'].setValue(newVersion);
 

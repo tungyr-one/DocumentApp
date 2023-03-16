@@ -27,21 +27,22 @@ export class NewCategoryComponent implements OnInit{
   ngOnInit(): void {
     this.loadCategories();
     this.newCategoryForm = this.fb.group({
-      categoryName: ['!exampleCat', [Validators.required]],
+      categoryName: ['!exampleCategory', [Validators.required]],
     });
   }
 
   onSubmit(form: FormGroup) {
     const values = {...this.newCategoryForm.value};
+    let categoryName = this.newCategoryForm.get('categoryName')?.value;
 
-    if(this.newCategoryForm.get('categoryName')?.value.substring(0,3) == this.prefix)
+    if(categoryName.substring(0,3) == this.prefix)
     {
       this.toastr.warning("Name of category can't start from '--' sign!", 'Achtung!');
       return;
     }
 
     let newCategory:Category = {
-      name: this.newCategoryForm.get('categoryName')?.value
+      name: categoryName
     }
 
     this.categoryService.createCategory(newCategory).subscribe({
