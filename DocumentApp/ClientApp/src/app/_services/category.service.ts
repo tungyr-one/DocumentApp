@@ -37,7 +37,6 @@ export class CategoryService {
       next: (categories) => {
         const filteredArray = categories.filter(item => item.parentId === null);
         this.categoriesOptions = this.constructTreeData(filteredArray);
-        console.log('service: ', this.categoriesOptions)
       }})
       )
     }

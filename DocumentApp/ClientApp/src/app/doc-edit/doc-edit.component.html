@@ -30,18 +30,8 @@
 
     <div class="mt-2">
       <label>Category: </label>
-      <!-- <select
-            class="custom-select mb-3"
-            formControlName="categoryName"
 
-            >
-            <option *ngFor="let category of CategoriesNames"
-            [selected]="category == DocCategoryName">
-              {{category}}
-            </option>
-          </select> -->
-
-          <ngx-mat-tree-select-input
+      <ngx-mat-tree-select-input
           [options]="categoriesSelectOptions"
           [placeholder]="'Select category'"
           [controlName]="'category'"
@@ -67,5 +57,3 @@
       <button class="btn btn-default ml-5" (click)="cancel()" type="button">Cancel</button>
     </div>
       </form>
-
-      <!-- <p>{{options | json}}</p> -->

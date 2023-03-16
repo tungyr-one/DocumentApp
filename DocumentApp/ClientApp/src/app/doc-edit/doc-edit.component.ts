@@ -59,7 +59,6 @@ export class DocEditComponent implements OnInit{
       .pipe(
         tap({next: (doc)=>{
           this.editForm.patchValue(doc, {emitEvent: false, onlySelf: true});
-          // add resolver!
           let docCategory = this.searchCategoryById(doc.category.id!, this.categoriesSelectOptions);
           this.editForm.controls['category'].setValue(docCategory);
         }})
@@ -85,59 +84,11 @@ export class DocEditComponent implements OnInit{
     return null;
   }
 
-
-  // searchTreeData(name: string, options: TreeData[]): TreeData | null {
-  //   for (const option of options) {
-  //     console.log('option: ', option);
-  //     console.log('option value:', option.value)
-  //     console.log('typeof value:', typeof option.value)
-  //     if (option.name === name) {
-  //       return option;
-  //     } else if (option.children.length > 0) {
-  //       const result = this.searchTreeData(name, option.children);
-  //       if (result) {
-  //         return result;
-  //       }
-  //     }
-  //   }
-  //   return null;
-  // }
-
-  // filter(array: TreeData[], id: number) {
-  //   // console.log('filter:', array,text);
-
-  //   let res:any;
-
-
-  //     const getNodes = (result:any, object:any) =>
-  //       {
-  //         if (object.id === id) {
-
-  //           return object;
-  //         }
-
-  //         if (Array.isArray(object.children)) {
-  //           const result:any = getNodes(object.children, id);
-  //           console.log('result: ', result);
-  //           if (result === null)
-  //           return result;
-  //         }
-  //         console.log('result 2: ', result);
-  //         return result;
-  //       };
-
-  //       array.forEach(category => {
-  //         getNodes(res, category);
-  //       });
-  //   }
-
   onSubmit(form: FormGroup) {
     if(this.editForm.dirty)
     {
       let formCategory = this.editForm.controls['category'].value;
       const values = {...this.editForm.value, categoryId: formCategory.value};
-
-      console.log(values);
 
       let newVersion = ++values.version;
       this.editForm.controls['version'].setValue(newVersion);

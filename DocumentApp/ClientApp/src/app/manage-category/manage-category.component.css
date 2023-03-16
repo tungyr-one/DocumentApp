@@ -1,0 +1,11 @@
+
+form {
+  font-size: 16px;
+  height: 57px;
+  background: #F5F5F5;
+  border: none;
+}
+
+form:hover {
+  background-color: #ECECEC;
+}

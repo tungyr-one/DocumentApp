@@ -31,63 +31,12 @@
      <div  class="d-flex justify-content-center mt-2 align-items-center">
       <label class="mr-2">Category: </label>
 
-        <!-- <select
-            class="custom-select mb-3"
-            formControlName="categoryName"
-            [(ngModel)]="selectedCategory"
-            (change)="onSelectionChange()"
-            >
-            <optgroup *ngFor="let category of Categories" label="{{category.name}}">
-              <option class="parent" [value]="category.id">
-                {{category.name}}
-              </option>
-              <option class="child" *ngFor="let subcategory of category.children" [value]="subcategory.id">
-              {{subcategory.name}}
-              </option>
-            </optgroup>
-
-          </select> -->
-
           <ngx-mat-tree-select-input
-          (selectionChanged)="onSelectionChanged()"
-          (click)="onSelectionChanged()"
           [options]="categoriesSelectOptions"
           [placeholder]="'Select category'"
           [controlName]="'category'"
           >
-
-          <input
-            #searchInput
-            placeholder="Search"
-            (keyup)="filter(categoriesSelectOptions, searchInput.value)"
-          >
         </ngx-mat-tree-select-input>
-        <button type="button" matSuffix mat-icon-button aria-label="Refresh" (click)="reloadCategorySelect()">
-          <span class="material-icons">refresh</span>
-        </button>
-
-
-
-<!--
-          <ngx-mat-tree-select-input-ngmodel
-          [(select)]="selectedCategory"
-          (selectionChanged)="onSelectionChanged()"
-          (click)="onSelectionChanged()"
-          [options]="options"
-          [placeholder]="'Select category'" >
-
-          <input
-            #searchInput
-            placeholder="Search"
-            (keydown)="$event.stopPropagation()"
-            (keyup)="filter(options, searchInput.value)"
-          >
-        </ngx-mat-tree-select-input>
-        <button type="button" matSuffix mat-icon-button aria-label="Refresh" (click)="reloadCategorySelect()">
-          <span class="material-icons">refresh</span>
-        </button>-->
-
-
 
     </div>
 
