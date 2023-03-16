@@ -21,7 +21,7 @@ export class NewDocComponent implements OnInit{
   selectedCategory:string;
 
   @ViewChild('searchInput', { static: false }) searchInputRef: ElementRef;
-  
+
   constructor(private docService:DocService,
     private categoriesService:CategoryService,
     private toastr: ToastrService,
@@ -46,7 +46,7 @@ export class NewDocComponent implements OnInit{
       (item:any)=>{
         let o:any = {
           name: item.name,
-          id: item.id,
+          value: item.id,
           children: item.children.length ? this.constructTreeData(item.children) : []
         }
         return o

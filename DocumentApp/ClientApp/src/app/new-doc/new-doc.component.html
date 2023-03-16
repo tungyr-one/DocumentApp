@@ -59,7 +59,6 @@
           <input
             #searchInput
             placeholder="Search"
-            (keydown)="$event.stopPropagation()"
             (keyup)="filter(options, searchInput.value)"
           >
         </ngx-mat-tree-select-input>
@@ -77,14 +76,16 @@
           [options]="options"
           [placeholder]="'Select category'" >
 
-          <mat-option>
-            <ngx-mat-select-search ngModel (ngModelChange)="filterMyOptions($event)"></ngx-mat-select-search>
-          </mat-option>
-
-        </ngx-mat-tree-select-input-ngmodel>
+          <input
+            #searchInput
+            placeholder="Search"
+            (keydown)="$event.stopPropagation()"
+            (keyup)="filter(options, searchInput.value)"
+          >
+        </ngx-mat-tree-select-input>
         <button type="button" matSuffix mat-icon-button aria-label="Refresh" (click)="reloadCategorySelect()">
           <span class="material-icons">refresh</span>
-        </button> -->
+        </button>-->
 
 
 

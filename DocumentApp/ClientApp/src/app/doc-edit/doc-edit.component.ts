@@ -50,9 +50,10 @@ export class DocEditComponent implements OnInit{
       (item:any)=>{
         let o:any = {
           name: item.name,
-          id: item.id,
+          value: item.id,
           children: item.children.length ? this.constructTreeData(item.children) : []
         }
+        console.log('o:', o);
         return o
       }
     )
@@ -66,13 +67,8 @@ export class DocEditComponent implements OnInit{
       this.doc$ = this.docService.getDocument(this.id)
       .pipe(
         tap({next: (doc)=>{
-          this.editForm.patchValue(doc, {emitEvent: false, onlySelf: true}),
-          // this.DocCategoryName = this.categoriesService.addPrefixToDocCategoryName(doc.categoryName)!
-          console.log('load doc :', doc);
-          console.log('load doc options :', this.options);
-          // let docCategory = this.options.find(x => x.name === doc.category.name);
-          let docCategory = this.searchTreeData(doc.category.name!, this.options );
-          console.log('load doc category :', docCategory);
+          this.editForm.patchValue(doc, {emitEvent: false, onlySelf: true});
+          let docCategory = this.searchCategoryById(doc.category.id!, this.options );
           this.editForm.controls['category'].setValue(docCategory);
         }})
         );
@@ -83,27 +79,18 @@ export class DocEditComponent implements OnInit{
     }
   }
 
-  // searchCategoryById(id: number, categories: object[]): object | null {
-  //   for (const category of categories) {
-  //     console.log(category);
-  //     if (category.id === id) {
-  //       return category;
-  //     } else if (category.children.length > 0) {
-  //       const result = this.searchCategoryById(id, category.children);
-  //       if (result) {
-  //         return result;
-  //       }
-  //     }
-  //   }
-  //   return null;
+  // interface CategoryData {
+  //   name: string;
+  //   id: number;
+  //   children: CategoryData[];
   // }
 
-  searchTreeData(name: string, options: TreeData[]): TreeData | null {
-    for (const option of options) {
-      if (option.name === name) {
-        return option;
-      } else if (option.children.length > 0) {
-        const result = this.searchTreeData(name, option.children);
+  searchCategoryById(id: number, categories: TreeData[]): TreeData | null {
+    for (const category of categories) {
+      if (+category.value === id) {
+        return category;
+      } else if (category.children.length > 0) {
+        const result = this.searchCategoryById(id, category.children);
         if (result) {
           return result;
         }
@@ -111,6 +98,24 @@ export class DocEditComponent implements OnInit{
     }
     return null;
   }
+
+
+  // searchTreeData(name: string, options: TreeData[]): TreeData | null {
+  //   for (const option of options) {
+  //     console.log('option: ', option);
+  //     console.log('option value:', option.value)
+  //     console.log('typeof value:', typeof option.value)
+  //     if (option.name === name) {
+  //       return option;
+  //     } else if (option.children.length > 0) {
+  //       const result = this.searchTreeData(name, option.children);
+  //       if (result) {
+  //         return result;
+  //       }
+  //     }
+  //   }
+  //   return null;
+  // }
 
   // filter(array: TreeData[], id: number) {
   //   // console.log('filter:', array,text);
@@ -156,16 +161,13 @@ export class DocEditComponent implements OnInit{
 
   onSubmit(form: FormGroup) {
     const values = {...this.editForm.value};
+    console.log(values);
 
     if(this.editForm.dirty)
     {
       let newVersion = ++values.version;
       this.editForm.controls['version'].setValue(newVersion);
 
-      if(values.categoryName.substring(0,3) == this.prefix)
-      {
-        values.categoryName = values.categoryName.replace(this.prefix, "");
-      }
       if(this.id)
       {
         this.docService.updateDocument(this.id, values).subscribe({
