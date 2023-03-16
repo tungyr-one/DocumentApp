@@ -13,7 +13,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class NewCategoryComponent implements OnInit{
   newCategoryForm: FormGroup;
-  Categories:Category[] = [];
   isChecked:boolean = true;
 
   constructor(private docService:DocService,
@@ -24,7 +23,6 @@ export class NewCategoryComponent implements OnInit{
     private router: Router) { }
 
   ngOnInit(): void {
-    this.loadCategories();
     this.newCategoryForm = this.fb.group({
       categoryName: ['!exampleCategory', [Validators.required]],
     });
@@ -43,15 +41,6 @@ export class NewCategoryComponent implements OnInit{
         this.router.navigateByUrl('');
       },
     });
-
-  }
-
-  loadCategories(){
-    this.categoryService.getCategories().subscribe({
-      next: response => {
-          this.Categories = response;
-      }
-    })
   }
 
   cancel(){
