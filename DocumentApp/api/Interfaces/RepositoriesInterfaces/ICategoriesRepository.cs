@@ -21,7 +21,11 @@ namespace api.Interfaces
       ///<summary>
       /// Gets categories list
       ///</summary>
+<<<<<<< HEAD
       Task<CategoryDb[]> GetCategoriesAsync();
+=======
+      Task<IEnumerable<CategoryDb>> GetCategoriesAsync();
+>>>>>>> master
 
       ///<summary>
       /// Creates category

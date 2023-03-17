@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class NewCategoryComponent implements OnInit{
   newCategoryForm: FormGroup;
   isChecked:boolean = true;
+  prefix = "-- ";
 
   constructor(private docService:DocService,
     private categoryService:CategoryService,
@@ -30,10 +31,14 @@ export class NewCategoryComponent implements OnInit{
 
   onSubmit(form: FormGroup) {
     const values = {...this.newCategoryForm.value};
-    let categoryName = this.newCategoryForm.get('categoryName')?.value;
-
-    let newCategory:Category = {
-      name: categoryName
+    console.log(values);
+    let subcategories: Array<string> = [this.newCategoryForm.get('subcategoryNameOne')?.value,
+    this.newCategoryForm.get('subcategoryNameTwo')?.value,
+    this.newCategoryForm.get('subcategoryNameThree')?.value];
+    console.log(subcategories);
+    let newCategory:CategoryDto = {
+      name: this.newCategoryForm.get('categoryName')?.value,
+      subcategories: subcategories
     }
 
     this.categoryService.createCategory(newCategory).subscribe({
@@ -41,8 +46,26 @@ export class NewCategoryComponent implements OnInit{
         this.router.navigateByUrl('');
       },
     });
+
   }
 
+  loadCategories(){
+    this.categoryService.getCategories().subscribe({
+      next: response => {
+          this.Categories = response;
+      }
+    })
+  }
+
+  loadSubcategories(){
+    this.subcatService.getSubcategories().subscribe({
+      next: response => {
+          this.Subcategories = response;
+      }
+    })
+  }
+
+  //TODO:warn user he may lose data
   cancel(){
     this.router.navigateByUrl('');
   }

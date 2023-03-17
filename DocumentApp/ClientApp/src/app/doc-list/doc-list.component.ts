@@ -17,6 +17,8 @@ export class DocumentListComponent implements OnInit
   docs: Doc[] = [];
   displayedColumns: string[] = ['name', 'created', 'version', 'author', 'category'];
   dataSource: MatTableDataSource<Doc>;
+    CategoriesNames:string[] = [];
+  currentCategoryName:string;
 
   @ViewChild(MatPaginator) paginator:MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);;
   @ViewChild(MatSort) sort:MatSort = new MatSort();
