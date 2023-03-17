@@ -43,7 +43,7 @@ namespace api.Controllers
         /// Creates category 
         ///</summary>
       [HttpPost]
-      public async Task<ActionResult> CreateCategory(CategoryUpdateDto newCategory)
+      public async Task<ActionResult> CreateCategory(CategoryDto newCategory)
       {
          if (await _categoriesService.CreateAsync(newCategory)) return Ok();
          return BadRequest("Failed to create category");
@@ -53,7 +53,7 @@ namespace api.Controllers
         /// Updates category 
         ///</summary>
       [HttpPut("{id}")]
-      public async Task<ActionResult> UpdateCategory(int id, CategoryUpdateDto categoryUpdate)
+      public async Task<ActionResult> UpdateCategory(int id, CategoryDto categoryUpdate)
       {
          if (await _categoriesService.UpdateAsync(id, categoryUpdate)) return NoContent();
          return BadRequest("Failed to update category");

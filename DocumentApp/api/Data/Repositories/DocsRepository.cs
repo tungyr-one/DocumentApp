@@ -22,11 +22,11 @@ namespace api.Data.Repositories
             .FirstOrDefaultAsync(d => d.Id == id);
         }
 
-        public async Task<List<DocDb>> GetDocsAsync()
+        public async Task<DocDb[]> GetDocsAsync()
         {
             var docsDb = await _context.Docs.AsNoTracking()
             .Include(d => d.Category)        
-            .ToListAsync();
+            .ToArrayAsync();
 
             return docsDb;
         }

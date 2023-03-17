@@ -41,7 +41,7 @@ export class CategoryService {
       )
     }
 
-    createCategory(model:any)
+    createCategory(model:Category)
     {
       return this.http.post(this.baseUrl + 'categories/', model)
       .pipe(
@@ -52,7 +52,7 @@ export class CategoryService {
       )
     }
 
-    updateCategory(id:number, model:any){
+    updateCategory(id:number, model:Category){
       return this.http.put(this.baseUrl + 'categories/' + id, model)
       .pipe(
         tap({next: ()=> {

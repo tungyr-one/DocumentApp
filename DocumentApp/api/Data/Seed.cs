@@ -10,16 +10,15 @@ namespace api.Data
 {
    public class Seed
    {
-      private string seedPath = "Data/seed.json";
+      private static string _seedPath = "Data/seed.json";
       public static async Task SeedData(DataContext context)
       {
-         if (await context.Docs.AnyAsync()) return;
+         if (await context.Categories.AnyAsync()) return;
          
-         if (File.Exists("Data/seed.json"))
+         if (File.Exists(_seedPath))
          {
-            var data = await System.IO.File.ReadAllTextAsync(seedPath);
+            var data = await System.IO.File.ReadAllTextAsync(_seedPath);
             var entities = JsonSerializer.Deserialize<List<CategoryDb>>(data);
-            Console.WriteLine("ENTITIES:" + entities);
             foreach (var entity in entities)
             {
                 context.Categories.Add(entity);

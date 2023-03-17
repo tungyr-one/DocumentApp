@@ -34,10 +34,10 @@ namespace api.Services
          return _mapper.Map<DocDto>(doc);
       }
 
-      public async Task<IEnumerable<DocDto>> GetDocsAsync()
+      public async Task<DocDto[]> GetDocsAsync()
       {
          var docs = await _docsRepository.GetDocsAsync();
-         return _mapper.Map<IEnumerable<DocDto>>(docs);
+         return _mapper.Map<DocDto[]>(docs);
       }
 
       public async Task<bool> CreateAsync(DocNewDto newDoc)

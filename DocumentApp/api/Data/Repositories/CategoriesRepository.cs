@@ -28,11 +28,11 @@ namespace api.Data.Repositories
             .FirstOrDefaultAsync(c => c.Id == id);
       }
 
-      public async Task<IEnumerable<CategoryDb>> GetCategoriesAsync()
+      public async Task<CategoryDb[]> GetCategoriesAsync()
       {
             return await _context.Categories.AsNoTracking()
             .Include(c=> c.Children)
-            .ToListAsync();
+            .ToArrayAsync();
       }
 
       public async Task<CategoryDb> GetCategoryByNameAsync(string categoryName)
