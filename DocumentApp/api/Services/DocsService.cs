@@ -34,10 +34,10 @@ namespace api.Services
          return _mapper.Map<DocDto>(doc);
       }
 
-      public async Task<IEnumerable<DocDto>> GetDocsAsync()
+      public async Task<DocDto[]> GetDocsAsync()
       {
          var docs = await _docsRepository.GetDocsAsync();
-         return _mapper.Map<IEnumerable<DocDto>>(docs);
+         return _mapper.Map<DocDto[]>(docs);
       }
 
       public async Task<bool> CreateAsync(DocNewDto newDoc)
@@ -55,7 +55,7 @@ namespace api.Services
       {
          var docDb = await _docsRepository.GetDocAsync(id);
          _mapper.Map(docUpdate, docDb);
-         var category = await _categoriesRepository.GetCategoryByNameAsync(docUpdate.CategoryName);
+         var category = await _categoriesRepository.GetCategoryAsync(docUpdate.CategoryId);
          docDb.Category = category;
 
          _docsRepository.Update(docDb);

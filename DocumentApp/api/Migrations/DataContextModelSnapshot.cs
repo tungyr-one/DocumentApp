@@ -64,8 +64,8 @@ namespace DocumentApp.Migrations
                     b.Property<string>("Text")
                         .HasColumnType("text");
 
-                    b.Property<string>("Version")
-                        .HasColumnType("text");
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -84,7 +84,7 @@ namespace DocumentApp.Migrations
             modelBuilder.Entity("api.Entities.DocDb", b =>
                 {
                     b.HasOne("api.Entities.CategoryDb", "Category")
-                        .WithMany("Docs")
+                        .WithMany()
                         .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
@@ -93,8 +93,6 @@ namespace DocumentApp.Migrations
             modelBuilder.Entity("api.Entities.CategoryDb", b =>
                 {
                     b.Navigation("Children");
-
-                    b.Navigation("Docs");
                 });
 #pragma warning restore 612, 618
         }

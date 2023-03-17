@@ -11,14 +11,14 @@
                {
                   "Name": "P1 Ch cat 1 doc 1",
                   "Created": "2020-10-30",
-                  "Version": "0.13",
+                  "Version": 1,
                   "Author": "Norris Laurenson",
                   "Text": "Distributed asymmetric moratorium"
                },
                {
                   "Name": "P1 Ch cat 1 doc 2",
                   "Created": "2022-06-18",
-                  "Version": "3.31",
+                  "Version": 1,
                   "Author": "Jethro Commings",
                   "Text": "Operative disintermediate toolset"
                }
@@ -32,14 +32,14 @@
                {
                   "Name": "P1 Ch cat 2 doc 1",
                   "Created": "2020-01-17",
-                  "Version": "0.80",
+                  "Version": 1,
                   "Author": "Starlin Seilmann",
                   "Text": "Robust asymmetric hierarchy"
                },
                {
                   "Name": "P1 Ch cat 2 doc 2",
                   "Created": "2021-12-31",
-                  "Version": "2.0.0",
+                  "Version": 1,
                   "Author": "Nyssa Demongeot",
                   "Text": "Object-based human-resource contingency"
                }
@@ -52,14 +52,14 @@
          {
             "Name": "Par cat 1 doc 1",
             "Created": "2020-09-04",
-            "Version": "0.6.3",
+            "Version": 1,
             "Author": "Ginger Steet",
             "Text": "Seamless 5th generation frame"
          },
          {
             "Name": "Par cat 1 doc 2",
             "Created": "2021-09-08",
-            "Version": "8.8.5",
+            "Version": 1,
             "Author": "Gardy Spinage",
             "Text": "Diverse attitude-oriented algorithm"
          }
@@ -77,14 +77,14 @@
                {
                   "Name": "P2 Ch cat 1 doc 1",
                   "Created": "2021-03-11",
-                  "Version": "7.0.5",
+                  "Version": 1,
                   "Author": "Arney De Biaggi",
                   "Text": "Monitored motivating neural-net"
                },
                {
                   "Name": "P2 Ch cat 1 doc 2",
                   "Created": "2020-05-23",
-                  "Version": "0.10",
+                  "Version": 1,
                   "Author": "Wally Dei",
                   "Text": "Programmable radical paradigm"
                }
@@ -98,7 +98,7 @@
                {
                   "Name": "P2 Ch cat 2 doc 1",
                   "Created": "2020-01-23",
-                  "Version": "8.3.2",
+                  "Version": 1,
                   "Author": "Tammie Dowsett",
                   "Text": "Upgradable asynchronous open architecture"
                }
@@ -111,7 +111,7 @@
          {
             "Name": "Par cat 2 doc 1",
             "Created": "2022-10-27",
-            "Version": "8.7.5",
+            "Version": 1,
             "Author": "Brantley Vaisey",
             "Text": "Proactive client-driven success"
          }

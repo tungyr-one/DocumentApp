@@ -1,7 +1,6 @@
 <div class="container-mt5" style='text-align: center;'>
   <h2>New category</h2>
    <form
-      *ngIf="Categories"
      [formGroup]="newCategoryForm"
      (ngSubmit)="onSubmit(newCategoryForm)">
      <div class="mb-2">

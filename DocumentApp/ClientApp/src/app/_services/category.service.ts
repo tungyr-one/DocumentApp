@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable, Output } from '@angular/core';
+import { TreeData } from 'mat-tree-select-input';
 import { map, tap, Observable, of } from 'rxjs';
 import { environment } from '../environments/environment';
 import { Category } from '../_models/Category';
@@ -9,9 +10,7 @@ import { Category } from '../_models/Category';
 })
 export class CategoryService {
   baseUrl = environment.apiUrl;
-  categories: Category[];
-  categoriesNamesWithPrefix: string[] = [];
-  prefix = "-- ";
+  categoriesOptions: TreeData[] = [];
 
   @Output() categoriesChangedEvent = new EventEmitter<any>();
 
@@ -36,24 +35,24 @@ export class CategoryService {
     }),
     tap({
       next: (categories) => {
-        this.categories = categories;
-        this.makeOrderedListWithPrefixes();
+        const filteredArray = categories.filter(item => item.parentId === null);
+        this.categoriesOptions = this.constructTreeData(filteredArray);
       }})
       )
     }
 
-    createCategory(model:any)
+    createCategory(model:Category)
     {
       return this.http.post(this.baseUrl + 'categories/', model)
       .pipe(
         tap({next:()=> {
           this.getCategories();
-          this.categoriesChanged()
+          this.categoriesChanged();
         }})
       )
     }
 
-    updateCategory(id:number, model:any){
+    updateCategory(id:number, model:Category){
       return this.http.put(this.baseUrl + 'categories/' + id, model)
       .pipe(
         tap({next: ()=> {
@@ -73,45 +72,17 @@ export class CategoryService {
       )
     }
 
-  makeOrderedListWithPrefixes():Observable<string[]>
-  {
-    this.categoriesNamesWithPrefix = [];
-    this.categories.forEach(category => {
-      if(category.parentId == null)
-      {
-        this.categoriesNamesWithPrefix.push(category.name)
-        if(category.children)
-        {
-          category.children.forEach(subcategory => {
-          this.categoriesNamesWithPrefix.push(this.prefix + subcategory.name)
-        });
+    constructTreeData(data:Category[]):TreeData[]{
+      this.categoriesOptions = [];
+      return data.map(
+        (item:any)=>{
+          let o:any = {
+            name: item.name,
+            value: item.id,
+            children: item.children.length ? this.constructTreeData(item.children) : []
+          }
+          return o
         }
-      }
-    });
-    const result = of(this.categoriesNamesWithPrefix);
-    return result;
-  }
-
-  addPrefixToDocCategoryName(categoryName:string){
-    let docCategory = this.categories.find((obj) => {
-      return obj.name === categoryName;
-    });
-
-    if(docCategory?.parentId)
-    {
-      return this.prefix + docCategory.name;
+      )
     }
-    else
-    {
-      if(docCategory)
-      {
-        return docCategory?.name;
-      }
-      else
-      {
-        return;
-      }
-
-    }
-  }
 }

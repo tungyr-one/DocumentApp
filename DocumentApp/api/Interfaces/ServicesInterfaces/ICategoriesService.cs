@@ -16,17 +16,17 @@ namespace api.Interfaces.ServicesInterfaces
         ///<summary>
         /// Gets categories list
         ///</summary>
-        Task<IEnumerable<CategoryDto>> GetCategoriesAsync();
+        Task<CategoryDto[]> GetCategoriesAsync();
 
         ///<summary>
         /// Creates category
         ///</summary>
-        Task<bool> CreateAsync(CategoryUpdateDto newCategory);
+        Task<bool> CreateAsync(CategoryDto newCategory);
 
         ///<summary>
         /// Updates category
         ///</summary>
-        Task<bool> UpdateAsync(int id, CategoryUpdateDto CategoryUpdate);
+        Task<bool> UpdateAsync(int id, CategoryDto CategoryUpdate);
 
         ///<summary>
         /// Deletes category

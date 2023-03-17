@@ -14,7 +14,7 @@ namespace api.Interfaces
       ///<summary>
       /// Gets documents list
       ///</summary>
-      Task<IEnumerable<DocDb>> GetDocsAsync();
+      Task<DocDb[]> GetDocsAsync();
 
       ///<summary>
       /// Updates document

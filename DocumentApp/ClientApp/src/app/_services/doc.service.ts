@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Doc } from '../_models/Doc';
-import { map, Observable, of, tap } from 'rxjs';
+import { map, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
+import { Doc } from '../_models/Doc';
 
 @Injectable({
   providedIn: 'root'
@@ -32,12 +32,12 @@ export class DocService {
       }));
   }
 
-  createDocument(model:any){
-    model.Created = new Date();
+  createDocument(model:Doc){
+    model.created = new Date();
     return this.http.post(this.baseUrl + 'docs/', model)
   }
 
-  updateDocument(id:number, model:any){
+  updateDocument(id:number, model:Doc){
     return this.http.put(this.baseUrl + 'docs/'+ id, model)
   }
 

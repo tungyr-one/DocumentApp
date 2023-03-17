@@ -15,7 +15,7 @@ namespace api.Services
         private ICategoriesRepository _categoriesRepository { get; }
         private IMapper _mapper { get; }
 
-        public CategoriesService(ICategoriesRepository categoryRepository,ILogger<CategoriesService> logger,
+        public CategoriesService(ICategoriesRepository categoryRepository, ILogger<CategoriesService> logger,
          IMapper mapper)
         {
             _mapper = mapper;
@@ -29,22 +29,22 @@ namespace api.Services
         return _mapper.Map<CategoryDto>(category);
       }
 
-      public async Task<IEnumerable<CategoryDto>> GetCategoriesAsync()
+      public async Task<CategoryDto[]> GetCategoriesAsync()
       {
         var categories = await _categoriesRepository.GetCategoriesAsync();
         _logger.LogInformation("Get all categories.");
-        return _mapper.Map<IEnumerable<CategoryDto>>(categories);;
+        return _mapper.Map<CategoryDto[]>(categories);;
       }
 
-      public async Task<bool> CreateAsync(CategoryUpdateDto newCategory)
+      public async Task<bool> CreateAsync(CategoryDto newCategory)
       {
-            var categoryToDb = new CategoryDb() {Name = newCategory.Name};        
+          var categoryToDb = _mapper.Map<CategoryDb>(newCategory);    
             _categoriesRepository.Create(categoryToDb);
 
             return await _categoriesRepository.SaveAllAsync();
       }
 
-      public async Task<bool> UpdateAsync(int id, CategoryUpdateDto categoryUpdate)
+      public async Task<bool> UpdateAsync(int id, CategoryDto categoryUpdate)
       {
           var categoryDb = await _categoriesRepository.GetCategoryAsync(id);
             _mapper.Map(categoryUpdate, categoryDb);      

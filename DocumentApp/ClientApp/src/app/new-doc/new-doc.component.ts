@@ -1,11 +1,13 @@
+import { Category } from './../_models/Category';
 import { CategoryService } from './../_services/category.service';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Category } from '../_models/Category';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DocService } from '../_services/doc.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tap } from 'rxjs';
+import { TreeData } from 'mat-tree-select-input';
+
 
 @Component({
   selector: 'app-new-doc',
@@ -14,10 +16,10 @@ import { tap } from 'rxjs';
 })
 export class NewDocComponent implements OnInit{
   newDocForm: FormGroup;
-  Categories:Category[] = [];
-  categoryId:number;
-  CategoriesNames:string[] = [];
-  prefix = "-- ";
+  categoriesSelectOptions: TreeData[] = [];
+  selectedCategory:string;
+
+  @ViewChild('searchInput', { static: false }) searchInputRef: ElementRef;
 
   constructor(private docService:DocService,
     private categoriesService:CategoryService,
@@ -30,26 +32,21 @@ export class NewDocComponent implements OnInit{
     this.loadCategories();
     this.newDocForm = this.fb.group({
       name: ['!Test doc', Validators.required],
-      version: ['1.0', [Validators.required]],
+      version: ['1'],
       author: ['Victor', [Validators.required]],
-      categoryName: ['', [Validators.required]],
+      category: ['', [Validators.required]],
       text: ['Please ensure the versions of these two packages exactly match.',
       [Validators.required, Validators.minLength(15)]],
     });
   }
 
   onSubmit(form: FormGroup) {
-    const values = {...this.newDocForm.value};
-
-    if(values.categoryName.substring(0,3) == this.prefix)
-    {
-      values.categoryName = values.categoryName.replace(this.prefix, "");
-    }
+    let formCategory = this.newDocForm.controls['category'].value;
+    const values = {...this.newDocForm.value, categoryId:formCategory.value};
 
     this.docService.createDocument(values).subscribe({
       next: () => {
         this.toastr.success('Document saved');
-        this.router.navigateByUrl('');
       },
       error:() => {
         this.toastr.error('Something went wrong!', 'Oops!');
@@ -61,9 +58,8 @@ export class NewDocComponent implements OnInit{
     this.categoriesService.getCategories()
     .pipe(
       tap({
-        next: (categories) => {
-          this.Categories = categories;
-          this.CategoriesNames = this.categoriesService.categoriesNamesWithPrefix;
+        next: () => {
+          this.categoriesSelectOptions = this.categoriesService.categoriesOptions;
         }}
       )
     ).subscribe();

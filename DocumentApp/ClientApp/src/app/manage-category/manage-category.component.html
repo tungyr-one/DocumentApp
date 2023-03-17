@@ -1,12 +1,16 @@
-<div>
-  <label class="m-1">Manage category:</label>
-              <select
-                    class="custom-select ml-2"
-                    [(ngModel)]="currentCategoryName">
-                    <option *ngFor="let category of CategoriesNames">
-                      {{category}}
-                    </option>
-                </select>
-                <button class="btn btn-primary btn-sm m-1" (click)="editCategory()">Edit</button>
-                <button class="btn btn-warning btn-sm" (click)="deleteCategory()">Delete</button>
+<div class="d-flex mt-2 align-items-center">
+                <form class="d-inline-block"
+                [formGroup]="categoryForm">
+                  <ngx-mat-tree-select-input
+                      [options]="categoriesSelectOptions"
+                      [placeholder]="'Manage category'"
+                      [controlName]="'category'"
+                  >
+                </ngx-mat-tree-select-input>
+                </form>
+<div class="d-flex align-items-center ml-2">
+                  <button class="btn btn-outline-primary btn-sm m-1 d-inline-block" (click)="editCategory()">Edit</button>
+                <button class="btn btn-outline-warning btn-sm d-inline-block" (click)="deleteCategory()">Delete</button>
+</div>
+
 </div>

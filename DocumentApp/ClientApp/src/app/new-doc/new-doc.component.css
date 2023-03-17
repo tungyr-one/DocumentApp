@@ -1,0 +1,22 @@
+.ng-select::before
+{
+  content: "-- ";
+}
+
+.parent{
+  font-weight: 500;
+}
+
+ngx-mat-tree-select-input {
+  font-size: 16px;
+  height: 60px;
+}
+
+.mat-select-panel {
+  background: red;
+}
+
+.label
+{
+  margin-right: 10px;
+}

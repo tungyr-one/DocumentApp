@@ -15,9 +15,8 @@ export class CategoryEditComponent {
   editCategoryForm: FormGroup;
   id:number;
   category$: Observable<Category>;
-  Category: Category;
-  Subcategories:Category[] = [];
- NewCategory = <Category>{name: '', children:[]};
+  category: Category;
+ newCategory = <Category>{name: '', children:[]};
 
 
   constructor(private categoryService:CategoryService,
@@ -29,16 +28,14 @@ export class CategoryEditComponent {
   ngOnInit(): void {
     this.loadCategory();
     this.editCategoryForm = this.fb.group({
-      parentName: ['', [Validators.required]],
-      subcategoriesNameOne: [''],
-      subcategoriesNameTwo: [''],
+      categoryName: ['', [Validators.required]],
     });
   }
 
   onSubmit() {
     if(this.id)
     {
-        this.categoryService.updateCategory(this.id, this.Category).subscribe({
+        this.categoryService.updateCategory(this.id, this.category).subscribe({
               next: () => {
                 this.router.navigateByUrl('')
               }
@@ -55,7 +52,7 @@ loadCategory(){
         this.editCategoryForm.patchValue({
           name: category.name,
         })),
-        tap(category =>  this.Category = category),
+        tap(category =>  this.category = category),
         );
     }
     else

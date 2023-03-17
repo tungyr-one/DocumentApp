@@ -22,18 +22,19 @@ namespace api.Data.Repositories
             .FirstOrDefaultAsync(d => d.Id == id);
         }
 
-        public async Task<IEnumerable<DocDb>> GetDocsAsync()
+        public async Task<DocDb[]> GetDocsAsync()
         {
             var docsDb = await _context.Docs.AsNoTracking()
             .Include(d => d.Category)        
-            .ToListAsync();
+            .ToArrayAsync();
 
             return docsDb;
         }
 
         public void Create(DocDb doc)
         {
-           _context.Add(doc).State = EntityState.Added;
+           _context.Docs.
+           Add(doc).State = EntityState.Added;
         }
 
          public void Update(DocDb doc)

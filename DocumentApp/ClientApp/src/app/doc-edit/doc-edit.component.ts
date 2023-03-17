@@ -7,6 +7,7 @@ import { Observable, tap } from 'rxjs';
 import { Doc } from 'src/app/_models/Doc';
 import { DocService } from '../_services/doc.service';
 import { CategoryService } from '../_services/category.service';
+import { TreeData } from 'mat-tree-select-input';
 
 @Component({
   selector: 'app-doc-edit',
@@ -17,10 +18,7 @@ export class DocEditComponent implements OnInit{
   editForm: FormGroup;
   id:number;
   doc$:Observable<Doc>;
-  Categories:Category[] = [];
-  CategoriesNames:string[] = [];
-  DocCategoryName:string;
-  prefix = "-- ";
+  categoriesSelectOptions: TreeData[] = [];
 
   constructor(private docService:DocService,
     private categoriesService:CategoryService,
@@ -35,11 +33,22 @@ export class DocEditComponent implements OnInit{
     this.loadDoc();
     this.editForm = this.fb.group({
       name: ['', Validators.required],
-      version: ['', [Validators.required]],
+      version: [''],
       author: ['', [Validators.required]],
-      categoryName: ['', [Validators.required]],
+      category: ['', [Validators.required]],
       text: ['', [Validators.required, Validators.minLength(15)]],
     });
+  }
+
+  loadCategories(){
+    this.categoriesService.getCategories()
+    .pipe(
+      tap({
+        next: () => {
+          this.categoriesSelectOptions = this.categoriesService.categoriesOptions;
+        }}
+      )
+    ).subscribe();
   }
 
   loadDoc(){
@@ -49,8 +58,9 @@ export class DocEditComponent implements OnInit{
       this.doc$ = this.docService.getDocument(this.id)
       .pipe(
         tap({next: (doc)=>{
-          this.editForm.patchValue(doc),
-          this.DocCategoryName = this.categoriesService.addPrefixToDocCategoryName(doc.categoryName)!
+          this.editForm.patchValue(doc, {emitEvent: false, onlySelf: true});
+          let docCategory = this.searchCategoryById(doc.category.id!, this.categoriesSelectOptions);
+          this.editForm.controls['category'].setValue(docCategory);
         }})
         );
     }
@@ -60,37 +70,46 @@ export class DocEditComponent implements OnInit{
     }
   }
 
-  loadCategories(){
-    this.categoriesService.getCategories()
-    .pipe(
-      tap({
-        next: (categories) => {
-          this.Categories = categories;
-          this.CategoriesNames = this.categoriesService.categoriesNamesWithPrefix;
-        }}
-      )
-    ).subscribe();
+  searchCategoryById(id: number, categories: TreeData[]): TreeData | null {
+    for (const category of categories) {
+      if (+category.value === id) {
+        return category;
+      } else if (category.children.length > 0) {
+        const result = this.searchCategoryById(id, category.children);
+        if (result) {
+          return result;
+        }
+      }
+    }
+    return null;
   }
 
   onSubmit(form: FormGroup) {
-    const values = {...this.editForm.value};
+    if(this.editForm.dirty)
+    {
+      let formCategory = this.editForm.controls['category'].value;
+      const values = {...this.editForm.value, categoryId: formCategory.value};
 
-    if(values.categoryName.substring(0,3) == this.prefix)
-    {
-      values.categoryName = values.categoryName.replace(this.prefix, "");
-    }
-    if(this.id)
-    {
+      let newVersion = ++values.version;
+      this.editForm.controls['version'].setValue(newVersion);
+
+      if(this.id)
+      {
         this.docService.updateDocument(this.id, values).subscribe({
               next: () => {
                 this.toastr.success('Document saved');
-                this.router.navigateByUrl('');
               },
               error:() => {
                 this.toastr.error('Something went wrong!', 'Oops!');
               }
             })
+        }
     }
+    else
+    {
+      this.toastr.info('No changes found');
+    }
+
   }
 
   deleteDoc()
@@ -102,22 +121,6 @@ export class DocEditComponent implements OnInit{
         this.router.navigateByUrl('')
       }
     });
-    }
-  }
-
-  loadDocCategory(categoryName:string){
-    let docCategory = this.Categories.find((obj) => {
-      return obj.name === categoryName;
-    });
-
-    if(docCategory?.parentId)
-    {
-      this.DocCategoryName = this.prefix + docCategory.name;
-    }
-    else
-    {
-      if(docCategory)
-      this.DocCategoryName = docCategory?.name;
     }
   }
 
