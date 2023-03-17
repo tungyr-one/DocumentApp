@@ -10,13 +10,8 @@ using api.Data;
 namespace DocumentApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-<<<<<<<< HEAD:DocumentApp/api/Migrations/20230311084302_InitialMigrations.Designer.cs
     [Migration("20230311084302_InitialMigrations")]
     partial class InitialMigrations
-========
-    [Migration("20230224160723_InitialMigration")]
-    partial class InitialMigration
->>>>>>>> master:DocumentApp/api/Migrations/20230224160723_InitialMigration.Designer.cs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -91,11 +86,7 @@ namespace DocumentApp.Migrations
             modelBuilder.Entity("api.Entities.DocDb", b =>
                 {
                     b.HasOne("api.Entities.CategoryDb", "Category")
-<<<<<<<< HEAD:DocumentApp/api/Migrations/20230311084302_InitialMigrations.Designer.cs
                         .WithMany()
-========
-                        .WithMany("Docs")
->>>>>>>> master:DocumentApp/api/Migrations/20230224160723_InitialMigration.Designer.cs
                         .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
@@ -104,11 +95,6 @@ namespace DocumentApp.Migrations
             modelBuilder.Entity("api.Entities.CategoryDb", b =>
                 {
                     b.Navigation("Children");
-<<<<<<<< HEAD:DocumentApp/api/Migrations/20230311084302_InitialMigrations.Designer.cs
-========
-
-                    b.Navigation("Docs");
->>>>>>>> master:DocumentApp/api/Migrations/20230224160723_InitialMigration.Designer.cs
                 });
 #pragma warning restore 612, 618
         }

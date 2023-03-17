@@ -2,15 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using api.DTOs;
 using api.Interfaces.ServicesInterfaces;
-using api.Interfaces.ServicesInterfaces;
 
 namespace api.Controllers
 {
-   [ApiController]
-   [Route("/api/[controller]")]
-   public class CategoriesController : ControllerBase
-   {
-      private readonly ICategoriesService _categoriesService;
    [ApiController]
    [Route("/api/[controller]")]
    public class CategoriesController : ControllerBase
