@@ -7,6 +7,7 @@ using api.DTOs;
 using api.Entities;
 using api.Interfaces;
 using AutoMapper;
+using DocumentApp.Entities;
 using Microsoft.Extensions.Logging;
 
 namespace api.Services

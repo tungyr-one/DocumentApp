@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.DTOs;
 using api.Entities;
 using AutoMapper;
+using DocumentApp.Entities;
 
 namespace api.Helpers
 {
