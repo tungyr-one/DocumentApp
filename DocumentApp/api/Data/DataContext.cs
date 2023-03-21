@@ -1,4 +1,5 @@
 using api.Entities;
+using DocumentApp.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Data
@@ -11,6 +12,5 @@ namespace api.Data
 
         public DbSet<CategoryDb> Categories { get; set; }
         public DbSet<DocDb> Docs { get; set; }
-
     }
 }
