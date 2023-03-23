@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using api.DTOs;
 using api.Interfaces.ServicesInterfaces;
+using System;
 
 namespace api.Controllers
 {
@@ -64,9 +65,9 @@ namespace api.Controllers
         ///</summary>
       [HttpDelete("{id}")]
       public async Task<ActionResult> DeleteCategory(int id)
-      {      
+      {         
          if (await  _categoriesService.DeleteAsync(id)) return Ok();
-         return BadRequest("Failed to delete category");
+            return BadRequest("Failed to delete category");         
       }
    }
 }

@@ -60,7 +60,11 @@ export class DocumentListComponent implements OnInit
     this.categoriesService.deleteCategory(id).subscribe({
       next: () => {
         this.ngOnInit();
-      }
+      },
+      error: error => {
+        console.log(error);
+        this.toastrService.error(error.error.message, "Oops!")
+    }
     });
   }
 

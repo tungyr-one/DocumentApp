@@ -36,7 +36,7 @@ namespace api.Interfaces
       ///<summary>
       /// Deletes category
       ///</summary>
-      void Delete(int id);
+      void Delete(CategoryDb category);
 
       ///<summary>
       /// Checks if category exists
