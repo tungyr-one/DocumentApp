@@ -1,4 +1,5 @@
 using api.Entities;
+using DocumentApp.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Data
