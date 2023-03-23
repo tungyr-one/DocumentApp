@@ -14,6 +14,7 @@ namespace api.Entities
         public int Version { get; set; }
         public string Author { get; set; }
         public string Text { get; set; }
+        public int CategoryId { get; set; }    
         public CategoryDb Category { get; set; }    
     }
 }

@@ -6,7 +6,7 @@
          {
          "Name": "Par cat 1 Ch cat 1",
          "ParentId": 1,
-         "Docs": 
+         "Documents": 
             [
                {
                   "Name": "P1 Ch cat 1 doc 1",
@@ -27,7 +27,7 @@
          {
          "Name": "Par cat 1 Ch cat 2",
          "ParentId": 1,
-         "Docs": 
+         "Documents": 
             [
                {
                   "Name": "P1 Ch cat 2 doc 1",
@@ -47,7 +47,7 @@
          }
 
 	  ],
-      "Docs": 
+      "Documents": 
       [
          {
             "Name": "Par cat 1 doc 1",
@@ -72,7 +72,7 @@
          {
          "Name": "Par cat 2 Ch cat 1",
          "ParentId": 2,
-         "Docs": 
+         "Documents": 
             [
                {
                   "Name": "P2 Ch cat 1 doc 1",
@@ -93,7 +93,7 @@
          {
          "Name": "Par cat 2 Ch cat 2",
          "ParentId": 2,
-         "Docs": 
+         "Documents": 
             [
                {
                   "Name": "P2 Ch cat 2 doc 1",
@@ -106,7 +106,7 @@
          }
 
 	  ],
-      "Docs": 
+      "Documents": 
       [
          {
             "Name": "Par cat 2 doc 1",

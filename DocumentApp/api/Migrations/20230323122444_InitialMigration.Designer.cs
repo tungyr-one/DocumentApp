@@ -10,8 +10,8 @@ using api.Data;
 namespace DocumentApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230311084302_InitialMigrations")]
-    partial class InitialMigrations
+    [Migration("20230323122444_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,9 +28,6 @@ namespace DocumentApp.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("CategoryDbId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
@@ -39,7 +36,7 @@ namespace DocumentApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryDbId");
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Categories");
                 });
@@ -54,7 +51,7 @@ namespace DocumentApp.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("text");
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Created")
@@ -78,16 +75,21 @@ namespace DocumentApp.Migrations
 
             modelBuilder.Entity("api.Entities.CategoryDb", b =>
                 {
-                    b.HasOne("api.Entities.CategoryDb", null)
+                    b.HasOne("api.Entities.CategoryDb", "Parent")
                         .WithMany("Children")
-                        .HasForeignKey("CategoryDbId");
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("api.Entities.DocDb", b =>
                 {
                     b.HasOne("api.Entities.CategoryDb", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .WithMany("Documents")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Category");
                 });
@@ -95,6 +97,8 @@ namespace DocumentApp.Migrations
             modelBuilder.Entity("api.Entities.CategoryDb", b =>
                 {
                     b.Navigation("Children");
+
+                    b.Navigation("Documents");
                 });
 #pragma warning restore 612, 618
         }
