@@ -18,6 +18,11 @@ namespace api.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<CategoryDb>()
+            .Property(c => c.Id)
+            .HasIdentityOptions(startValue: 7)
+            .IsRequired();
+
+            modelBuilder.Entity<CategoryDb>()
             .HasMany(c => c.Children)
             .WithOne()
             .HasForeignKey(c => c.ParentId)
