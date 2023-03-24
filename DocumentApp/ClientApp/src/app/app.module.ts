@@ -1,3 +1,4 @@
+import { TreeDynamicExample } from './categories-list/tree-dynamic-example.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from  '@angular/common/http';
@@ -25,6 +26,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ManageCategoryComponent } from './manage-category/manage-category.component';
 import { MatTreeSelectInputModule } from 'mat-tree-select-input';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatIconModule } from '@angular/material/icon';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 
 @NgModule({
@@ -37,7 +41,8 @@ import { MatTreeSelectInputModule } from 'mat-tree-select-input';
     NewDocComponent,
     NewCategoryComponent,
     CategoryEditComponent,
-    ManageCategoryComponent
+    ManageCategoryComponent,
+    TreeDynamicExample
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -60,8 +65,10 @@ import { MatTreeSelectInputModule } from 'mat-tree-select-input';
     ToastContainerModule,
     NgbModule,
     FontAwesomeModule,
-    MatTreeSelectInputModule
-
+    MatTreeSelectInputModule,
+    MatTreeModule,
+    MatIconModule,
+    MatProgressBarModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass:LoadingInterceptor, multi:true}

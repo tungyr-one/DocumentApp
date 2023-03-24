@@ -1,3 +1,4 @@
+import {TreeDynamicExample } from './categories-list/tree-dynamic-example.component';
 import { NewCategoryComponent } from './new-category/new-category.component';
 import { NewDocComponent } from './new-doc/new-doc.component';
 import { NgModule } from '@angular/core';
@@ -10,6 +11,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'docs/new', component: NewDocComponent, pathMatch: 'full' },
   { path: 'docs/edit/:id', component: DocEditComponent, pathMatch: 'full' },
+  { path: 'categories', component: TreeDynamicExample, pathMatch: 'full' },
   { path: 'categories/new', component: NewCategoryComponent, pathMatch: 'full' },
   { path: 'categories/edit/:id', component: CategoryEditComponent, pathMatch: 'full' },
 ];
