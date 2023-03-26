@@ -33,7 +33,7 @@ export class CategoryEditComponent {
   onSubmit() {
     if(this.category.id)
     {
-        this.categoriesService.updateCategory(this.category.id, this.category).subscribe({
+        this.categoriesService.updateCategory(this.category).subscribe({
               next: () => {
                 this.toastr.success('Category updated', 'Done!')
                 this.router.navigateByUrl('')

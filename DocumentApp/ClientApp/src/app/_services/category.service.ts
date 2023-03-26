@@ -52,8 +52,8 @@ export class CategoryService {
       )
     }
 
-    updateCategory(id:number, model:Category){
-      return this.http.put(this.baseUrl + 'categories/' + id, model)
+    updateCategory(model:Category){
+      return this.http.put(this.baseUrl + 'categories/' + model.id, model)
       .pipe(
         tap({next: ()=> {
           this.getCategories();
