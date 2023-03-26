@@ -90,14 +90,13 @@ export class DocEditComponent implements OnInit{
       let formCategory = this.editForm.controls['category'].value;
       const values = {...this.editForm.value, categoryId: formCategory.value};
 
-      let newVersion = ++values.version;
-      this.editForm.controls['version'].setValue(newVersion);
-
       if(this.id)
       {
         this.docService.updateDocument(this.id, values).subscribe({
               next: () => {
                 this.toastr.success('Document saved');
+                let newVersion = ++values.version;
+                this.editForm.controls['version'].setValue(newVersion);
               },
               error:() => {
                 this.toastr.error('Something went wrong!', 'Oops!');

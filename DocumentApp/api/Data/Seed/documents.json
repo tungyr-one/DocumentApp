@@ -1,0 +1,18 @@
+﻿[
+  {
+    "Name": "Document of Category 1",
+    "Created": "2020-10-30",
+    "Version": 1,
+    "Author": "Norris Laurenson",
+    "Text": "Distributed asymmetric moratorium",
+    "CategoryId": 1
+  },
+  {
+    "Name": "Document of Category 1.3",
+    "Created": "2022-06-18",
+    "Version": 1,
+    "Author": "Jethro Commings",
+    "Text": "Operative disintermediate toolset",
+    "CategoryId": 4
+  }
+]

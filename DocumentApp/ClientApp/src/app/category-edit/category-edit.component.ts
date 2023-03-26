@@ -13,13 +13,11 @@ import { firstValueFrom, lastValueFrom, Observable, Subject, tap } from 'rxjs';
 })
 export class CategoryEditComponent {
   editCategoryForm: FormGroup;
-  id:number;
   category$: Observable<Category>;
   category: Category;
- newCategory = <Category>{name: '', children:[]};
 
 
-  constructor(private categoryService:CategoryService,
+  constructor(private categoriesService:CategoryService,
     private toastr: ToastrService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -33,10 +31,11 @@ export class CategoryEditComponent {
   }
 
   onSubmit() {
-    if(this.id)
+    if(this.category.id)
     {
-        this.categoryService.updateCategory(this.id, this.category).subscribe({
+        this.categoriesService.updateCategory(this.category).subscribe({
               next: () => {
+                this.toastr.success('Category updated', 'Done!')
                 this.router.navigateByUrl('')
               }
             })
@@ -44,20 +43,35 @@ export class CategoryEditComponent {
   }
 
 loadCategory(){
-    this.id = +this.route.snapshot.paramMap.get('id')!;
-    if(this.id !== null)
+    let id = +this.route.snapshot.paramMap.get('id')!;
+    if(id)
     {
-      this.category$ = this.categoryService.getCategory(this.id)
+      this.category$ = this.categoriesService.getCategory(id)
       .pipe(tap(category =>
         this.editCategoryForm.patchValue({
           name: category.name,
         })),
-        tap(category =>  this.category = category),
+        tap(category => this.category = category),
         );
     }
     else
     {
-      this.toastr.error('Unable to load categoryument data');
+      this.toastr.error('Unable to load category data');
+    }
+  }
+
+  deleteCategory(){
+    if(this.category.id)
+    {
+      this.categoriesService.deleteCategory(this.category.id).subscribe({
+      next: () => {
+        this.toastr.success('Category deleted', 'Done!');
+        this.router.navigateByUrl('');
+      },
+      error:() => {
+        this.toastr.error('Something went wrong!', 'Oops!');
+      }
+    });
     }
   }
 

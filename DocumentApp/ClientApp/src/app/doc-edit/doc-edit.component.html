@@ -15,7 +15,7 @@
     <div class="mt-2">
       <label>
         Version:
-        <input id="version" formControlName="version" placeholder="Doc version" readonly>
+        <input type="text"  id="version" formControlName="version" placeholder="Doc version" readonly>
       </label>
     </div>
     <div class="mt-2">
@@ -30,7 +30,6 @@
 
     <div class="mt-2">
       <label>Category: </label>
-
       <ngx-mat-tree-select-input
           [options]="categoriesSelectOptions"
           [placeholder]="'Select category'"
@@ -38,7 +37,6 @@
           >
         </ngx-mat-tree-select-input>
     </div>
-
     <div>
       <label>
         Text:

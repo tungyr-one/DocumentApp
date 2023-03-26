@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using api.Entities;
 using api.Interfaces;
+using DocumentApp.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Data.Repositories
