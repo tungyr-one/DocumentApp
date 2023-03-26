@@ -17,4 +17,5 @@ namespace api.Entities
         public int? ParentId { get; set; }
         public IList<CategoryDb>? Children { get; set; }
     }
+    
 }

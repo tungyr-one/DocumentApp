@@ -1,0 +1,120 @@
+[
+   {
+      "Name": "Par cat 1",
+      "Children": 
+	  [
+         {
+         "Name": "Par cat 1 Ch cat 1",
+         "ParentId": 1,
+         "Documents": 
+            [
+               {
+                  "Name": "P1 Ch cat 1 doc 1",
+                  "Created": "2020-10-30",
+                  "Version": 1,
+                  "Author": "Norris Laurenson",
+                  "Text": "Distributed asymmetric moratorium"
+               },
+               {
+                  "Name": "P1 Ch cat 1 doc 2",
+                  "Created": "2022-06-18",
+                  "Version": 1,
+                  "Author": "Jethro Commings",
+                  "Text": "Operative disintermediate toolset"
+               }
+            ]
+         },
+         {
+         "Name": "Par cat 1 Ch cat 2",
+         "ParentId": 1,
+         "Documents": 
+            [
+               {
+                  "Name": "P1 Ch cat 2 doc 1",
+                  "Created": "2020-01-17",
+                  "Version": 1,
+                  "Author": "Starlin Seilmann",
+                  "Text": "Robust asymmetric hierarchy"
+               },
+               {
+                  "Name": "P1 Ch cat 2 doc 2",
+                  "Created": "2021-12-31",
+                  "Version": 1,
+                  "Author": "Nyssa Demongeot",
+                  "Text": "Object-based human-resource contingency"
+               }
+            ]
+         }
+
+	  ],
+      "Documents": 
+      [
+         {
+            "Name": "Par cat 1 doc 1",
+            "Created": "2020-09-04",
+            "Version": 1,
+            "Author": "Ginger Steet",
+            "Text": "Seamless 5th generation frame"
+         },
+         {
+            "Name": "Par cat 1 doc 2",
+            "Created": "2021-09-08",
+            "Version": 1,
+            "Author": "Gardy Spinage",
+            "Text": "Diverse attitude-oriented algorithm"
+         }
+      ]
+   },
+   {
+      "Name": "Par cat 2",
+      "Children": 
+	  [
+         {
+         "Name": "Par cat 2 Ch cat 1",
+         "ParentId": 2,
+         "Documents": 
+            [
+               {
+                  "Name": "P2 Ch cat 1 doc 1",
+                  "Created": "2021-03-11",
+                  "Version": 1,
+                  "Author": "Arney De Biaggi",
+                  "Text": "Monitored motivating neural-net"
+               },
+               {
+                  "Name": "P2 Ch cat 1 doc 2",
+                  "Created": "2020-05-23",
+                  "Version": 1,
+                  "Author": "Wally Dei",
+                  "Text": "Programmable radical paradigm"
+               }
+            ]
+         },
+         {
+         "Name": "Par cat 2 Ch cat 2",
+         "ParentId": 2,
+         "Documents": 
+            [
+               {
+                  "Name": "P2 Ch cat 2 doc 1",
+                  "Created": "2020-01-23",
+                  "Version": 1,
+                  "Author": "Tammie Dowsett",
+                  "Text": "Upgradable asynchronous open architecture"
+               }
+            ]
+         }
+
+	  ],
+      "Documents": 
+      [
+         {
+            "Name": "Par cat 2 doc 1",
+            "Created": "2022-10-27",
+            "Version": 1,
+            "Author": "Brantley Vaisey",
+            "Text": "Proactive client-driven success"
+         }
+      ]
+   }
+]

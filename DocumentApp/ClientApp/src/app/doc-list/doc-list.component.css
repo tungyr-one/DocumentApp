@@ -1,21 +1,12 @@
-.inlineOpen {
-   display: inline;
-   height:100%;
-   width:100%;
-   font-size: medium;
- }
-
-.inlineDelete {
-   display: inline;
-   height:100%;
-   width:100%;
-   color:darkorange;
-   font-size: medium;
- }
-
  .docName {
    font-size: large;
    color:darkgreen;
    font-weight: bold;
    margin-bottom: 15%;
+   text-decoration: none;
  }
+
+ .categoryName {
+  margin-bottom: 15%;
+  text-decoration: none;
+}

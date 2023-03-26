@@ -10,8 +10,8 @@ using api.Data;
 namespace DocumentApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230311084302_InitialMigrations")]
-    partial class InitialMigrations
+    [Migration("20230324112221_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,30 +21,7 @@ namespace DocumentApp.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("api.Entities.CategoryDb", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int?>("CategoryDbId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryDbId");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("api.Entities.DocDb", b =>
+            modelBuilder.Entity("DocumentApp.Entities.DocDb", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,7 +31,7 @@ namespace DocumentApp.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("text");
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Created")
@@ -78,18 +55,42 @@ namespace DocumentApp.Migrations
 
             modelBuilder.Entity("api.Entities.CategoryDb", b =>
                 {
-                    b.HasOne("api.Entities.CategoryDb", null)
-                        .WithMany("Children")
-                        .HasForeignKey("CategoryDbId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasIdentityOptions(7L, null, null, null, null, null)
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("api.Entities.DocDb", b =>
+            modelBuilder.Entity("DocumentApp.Entities.DocDb", b =>
                 {
                     b.HasOne("api.Entities.CategoryDb", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("api.Entities.CategoryDb", b =>
+                {
+                    b.HasOne("api.Entities.CategoryDb", null)
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("api.Entities.CategoryDb", b =>
