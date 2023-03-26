@@ -19,14 +19,17 @@ namespace api.Services
         private readonly ILogger<CategoriesService> _logger;
         private ICategoriesRepository _categoriesRepository { get; }
         private IMapper _mapper { get; }
-      private readonly DataContext _context;
+        private IDocsRepository _docsRepository;
 
-        public CategoriesService(ICategoriesRepository categoryRepository, DataContext context, ILogger<CategoriesService> logger,
-         IMapper mapper)
+
+        public CategoriesService(ICategoriesRepository categoryRepository, 
+        IDocsRepository docsRepository,
+        ILogger<CategoriesService> logger,
+        IMapper mapper)
         {
-            _context = context;
-            _mapper = mapper;
             _categoriesRepository = categoryRepository;
+            _docsRepository = docsRepository;
+            _mapper = mapper;
             _logger = logger;
         }
 
@@ -69,7 +72,7 @@ namespace api.Services
                 throw new ValidationException("Category has subcategories, delete them first");
             }
 
-            if (await _context.Docs.AnyAsync(d => d.Category.Id == id))
+            if (await _docsRepository.IsDocumentWithCategoryRelationExists(categoryToDelete.Id))
             {
                 throw new ValidationException("Category has documents, delete them first");
             }

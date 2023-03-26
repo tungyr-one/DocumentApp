@@ -32,6 +32,11 @@ namespace api.Interfaces
       void Delete(int id);
 
       ///<summary>
+      /// Checks if the document is in any category
+      ///</summary>
+      Task<bool> IsDocumentWithCategoryRelationExists(int id);
+
+      ///<summary>
       /// Saves all changes to database
       ///</summary>
       Task<bool> SaveAllAsync();

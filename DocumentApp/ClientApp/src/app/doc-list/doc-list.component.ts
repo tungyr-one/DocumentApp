@@ -62,7 +62,6 @@ export class DocumentListComponent implements OnInit
         this.ngOnInit();
       },
       error: error => {
-        console.log(error);
         this.toastrService.error(error.error.message, "Oops!")
     }
     });

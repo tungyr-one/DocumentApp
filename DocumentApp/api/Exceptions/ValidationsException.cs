@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace api.Exceptions
 {
-    public class ValidationException: ArgumentException
+    public class ValidationException: Exception
     {
         public ValidationException()
         {

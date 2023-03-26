@@ -39,9 +39,9 @@ namespace api.Interfaces
       void Delete(CategoryDb category);
 
       ///<summary>
-      /// Checks if category exists
+      /// Checks is category exists
       ///</summary>
-      Task<bool> CategoryExists(int id);
+      Task<bool> IsCategoryExists(int id);
 
       ///<summary>
       /// Saves all changes to database
