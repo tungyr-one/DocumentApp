@@ -1,5 +1,6 @@
 using api.Data;
 using API.Extensions;
+using API.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,17 +35,21 @@ namespace DocumentApp
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseMiddleware<ErrorHandlingMiddleware>();
+                // app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseMiddleware<ErrorHandlingMiddleware>();                
                 app.UseHsts();
             }
 
             app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins(config.GetSection("AppLocalAddress").Value));
+            
             app.UseHttpsRedirection();
+            
             app.UseRouting();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
