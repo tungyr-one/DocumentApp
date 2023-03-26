@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using api.Entities;
 using api.Interfaces;
@@ -7,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api.Data.Repositories
 {
-    public class DocsRepository:IDocsRepository
+    public class DocsRepository: IDocsRepository
     {
         private readonly DataContext _context;
 
@@ -53,5 +52,11 @@ namespace api.Data.Repositories
         {
             return await _context.SaveChangesAsync() > 0;
         }
-    }
+
+        async Task<bool> IDocsRepository.IsDocumentWithCategoryRelationExists(int categoryId)
+        {
+            return await _context.Docs.AnyAsync(d => d.Category.Id == categoryId);
+        }
+
+   }
 }

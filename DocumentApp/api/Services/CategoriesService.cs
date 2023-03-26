@@ -1,10 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using api.Data;
 using api.DTOs;
 using api.Entities;
+using api.Exceptions;
 using api.Interfaces;
 using api.Interfaces.ServicesInterfaces;
+using API.Errors;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace api.Services
@@ -14,12 +19,17 @@ namespace api.Services
         private readonly ILogger<CategoriesService> _logger;
         private ICategoriesRepository _categoriesRepository { get; }
         private IMapper _mapper { get; }
+        private IDocsRepository _docsRepository;
 
-        public CategoriesService(ICategoriesRepository categoryRepository, ILogger<CategoriesService> logger,
-         IMapper mapper)
+
+        public CategoriesService(ICategoriesRepository categoryRepository, 
+        IDocsRepository docsRepository,
+        ILogger<CategoriesService> logger,
+        IMapper mapper)
         {
-            _mapper = mapper;
             _categoriesRepository = categoryRepository;
+            _docsRepository = docsRepository;
+            _mapper = mapper;
             _logger = logger;
         }
 
@@ -55,7 +65,19 @@ namespace api.Services
 
       public async Task<bool> DeleteAsync(int id)
       {
-          _categoriesRepository.Delete(id);
+            var categoryToDelete = await _categoriesRepository.GetCategoryAsync(id);
+
+            if (categoryToDelete.Children.Count > 0)
+            {
+                throw new ValidationException("Category has subcategories, delete them first");
+            }
+
+            if (await _docsRepository.IsDocumentWithCategoryRelationExists(categoryToDelete.Id))
+            {
+                throw new ValidationException("Category has documents, delete them first");
+            }
+
+          _categoriesRepository.Delete(categoryToDelete);
 
           return await _categoriesRepository.SaveAllAsync();
       }

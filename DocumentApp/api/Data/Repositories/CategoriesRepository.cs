@@ -53,21 +53,9 @@ namespace api.Data.Repositories
             _context.Entry(category).State = EntityState.Modified;
       }
 
-      public void Delete(int id)
+      public void Delete(CategoryDb category)
       {
-            foreach(var doc in _context.Docs.Where(d => d.Category.Id == id))
-            {
-                 _context.Docs.Remove(doc);
-            }
-
-            foreach(var subcategory in _context.Categories.Where(d => d.ParentId == id))
-            {
-                 _context.Categories.Remove(subcategory);
-            }
-            _context.SaveChanges();
-
-            var categoryToDelete = _context.Categories.Find(id);
-            _context.Entry(categoryToDelete).State = EntityState.Deleted; 
+            _context.Entry(category).State = EntityState.Deleted; 
       }   
 
       public async Task<bool> SaveAllAsync()
@@ -75,9 +63,10 @@ namespace api.Data.Repositories
             return await _context.SaveChangesAsync() > 0;
       }
 
-      async Task<bool> ICategoriesRepository.CategoryExists(int categoryId)
+      async Task<bool> ICategoriesRepository.IsCategoryExists(int categoryId)
       {
           return await _context.Categories.AnyAsync(c => c.Id == categoryId);
       }
+
    }
 }

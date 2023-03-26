@@ -61,8 +61,8 @@ export class ManageCategoryComponent implements OnInit {
         next: () => {
           this.toastr.success('Category deleted');
         },
-        error:() => {
-          this.toastr.error('Something went wrong!', 'Oops!');
+        error:error => {
+          this.toastr.error(error.error.message, 'Oops!');
         }
       });
       }
