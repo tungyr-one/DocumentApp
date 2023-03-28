@@ -29,6 +29,7 @@ import { MatTreeSelectInputModule } from 'mat-tree-select-input';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
@@ -68,7 +69,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatTreeSelectInputModule,
     MatTreeModule,
     MatIconModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatButtonModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass:LoadingInterceptor, multi:true}
