@@ -1,6 +1,7 @@
 import { CollectionViewer, DataSource, SelectionChange } from "@angular/cdk/collections";
 import { FlatTreeControl } from "@angular/cdk/tree";
 import { BehaviorSubject, map, merge, Observable } from "rxjs";
+import { Category } from "../_models/Category";
 import { DynamicDatabase } from "./DynamicDatabase";
 import { DynamicFlatNode } from "./DynamicFlatNode";
 
@@ -59,10 +60,11 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
    * Toggle the node, remove from display list
    */
   toggleNode(node: DynamicFlatNode, expand: boolean) {
-    const children = this._database.getChildren(node.item);
+    let children:Category[] = [];
+    if(node.item.children!.length > 0)
+      children = node.item.children!;
     const index = this.data.indexOf(node);
     if (!children || index < 0) {
-      // If no children, or cannot find the node, no op
       return;
     }
 
@@ -84,7 +86,6 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
         this.data.splice(index + 1, count);
       }
 
-      // notify the change
       this.dataChange.next(this.data);
       node.isLoading = false;
     }, 100);

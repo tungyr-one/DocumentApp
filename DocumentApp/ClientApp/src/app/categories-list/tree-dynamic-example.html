@@ -1,8 +1,25 @@
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+  <mat-tree-node *matTreeNodeDef="let node" style="font-size: large;" matTreeNodePadding>
     <button mat-icon-button disabled></button>
-    {{node.item}}
+    <a routerLink="/categories/edit/{{node.item.id}}">{{node.item.name}}</a>
+
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
+    <mat-menu #menu="matMenu">
+      <a routerLink="/categories/edit/{{node.item.id}}"><button mat-menu-item color="primary">
+        <mat-icon class="material-icons-outlined">edit</mat-icon>
+        <span>Edit</span>
+      </button></a>
+      <button mat-menu-item  color="warn" (click)="deleteCategory(node.item.id)">
+        <mat-icon class="material-icons-outlined">delete</mat-icon>
+        <span>Delete</span>
+      </button>
+    </mat-menu>
+
   </mat-tree-node>
+
   <mat-tree-node *matTreeNodeDef="let node; when: hasChild" style="font-size: large;" matTreeNodePadding>
     <button mat-icon-button
             [attr.aria-label]="'Toggle ' + node.item" matTreeNodeToggle>
@@ -10,22 +27,23 @@
         {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
       </mat-icon>
     </button>
-    {{node.item}}
-    <button mat-icon-button color="primary">
-      <mat-icon>edit</mat-icon>
-    </button>
-    <button mat-icon-button color="warn">
-      <mat-icon>delete</mat-icon>
-    </button>
-    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+    <a routerLink="/categories/edit/{{node.item.id}}">{{node.item.name}}</a>
+
+    <button mat-icon-button [matMenuTriggerFor]="menu">
       <mat-icon>more_vert</mat-icon>
     </button>
-      <!-- <div class="inlineOpen">
-        <a routerLink="/categories/edit/"><button class="btn btn-outline-primary btn-sm m-2">Edit</button></a>
-      </div>
-      <div class="inlineDelete">
-        <button  class="btn btn-outline-warning btn-sm" >Delete</button>
-      </div> -->
+
+    <mat-menu #menu="matMenu">
+      <a routerLink="/categories/edit/{{node.item.id}}"><button mat-menu-item color="primary">
+        <mat-icon class="material-icons-outlined">edit</mat-icon>
+        <span>Edit</span>
+      </button></a>
+      <button mat-menu-item color="warn" (click)="deleteCategory(node.item.id)">
+        <mat-icon class="material-icons-outlined">delete</mat-icon>
+        <span>Delete</span>
+      </button>
+    </mat-menu>
+
     <mat-progress-bar *ngIf="node.isLoading"
                       mode="indeterminate"
                       class="example-tree-progress-bar"></mat-progress-bar>
