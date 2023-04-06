@@ -25,6 +25,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ManageCategoryComponent } from './manage-category/manage-category.component';
 import { MatTreeSelectInputModule } from 'mat-tree-select-input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @NgModule({
@@ -60,7 +63,10 @@ import { MatTreeSelectInputModule } from 'mat-tree-select-input';
     ToastContainerModule,
     NgbModule,
     FontAwesomeModule,
-    MatTreeSelectInputModule
+    MatTreeSelectInputModule,
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule
 
   ],
   providers: [

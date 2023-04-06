@@ -10,3 +10,7 @@
   margin-bottom: 15%;
   text-decoration: none;
 }
+
+a.categoryName {
+  margin-bottom: 0;
+}
