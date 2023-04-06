@@ -9,11 +9,11 @@ import { CategoryService } from '../_services/category.service';
 import { TreeData } from 'mat-tree-select-input';
 
 @Component({
-  selector: 'app-doc-edit',
-  templateUrl: './doc-edit.component.html',
-  styleUrls: ['./doc-edit.component.css']
+  selector: 'app-document-view',
+  templateUrl: './doc-view.component.html',
+  styleUrls: ['./doc-view.component.css']
 })
-export class DocEditComponent implements OnInit{
+export class DocumentViewComponent {
   editForm: FormGroup;
   id:number;
   doc$:Observable<Doc>;

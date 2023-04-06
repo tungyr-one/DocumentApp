@@ -28,6 +28,9 @@ import { MatTreeSelectInputModule } from 'mat-tree-select-input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { CommonModule } from '@angular/common';
+import { DocumentViewComponent } from './doc-view/doc-view.component';
+
 
 
 @NgModule({
@@ -40,7 +43,8 @@ import { MatMenuModule } from '@angular/material/menu';
     NewDocComponent,
     NewCategoryComponent,
     CategoryEditComponent,
-    ManageCategoryComponent
+    ManageCategoryComponent,
+    DocumentViewComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -66,7 +70,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatTreeSelectInputModule,
     MatIconModule,
     MatButtonModule,
-    MatMenuModule
+    MatMenuModule,
+    CommonModule
 
   ],
   providers: [

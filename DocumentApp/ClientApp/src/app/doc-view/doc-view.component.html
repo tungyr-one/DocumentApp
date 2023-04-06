@@ -1,0 +1,98 @@
+<div *ngIf="doc$ | async; let doc" class="container-mt5" style='text-align: center;'>
+  <h1>Document view</h1>
+<div class="row">
+  <div class="col-3">
+      <div class="card">
+          <div class="card-body">
+              <div>
+                  <strong>Name:</strong>
+                  <p>{{doc.name}}</p>
+              </div>
+              <div>
+                  <strong>Version:</strong>
+                  <p>{{doc.version}}</p>
+              </div>
+              <div>
+                  <strong>Author:</strong>
+                  <p>{{doc.author}}</p>
+              </div>
+              <div>
+                  <strong>Category:</strong>
+                  <p>{{doc.category.name}}</p>
+              </div>
+              <div>
+                  <strong>Created:</strong>
+                  <p>{{doc.created}}</p>
+              </div>
+          </div>
+      </div>
+
+          <div class="text-center mt-3">
+            <a class="text-decoration-none" routerLink="/docs/edit/{{doc.id}}">
+              <button class="btn btn-outline-primary me-2" type="submit">Edit</button>
+            </a>
+            <button class="btn btn-outline-secondary me-2" (click)="cancel()" type="button">Back to list</button>
+            <button class="btn btn-outline-danger me-2" (click)="deleteDoc()" type="button">Delete</button>
+          </div>
+  </div>
+
+  <div class="col-8 ms-2">
+    <textarea  id="text" formControlName="text" placeholder="Doc text">{{doc.text}}</textarea>
+  </div>
+</div>
+</div>
+
+
+
+
+<!-- <div *ngIf="doc$ | async; let document" class="container-mt5" style='text-align: center;'>
+  <h2>Document view</h2>
+  <form
+    [formGroup]="editForm"
+    (ngSubmit)="onSubmit(editForm)">
+    <div>
+      <label>
+        Name:
+        <input id="name" formControlName="name" placeholder="Document name">
+      </label>
+      <div *ngIf="editForm.get('name')?.invalid && (editForm.get('name')?.dirty || editForm.get('name')?.touched)" class="error-field">
+        <p class="error">Please provide a name.</p>
+      </div>
+    </div>
+    <div class="mt-2">
+      <label>
+        Version:
+        <input type="text"  id="version" formControlName="version" placeholder="Doc version" readonly>
+      </label>
+    </div>
+    <div class="mt-2">
+      <label>
+        Author:
+        <input id="author" formControlName="author" placeholder="Doc author">
+      </label>
+      <div *ngIf="editForm.get('author')?.invalid && (editForm.get('author')?.dirty || editForm.get('author')?.touched)">
+        <p class="error">Please provide an author.</p>
+      </div>
+    </div>
+
+    <div class="mt-2">
+      <label>Category: </label>
+    </div>
+    <div>
+      <label>
+        Text:
+      </label>
+      <div class="mt-2">
+        <textarea  id="text" formControlName="text" placeholder="Doc text" rows="15" cols="150"></textarea>
+      </div>
+
+      <div *ngIf="editForm.get('text')?.invalid && (editForm.get('text')?.dirty || editForm.get('text')?.touched)">
+        <p class="error">Please provide a text.</p>
+      </div>
+    </div>
+    <div class="text-center">
+      <button [disabled]="!editForm.valid" class="btn btn-success mr-5" type="submit">Save document</button>
+      <button class="btn btn-default ml-5" (click)="deleteDoc()" type="button">Delete</button>
+      <button class="btn btn-default ml-5" (click)="cancel()" type="button">Cancel</button>
+    </div>
+      </form> -->
