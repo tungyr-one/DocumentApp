@@ -45,21 +45,14 @@
             <a class="categoryName" style="vertical-align: middle;" routerLink="/categories/edit/{{doc.category.id}}">{{doc.category.name}}</a>
           </div>
           <div style="margin-left: auto;">
-            <button mat-icon-button [matMenuTriggerFor]="menu">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-              <a class="text-decoration-none" routerLink="/docs/edit/{{doc.id}}">
-                <button mat-menu-item color="primary">
-                  <mat-icon class="material-icons-outlined">edit</mat-icon>
-                  <span>Edit</span>
-                </button>
+
+              <a class="text-decoration-none" routerLink="/docs/edit/{{doc.id}}"><button mat-icon-button title="edit document">
+                <mat-icon class="material-icons-outlined">edit</mat-icon></button>
               </a>
-              <button mat-menu-item color="warn" (click)="deleteDoc(doc.id)">
-                <mat-icon class="material-icons-outlined">delete</mat-icon>
-                <span>Delete</span>
-              </button>
-            </mat-menu>
+
+            <button mat-icon-button title="delete document" (click)="deleteDoc(doc.id)">
+              <mat-icon class="material-icons-outlined" color="warn">delete</mat-icon>
+            </button>
           </div>
         </div>
       </td>
