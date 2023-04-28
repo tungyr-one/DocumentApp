@@ -59,7 +59,7 @@ export class NewDocComponent implements OnInit{
     .pipe(
       tap({
         next: () => {
-          this.categoriesSelectOptions = this.categoriesService.categoriesOptions;
+          this.categoriesSelectOptions = this.categoriesService.categoriesTreeData;
         }}
       )
     ).subscribe();

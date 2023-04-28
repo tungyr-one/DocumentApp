@@ -3,8 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { TreeData } from 'mat-tree-select-input';
 import { ToastrService } from 'ngx-toastr';
-import { tap, Observable } from 'rxjs';
-import { Category } from '../_models/Category';
+import { tap } from 'rxjs';
 import { CategoryService } from '../_services/category.service';
 
 @Component({
@@ -39,7 +38,7 @@ export class ManageCategoryComponent implements OnInit {
       .pipe(
         tap({
           next: () => {
-            this.categoriesSelectOptions = this.categoriesService.categoriesOptions;
+            this.categoriesSelectOptions = this.categoriesService.categoriesTreeData;
           }}
         )
       ).subscribe();

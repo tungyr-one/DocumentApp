@@ -10,7 +10,7 @@ import { Category } from '../_models/Category';
 })
 export class CategoryService {
   baseUrl = environment.apiUrl;
-  categoriesOptions: TreeData[] = [];
+  categoriesTreeData: TreeData[] = [];
 
   @Output() categoriesChangedEvent = new EventEmitter<any>();
 
@@ -36,7 +36,7 @@ export class CategoryService {
     tap({
       next: (categories) => {
         const filteredArray = categories.filter(item => item.parentId === null);
-        this.categoriesOptions = this.constructTreeData(filteredArray);
+        this.categoriesTreeData = this.constructTreeData(filteredArray);
       }})
       )
     }
@@ -73,7 +73,7 @@ export class CategoryService {
     }
 
     constructTreeData(data:Category[]):TreeData[]{
-      this.categoriesOptions = [];
+      this.categoriesTreeData = [];
       return data.map(
         (item:any)=>{
           let o:any = {

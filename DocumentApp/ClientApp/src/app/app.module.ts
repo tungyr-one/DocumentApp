@@ -11,7 +11,7 @@ import { DocumentListComponent } from './doc-list/doc-list.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSortModule } from '@angular/material/sort';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { DocEditComponent } from './doc-edit/doc-edit.component';
@@ -25,13 +25,17 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ManageCategoryComponent } from './manage-category/manage-category.component';
 import { MatTreeSelectInputModule } from 'mat-tree-select-input';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu';
 import { CommonModule } from '@angular/common';
 import { DocumentViewComponent } from './doc-view/doc-view.component';
 
-
+import { MatTreeModule } from '@angular/material/tree';
+import { MatIconModule } from '@angular/material/icon';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatListModule} from '@angular/material/list';
+import { CategoriesListComponent } from './categories-list/categories-list.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +48,7 @@ import { DocumentViewComponent } from './doc-view/doc-view.component';
     NewCategoryComponent,
     CategoryEditComponent,
     ManageCategoryComponent,
+    CategoriesListComponent,
     DocumentViewComponent
   ],
   imports: [
@@ -58,7 +63,6 @@ import { DocumentViewComponent } from './doc-view/doc-view.component';
     MatTableModule,
     MatInputModule,
     MatFormFieldModule,
-    FormsModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass:'toast-top-left'
@@ -71,8 +75,14 @@ import { DocumentViewComponent } from './doc-view/doc-view.component';
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
-    CommonModule
-
+    CommonModule,
+    MatTreeModule,
+    MatIconModule,
+    MatProgressBarModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatListModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass:LoadingInterceptor, multi:true}

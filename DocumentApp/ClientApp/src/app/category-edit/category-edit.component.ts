@@ -1,10 +1,10 @@
 import { CategoryService } from './../_services/category.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Category } from '../_models/Category';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
-import { firstValueFrom, lastValueFrom, Observable, Subject, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-category-edit',
@@ -36,7 +36,7 @@ export class CategoryEditComponent {
         this.categoriesService.updateCategory(this.category).subscribe({
               next: () => {
                 this.toastr.success('Category updated', 'Done!')
-                this.router.navigateByUrl('')
+                this.router.navigateByUrl('/categories')
               }
             })
     }
@@ -76,6 +76,6 @@ loadCategory(){
   }
 
   cancel(){
-    this.router.navigateByUrl('');
+    this.router.navigateByUrl('/categories');
   }
 }

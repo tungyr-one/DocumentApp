@@ -1,15 +1,22 @@
 <div>
   <div style="display: inline-block;">
-      <mat-form-field>
-  <mat-label>Filter</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
-</mat-form-field>
+    <mat-form-field>
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+    </mat-form-field>
   </div>
+
   <div style="float:right;">
-    <app-manage-category></app-manage-category>
+  <div style="float:left;">
+    <button class="btn btn-outline-success me-2">
+      <a [routerLink]="['/docs/new']" style="text-decoration: none;">New document</a>
+    </button>
+  </div>
+    <button class="btn btn-outline-primary">
+      <a routerLink="/categories" style="text-decoration: none;">Categories list</a>
+    </button>
   </div>
 </div>
-
 
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" matSort>
@@ -19,7 +26,6 @@
       <td  mat-cell *matCellDef="let doc"><a class="docName" routerLink="/docs/{{doc.id}}">{{doc.name}}</a>
       </td>
     </ng-container>
-
 
     <ng-container matColumnDef="created">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Created </th>

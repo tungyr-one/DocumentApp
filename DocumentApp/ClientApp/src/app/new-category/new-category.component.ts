@@ -38,12 +38,12 @@ export class NewCategoryComponent implements OnInit{
 
     this.categoryService.createCategory(newCategory).subscribe({
       next: () => {
-        this.router.navigateByUrl('');
+        this.router.navigateByUrl('/categories');
       },
     });
   }
 
   cancel(){
-    this.router.navigateByUrl('');
+    this.router.navigateByUrl('/categories');
   }
 }
