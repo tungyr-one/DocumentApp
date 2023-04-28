@@ -62,7 +62,10 @@ export class CategoriesListComponent implements OnInit{
     this.categoriesService.deleteCategory(id).subscribe({
       next: () => {
         this.ngOnInit();
-        this.toastrService.success('Document deleted');
+        this.toastrService.success('Category deleted');
+      },
+      error:() => {
+        this.toastrService.error('Something went wrong!', 'Oops!');
       }
     });
   }

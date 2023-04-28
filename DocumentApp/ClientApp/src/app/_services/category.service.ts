@@ -35,8 +35,10 @@ export class CategoryService {
     }),
     tap({
       next: (categories) => {
+        console.log(categories);
         const filteredArray = categories.filter(item => item.parentId === null);
         this.categoriesTreeData = this.constructTreeData(filteredArray);
+        console.log(this.categoriesTreeData);
       }})
       )
     }

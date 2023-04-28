@@ -25,7 +25,6 @@ export class NewDocComponent implements OnInit{
     private categoriesService:CategoryService,
     private toastr: ToastrService,
     private fb: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit(): void {
@@ -46,7 +45,7 @@ export class NewDocComponent implements OnInit{
 
     this.docService.createDocument(values).subscribe({
       next: () => {
-        this.toastr.success('Document saved');
+        this.toastr.success('Document created');
       },
       error:() => {
         this.toastr.error('Something went wrong!', 'Oops!');
