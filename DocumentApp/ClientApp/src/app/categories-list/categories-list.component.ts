@@ -22,7 +22,7 @@ export class CategoriesListComponent implements OnInit{
       expandable: !!node.children && node.children.length > 0,
       name: node.name,
       level: level,
-      id: node.value
+      id: node.id
     };
   };
 

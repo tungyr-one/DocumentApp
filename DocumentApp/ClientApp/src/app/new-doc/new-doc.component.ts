@@ -41,7 +41,7 @@ export class NewDocComponent implements OnInit{
 
   onSubmit(form: FormGroup) {
     let formCategory = this.newDocForm.controls['category'].value;
-    const values = {...this.newDocForm.value, categoryId:formCategory.value};
+    const values = {...this.newDocForm.value, categoryId:formCategory.id};
 
     this.docService.createDocument(values).subscribe({
       next: () => {

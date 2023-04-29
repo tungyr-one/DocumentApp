@@ -74,17 +74,18 @@ export class CategoryService {
       )
     }
 
-    constructTreeData(data:Category[]):TreeData[]{
+    constructTreeData(data: Category[], level: number = 0): TreeData[] {
       this.categoriesTreeData = [];
-      return data.map(
-        (item:any)=>{
-          let o:any = {
-            name: item.name,
-            value: item.id,
-            children: item.children.length ? this.constructTreeData(item.children) : []
-          }
-          return o
-        }
-      )
+      return data.map((item:any) => {
+        const node: TreeData = {
+          name: item.name,
+          id: item.id,
+          level: level,
+          children: item.children.length
+            ? this.constructTreeData(item.children, level + 1)
+            : [],
+        };
+        return node;
+      });
     }
 }

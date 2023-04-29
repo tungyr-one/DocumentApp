@@ -5,6 +5,7 @@ import { Category } from '../_models/Category';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
+import { TreeData } from 'mat-tree-select-input';
 
 @Component({
   selector: 'app-category-edit',
@@ -15,6 +16,7 @@ export class CategoryEditComponent {
   editCategoryForm: FormGroup;
   category$: Observable<Category>;
   category: Category;
+  categoriesSelectOptions: TreeData[] = [];
 
 
   constructor(private categoriesService:CategoryService,
@@ -24,13 +26,23 @@ export class CategoryEditComponent {
     private router: Router) { }
 
   ngOnInit(): void {
+    this.loadCategories();
     this.loadCategory();
     this.editCategoryForm = this.fb.group({
       categoryName: ['', [Validators.required]],
+      parentCategory: ['parCat'],
     });
   }
 
   onSubmit() {
+    let parentCategory = this.editCategoryForm.controls['parentCategory']?.value;
+
+    if(parentCategory.level == 2)
+    {
+      this.toastr.error('The maximum depth of nested categories for the selected category has been reached', 'Oops!');
+      return;
+    }
+
     if(this.category.id)
     {
         this.categoriesService.updateCategory(this.category).subscribe({
@@ -40,6 +52,17 @@ export class CategoryEditComponent {
               }
             })
     }
+  }
+
+  loadCategories(){
+    this.categoriesService.getCategories()
+    .pipe(
+      tap({
+        next: () => {
+          this.categoriesSelectOptions = this.categoriesService.categoriesTreeData;
+        }}
+      )
+    ).subscribe();
   }
 
 loadCategory(){

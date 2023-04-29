@@ -1,21 +1,33 @@
 <div *ngIf="category$ | async; let category" class="container-mt5" style='text-align: center;'>
    <h2>Edit category</h2>
    <form
+   [formGroup]="editCategoryForm"
      (ngSubmit)="onSubmit()">
 
-     <div class="mb-5">
+     <div class="mb-2">
        <label>
          Category name:
-         <input [(ngModel)]="category.name" name="CategoryName" #ctrl="ngModel" required placeholder="Category name" required>
+         <input [(ngModel)]="category.name" [ngModelOptions]="{standalone: true}"
+         name="CategoryName" #ctrl="ngModel" required placeholder="Category name" required >
        </label>
      </div>
+
+     <div  class="d-flex justify-content-center mt-1 align-items-center">
+      <label class="mr-2">Parent category: </label>
+          <ngx-mat-tree-select-input
+          [options]="categoriesSelectOptions"
+          [placeholder]="'Select category'"
+          [controlName]="'parentCategory'"
+          >
+        </ngx-mat-tree-select-input>
+    </div>
 
      <div class="text-center">
        <button [disabled]="!ctrl.valid" class="btn btn-success mr-5" type="submit">Save category</button>
        <button class="btn btn-default ml-5" (click)="deleteCategory()" type="button">Delete</button>
        <button class="btn btn-default ml-5" (click)="cancel()" type="button">Cancel</button>
      </div>
-       </form>
+  </form>
 
 
 

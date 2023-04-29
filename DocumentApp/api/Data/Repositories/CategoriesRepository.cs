@@ -32,6 +32,7 @@ namespace api.Data.Repositories
       {
             return await _context.Categories.AsNoTracking()
             .Include(c=> c.Children)
+            .ThenInclude(c => c.Children)
             .ToArrayAsync();
       }
 

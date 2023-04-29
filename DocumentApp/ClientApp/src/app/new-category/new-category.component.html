@@ -4,7 +4,6 @@
      [formGroup]="newCategoryForm"
      (ngSubmit)="onSubmit(newCategoryForm)">
 
-
      <div class="mb-2">
        <label>
          Category name:
@@ -13,14 +12,12 @@
 
         <div  class="d-flex justify-content-center mt-2 align-items-center">
          <label class="mr-2">Parent category: </label>
-
              <ngx-mat-tree-select-input
              [options]="categoriesSelectOptions"
              [placeholder]="'Select category'"
              [controlName]="'parentCategory'"
              >
            </ngx-mat-tree-select-input>
-
        </div>
 
         <div *ngIf="newCategoryForm.get('name')?.invalid && (newCategoryForm.get('name')?.dirty || newCategoryForm.get('name')?.touched)" class="error-field">

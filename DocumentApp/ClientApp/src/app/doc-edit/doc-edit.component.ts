@@ -71,7 +71,7 @@ export class DocEditComponent implements OnInit{
 
   searchCategoryById(id: number, categories: TreeData[]): TreeData | null {
     for (const category of categories) {
-      if (+category.value === id) {
+      if (+category.id === id) {
         return category;
       } else if (category.children.length > 0) {
         const result = this.searchCategoryById(id, category.children);
