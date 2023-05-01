@@ -35,10 +35,8 @@ export class CategoryService {
     }),
     tap({
       next: (categories) => {
-        console.log(categories);
         const filteredArray = categories.filter(item => item.parentId === null);
         this.categoriesTreeData = this.constructTreeData(filteredArray);
-        console.log(this.categoriesTreeData);
       }})
       )
     }
@@ -87,5 +85,19 @@ export class CategoryService {
         };
         return node;
       });
+    }
+
+    findCategoryById(categories: TreeData[], idToFind: number): TreeData | undefined {
+      for (const category of categories) {
+        if (category.id === idToFind) {
+          return category;
+        } else if (category.children.length > 0) {
+          const foundInChild = this.findCategoryById(category.children, idToFind);
+          if (foundInChild) {
+            return foundInChild;
+          }
+        }
+      }
+      return undefined;
     }
 }

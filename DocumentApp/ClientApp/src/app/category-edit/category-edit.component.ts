@@ -26,11 +26,11 @@ export class CategoryEditComponent {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.loadCategories();
+    this.loadDropdownCategoriesData();
     this.loadCategory();
     this.editCategoryForm = this.fb.group({
       categoryName: ['', [Validators.required]],
-      parentCategory: ['parCat'],
+      parentCategory: [''],
     });
   }
 
@@ -43,18 +43,24 @@ export class CategoryEditComponent {
       return;
     }
 
-    if(this.category.id)
+    if(parentCategory)
     {
-        this.categoriesService.updateCategory(this.category).subscribe({
-              next: () => {
-                this.toastr.success('Category updated', 'Done!')
-                this.router.navigateByUrl('/categories')
-              }
-            })
+      if(parentCategory.id === this.category.id){
+        this.toastr.error('Choosen parent category id and catetegory id cannot be the same', 'Oops!');
+        return;
+      }
+      this.category.parentId = parentCategory.id;
     }
+
+    this.categoriesService.updateCategory(this.category).subscribe({
+          next: () => {
+            this.toastr.success('Category updated', 'Done!')
+            this.router.navigateByUrl('/categories')
+          }
+        })
   }
 
-  loadCategories(){
+  loadDropdownCategoriesData(){
     this.categoriesService.getCategories()
     .pipe(
       tap({
@@ -70,12 +76,21 @@ loadCategory(){
     if(id)
     {
       this.category$ = this.categoriesService.getCategory(id)
-      .pipe(tap(category =>
-        this.editCategoryForm.patchValue({
-          name: category.name,
-        })),
-        tap(category => this.category = category),
-        );
+      .pipe
+      (
+        tap({next: (categoryData:Category)=>{
+          this.editCategoryForm.patchValue({
+            name: categoryData.name,});
+          this.category = categoryData;
+
+          if(categoryData.parentId)
+          {
+            var parentCategory = this.categoriesService
+            .findCategoryById(this.categoriesSelectOptions,categoryData.parentId);
+            this.editCategoryForm.controls['parentCategory'].setValue(parentCategory);
+          }
+        }})
+      )
     }
     else
     {
@@ -102,3 +117,6 @@ loadCategory(){
     this.router.navigateByUrl('/categories');
   }
 }
+
+
+
