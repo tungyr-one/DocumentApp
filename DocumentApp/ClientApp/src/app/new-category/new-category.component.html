@@ -5,13 +5,13 @@
      (ngSubmit)="onSubmit(newCategoryForm)">
 
      <div class="mb-2">
-       <label>
+       <label class="me-2">
          Category name:
          <input id="name" formControlName="categoryName" placeholder="Category name">
         </label>
 
-        <div  class="d-flex justify-content-center mt-2 align-items-center">
-         <label class="mr-2">Parent category: </label>
+        <div  class="mt-2">
+         <label class="me-2">Parent category: </label>
              <ngx-mat-tree-select-input
              [options]="categoriesSelectOptions"
              [placeholder]="'Select category'"

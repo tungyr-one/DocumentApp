@@ -42,7 +42,6 @@ namespace api.Services
       public async Task<CategoryDto[]> GetCategoriesAsync()
       {
         var categories = await _categoriesRepository.GetCategoriesAsync();
-        _logger.LogInformation("Get all categories.");
         return _mapper.Map<CategoryDto[]>(categories);;
       }
 

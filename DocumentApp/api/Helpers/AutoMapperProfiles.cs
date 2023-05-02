@@ -14,11 +14,23 @@ namespace api.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<DocDb, DocDto>().ReverseMap();
+
+            CreateMap<DocNewDto, DocDb>()
+                .ForMember(
+                    dest => dest.Created,
+                    opt => opt.MapFrom(src => DateTime.Now))
+                .ForMember(
+                    dest => dest.Edited,
+                    opt => opt.MapFrom(src => DateTime.Now));  
+
             CreateMap<DocUpdateDto, DocDb>()
                 .ForMember(
                     dest => dest.Version,
-                    opt => opt.MapFrom(src => src.Version + 1));
-            CreateMap<DocNewDto, DocDb>();
+                    opt => opt.MapFrom(src => src.Version + 1))
+                .ForMember(
+                    dest => dest.Edited,
+                    opt => opt.MapFrom(src => DateTime.Now)); 
+
             CreateMap<CategoryDb, CategoryDto>().ReverseMap();
         }
     }

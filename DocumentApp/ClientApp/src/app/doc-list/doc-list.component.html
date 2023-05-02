@@ -27,6 +27,11 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="edited">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Edited </th>
+      <td mat-cell *matCellDef="let doc"> {{doc.edited | date:'medium' }} </td>
+    </ng-container>
+
     <ng-container matColumnDef="created">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Created </th>
       <td mat-cell *matCellDef="let doc"> {{doc.created | date:'medium' }} </td>

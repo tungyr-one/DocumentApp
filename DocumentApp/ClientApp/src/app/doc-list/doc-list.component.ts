@@ -15,7 +15,7 @@ import { DocService } from '../_services/doc.service';
 export class DocumentListComponent implements OnInit
 {
   docs: Doc[] = [];
-  displayedColumns: string[] = ['name', 'created', 'version', 'author', 'category'];
+  displayedColumns: string[] = ['name', 'edited', 'created', 'version', 'author', 'category'];
   dataSource: MatTableDataSource<Doc>;
 
   @ViewChild(MatPaginator) paginator:MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);;

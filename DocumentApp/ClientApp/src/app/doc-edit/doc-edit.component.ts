@@ -83,11 +83,11 @@ export class DocEditComponent implements OnInit{
     return null;
   }
 
-  onSubmit(form: FormGroup) {
+  onSubmit() {
     if(this.editForm.dirty)
     {
-      let formCategory = this.editForm.controls['category'].value;
-      const values = {...this.editForm.value, categoryId: formCategory.value};
+      let docCategoryId = this.editForm.controls['category'].value.id;
+      const values = {...this.editForm.value, categoryId: docCategoryId};
 
       if(this.id)
       {

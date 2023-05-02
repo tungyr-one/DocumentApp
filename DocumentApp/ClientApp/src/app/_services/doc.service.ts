@@ -33,7 +33,6 @@ export class DocService {
   }
 
   createDocument(model:Doc){
-    model.created = new Date();
     return this.http.post(this.baseUrl + 'docs/', model)
   }
 
