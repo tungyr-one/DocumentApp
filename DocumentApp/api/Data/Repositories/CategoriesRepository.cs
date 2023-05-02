@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Entities;
@@ -43,26 +41,24 @@ namespace api.Data.Repositories
             .FirstOrDefaultAsync();
       }
 
-      public void Create(CategoryDb newCategory)
+      public async Task<bool> Create(CategoryDb newCategory)
       {
             _context.Categories
             .Add(newCategory).State = EntityState.Added;
-      }
-
-      public void Update(CategoryDb category)
-      {            
-            _context.Entry(category).State = EntityState.Modified;
-      }
-
-      public void Delete(CategoryDb category)
-      {
-            _context.Entry(category).State = EntityState.Deleted; 
-      }   
-
-      public async Task<bool> SaveAllAsync()
-      {
             return await _context.SaveChangesAsync() > 0;
       }
+
+      public async Task<bool> Update(CategoryDb category)
+      {            
+            _context.Entry(category).State = EntityState.Modified;
+            return await _context.SaveChangesAsync() > 0;
+      }
+
+      public async Task<bool> Delete(CategoryDb category)
+      {
+            _context.Entry(category).State = EntityState.Deleted; 
+            return await _context.SaveChangesAsync() > 0;
+      }   
 
       async Task<bool> ICategoriesRepository.IsCategoryExists(int categoryId)
       {

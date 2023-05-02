@@ -47,9 +47,9 @@ namespace api.Services
          var category = await _categoriesRepository.GetCategoryAsync(newDoc.CategoryId);
          docToDb.Category = category;
 
-         _docsRepository.Create(docToDb);
+         
 
-         return await _docsRepository.SaveAllAsync();
+         return await _docsRepository.Create(docToDb);
       }
 
       public async Task<bool> UpdateAsync(int id, DocUpdateDto docUpdate)
@@ -59,15 +59,12 @@ namespace api.Services
          var category = await _categoriesRepository.GetCategoryAsync(docUpdate.CategoryId);
          docDb.Category = category;
 
-         _docsRepository.Update(docDb);
-
-         return await _docsRepository.SaveAllAsync();
+          return await _docsRepository.Update(docDb);
       }
 
       public async Task<bool> DeleteAsync(int id)
       {
-         _docsRepository.Delete(id);
-         return await _docsRepository.SaveAllAsync();
+         return await _docsRepository.Delete(id);
       }
    }
 }

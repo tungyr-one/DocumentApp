@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using api.Entities;
 
@@ -26,27 +23,22 @@ namespace api.Interfaces
       ///<summary>
       /// Creates category
       ///</summary>
-      void Create(CategoryDb cateogory);
+      Task<bool> Create(CategoryDb cateogory);
 
       ///<summary>
       /// Updates category
       ///</summary>
-      void Update(CategoryDb cateogory);
+      Task<bool> Update(CategoryDb cateogory);
 
       ///<summary>
       /// Deletes category
       ///</summary>
-      void Delete(CategoryDb category);
+      Task<bool> Delete(CategoryDb category);
 
       ///<summary>
       /// Checks is category exists
       ///</summary>
       Task<bool> IsCategoryExists(int id);
-
-      ///<summary>
-      /// Saves all changes to database
-      ///</summary>
-      Task<bool> SaveAllAsync();
 
    }
 }

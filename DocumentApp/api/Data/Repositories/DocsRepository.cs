@@ -31,27 +31,25 @@ namespace api.Data.Repositories
             return docsDb;
         }
 
-        public void Create(DocDb doc)
+        public async Task<bool> Create(DocDb doc)
         {
            _context.Docs.
            Add(doc).State = EntityState.Added;
+           return await _context.SaveChangesAsync() > 0;
         }
 
-         public void Update(DocDb doc)
+         public async Task<bool> Update(DocDb doc)
         {            
            _context.Entry(doc).State = EntityState.Modified;
+           return await _context.SaveChangesAsync() > 0;
         }
 
-        public void Delete(int id)
+        public async Task<bool> Delete(int id)
         {
             var docToDelete = _context.Docs.Find(id);
             _context.Entry(docToDelete).State = EntityState.Deleted; 
-        }     
-
-        public async Task<bool> SaveAllAsync()
-        {
             return await _context.SaveChangesAsync() > 0;
-        }
+        }     
 
         async Task<bool> IDocsRepository.IsDocumentWithCategoryRelationExists(int categoryId)
         {

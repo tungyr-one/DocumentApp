@@ -20,26 +20,21 @@ namespace api.Interfaces
       ///<summary>
       /// Updates document
       ///</summary>
-      void Update(DocDb doc);
+      Task<bool> Update(DocDb doc);
 
       ///<summary>
       /// Creates document
       ///</summary>
-      void Create(DocDb doc);
+      Task<bool> Create(DocDb doc);
 
       ///<summary>
       /// Deletes document
       ///</summary>
-      void Delete(int id);
+      Task<bool> Delete(int id);
 
       ///<summary>
       /// Checks if the document is in any category
       ///</summary>
       Task<bool> IsDocumentWithCategoryRelationExists(int id);
-
-      ///<summary>
-      /// Saves all changes to database
-      ///</summary>
-      Task<bool> SaveAllAsync();
    }
 }
