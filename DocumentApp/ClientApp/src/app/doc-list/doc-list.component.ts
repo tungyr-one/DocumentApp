@@ -1,11 +1,13 @@
 import { ToastrService } from 'ngx-toastr';
 import { CategoryService } from './../_services/category.service';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Doc } from '../_models/Doc';
 import { DocService } from '../_services/doc.service';
+import { Pagination } from '../_models/pagination';
+import { UserParams } from '../_models/userParams';
 
 @Component({
   selector: 'app-doc-list',
@@ -17,6 +19,34 @@ export class DocumentListComponent implements OnInit
   docs: Doc[] = [];
   displayedColumns: string[] = ['name', 'edited', 'created', 'version', 'author', 'category'];
   dataSource: MatTableDataSource<Doc>;
+
+  pagination: Pagination | undefined;
+  userParams: UserParams | undefined;
+
+  length = 50;
+  pageSize = 10;
+  pageIndex = 0;
+  pageSizeOptions = [5, 10, 25, 50, 100];
+
+  hidePageSize = false;
+  showPageSizeOptions = true;
+  showFirstLastButtons = true;
+  disabled = false;
+
+  pageEvent: PageEvent;
+
+  handlePageEvent(e: PageEvent) {
+    this.pageEvent = e;
+    this.length = e.length;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+  }
+
+  setPageSizeOptions(setPageSizeOptionsInput: string) {
+    if (setPageSizeOptionsInput) {
+      this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+    }
+  }
 
   @ViewChild(MatPaginator) paginator:MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);;
   @ViewChild(MatSort) sort:MatSort = new MatSort();
@@ -74,6 +104,10 @@ export class DocumentListComponent implements OnInit
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  pageChanged(event: any){
+
   }
 
 }
