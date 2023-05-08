@@ -2,7 +2,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CategoryService } from './../_services/category.service';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Doc } from '../_models/Doc';
 import { DocService } from '../_services/doc.service';
@@ -21,10 +21,10 @@ export class DocumentListComponent implements OnInit
   dataSource: MatTableDataSource<Doc>;
 
   pagination: Pagination | undefined;
-  userParams: UserParams | undefined;
+  userParams: UserParams;
 
   length = 50;
-  pageSize = 10;
+  pageSize = 5;
   pageIndex = 0;
   pageSizeOptions = [5, 10, 25, 50, 100];
 
@@ -33,6 +33,14 @@ export class DocumentListComponent implements OnInit
   showFirstLastButtons = true;
   disabled = false;
 
+  // pageChanged(event: any){
+  //   if(this.userParams && this.userParams.pageNumber !== event.page)
+  //   {
+  //     this.userParams.pageNumber = event.page;
+  //     this.loadDocs();
+  //   }
+  // }
+
   pageEvent: PageEvent;
 
   handlePageEvent(e: PageEvent) {
@@ -40,15 +48,17 @@ export class DocumentListComponent implements OnInit
     this.length = e.length;
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
+    console.clear();
+    console.log(e);
+
+    this.userParams!.pageSize = e.pageSize;
+    this.userParams!.pageNumber = e.pageIndex;
+
+    this.loadDocs();
+
   }
 
-  setPageSizeOptions(setPageSizeOptionsInput: string) {
-    if (setPageSizeOptionsInput) {
-      this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
-    }
-  }
-
-  @ViewChild(MatPaginator) paginator:MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);;
+  @ViewChild(MatPaginator) paginator:MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
   @ViewChild(MatSort) sort:MatSort = new MatSort();
 
   constructor(private docService: DocService, private categoriesService:CategoryService,
@@ -57,6 +67,7 @@ export class DocumentListComponent implements OnInit
   }
 
   ngOnInit(): void {
+    this.userParams = new UserParams();
     this.loadDocs();
 
     this.categoriesService.categoriesChangedEvent
@@ -66,13 +77,18 @@ export class DocumentListComponent implements OnInit
   }
 
   loadDocs() {
-    this.docService.getDocuments().subscribe({
-      next: (response: any) => {
-          this.dataSource = new MatTableDataSource(response);
-          this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }
-    })
+    if(this.userParams)
+    {
+      console.log("user params: ", this.userParams);
+      this.docService.getDocuments(this.userParams).subscribe({
+        next: (response: any) => {
+            this.dataSource = new MatTableDataSource(response);
+            // this.dataSource.paginator = this.paginator;
+          // this.dataSource.sort = this.sort;
+          this.length = 50;
+        }
+      })
+    }
   }
 
   deleteDoc(id:number)
@@ -100,14 +116,22 @@ export class DocumentListComponent implements OnInit
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    console.log(filterValue);
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+
+    this.userParams!.filterBy = filterValue
+    this.loadDocs();
   }
 
-  pageChanged(event: any){
-
-  }
-
+  sortData(sort: Sort) {
+    console.log(sort);
+    this.userParams!.orderBy = sort.active;
+    this.userParams!.orderDirection = sort.direction;
+    this.loadDocs();
+    }
 }
+
+

@@ -2,6 +2,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using api.Interfaces;
 using api.DTOs;
+using System;
+using System.Text.Json;
 
 namespace api.Controllers
 {
@@ -32,17 +34,27 @@ namespace api.Controllers
         ///<summary>
         /// Gets documents list
         ///</summary>
-      [HttpGet]
-      public async Task<ActionResult<DocDto>> GetDocs()
+      // [HttpGet]
+      // public async Task<ActionResult<DocDto>> GetDocs()
+      // {
+      //    var userParams = new UserParams();
+      //    var docs = await _docsService.GetDocsAsync(userParams);
+      //    return Ok(docs);
+      // }
+
+      [HttpPost]
+      public async Task<ActionResult<DocDto>> GetDocs(UserParams userParams)
       {
-         var docs = await _docsService.GetDocsAsync();
+         string json = JsonSerializer.Serialize(userParams);
+         Console.WriteLine(json);
+         var docs = await _docsService.GetDocsAsync(userParams);
          return Ok(docs);
       }
 
         ///<summary>
         /// Creates document 
         ///</summary>
-      [HttpPost]
+      [HttpPost("new")]
       public async Task<ActionResult> CreateDocAsync(DocNewDto newDoc)
       {
          if (await _docsService.CreateAsync(newDoc)) return Ok();

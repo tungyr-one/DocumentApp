@@ -1,7 +1,9 @@
+import { UserParams } from './../_models/userParams';
 import { Injectable } from '@angular/core';
-import { map, of } from 'rxjs';
+import { map, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
+import { getPaginationHeaders } from './paginationHelper';
 import { Doc } from '../_models/Doc';
 
 @Injectable({
@@ -14,15 +16,26 @@ export class DocService {
   constructor(private http: HttpClient) {
   }
 
-  getDocuments()
+
+  getDocuments(userParams:UserParams)
   {
-    return this.http.get<Doc[]>(this.baseUrl + 'docs').pipe(
+    console.log('docs service userParams: ', userParams);
+    return this.http.post<Doc[]>(this.baseUrl + 'docs', userParams).pipe(
       map((docs:Doc[]) => {
+        console.log('docs service: ', docs);
         return docs;
       }))
-  }
+    }
 
-  getDocument(id:number)
+    // getDocuments()
+    // {
+    //   return this.http.get<Doc[]>(this.baseUrl + 'docs').pipe(
+    //     map((docs:Doc[]) => {
+    //       return docs;
+    //     }))
+    // }
+
+    getDocument(id:number)
   {
     const doc = this.docs.find(x => x.id === +id);
     if (doc != undefined) return of(doc);
@@ -33,7 +46,7 @@ export class DocService {
   }
 
   createDocument(model:Doc){
-    return this.http.post(this.baseUrl + 'docs/', model)
+    return this.http.post(this.baseUrl + 'docs/new', model)
   }
 
   updateDocument(id:number, model:Doc){

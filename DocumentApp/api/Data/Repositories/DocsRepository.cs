@@ -1,4 +1,6 @@
+using System.Linq;
 using System.Threading.Tasks;
+using api.DTOs;
 using api.Entities;
 using api.Interfaces;
 using DocumentApp.Entities;
@@ -22,11 +24,15 @@ namespace api.Data.Repositories
             .FirstOrDefaultAsync(d => d.Id == id);
         }
 
-        public async Task<DocDb[]> GetDocsAsync()
+        public async Task<DocDb[]> GetDocsAsync(UserParams userParams)
         {
-            var docsDb = await _context.Docs.AsNoTracking()
-            .Include(d => d.Category)        
-            .ToArrayAsync();
+            // var docsDb = await _context.Docs.AsNoTracking()
+            // .Include(d => d.Category)
+            // .Skip((userParams.PageNumber - 1) * userParams.PageSize).Take(userParams.PageSize).ToArrayAsync();
+
+            // var docsDb = await _context.Docs.AsNoTracking()
+            // .Include(d => d.Category)        
+            // .ToArrayAsync();
 
             return docsDb;
         }

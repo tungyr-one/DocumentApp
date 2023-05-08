@@ -9,7 +9,7 @@ namespace api.Interfaces
         ///<summary>
         /// Gets document
         ///</summary>
-        Task<DocDto[]> GetDocsAsync();
+        Task<DocDto[]> GetDocsAsync(UserParams userParams);
 
         ///<summary>
         /// Gets documents list

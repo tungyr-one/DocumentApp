@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using api.DTOs;
 using api.Entities;
 using DocumentApp.Entities;
 
@@ -15,7 +16,7 @@ namespace api.Interfaces
       ///<summary>
       /// Gets documents list
       ///</summary>
-      Task<DocDb[]> GetDocsAsync();
+      Task<DocDb[]> GetDocsAsync(UserParams userParams);
 
       ///<summary>
       /// Updates document

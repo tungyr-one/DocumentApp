@@ -35,9 +35,9 @@ namespace api.Services
          return _mapper.Map<DocDto>(doc);
       }
 
-      public async Task<DocDto[]> GetDocsAsync()
+      public async Task<DocDto[]> GetDocsAsync(UserParams userParams)
       {
-         var docs = await _docsRepository.GetDocsAsync();
+         var docs = await _docsRepository.GetDocsAsync(userParams);
          return _mapper.Map<DocDto[]>(docs);
       }
 
