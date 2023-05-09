@@ -1,7 +1,5 @@
 using System.Linq;
 using System.Threading.Tasks;
-using api.DTOs;
-using api.Entities;
 using api.Interfaces;
 using DocumentApp.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -24,17 +22,9 @@ namespace api.Data.Repositories
             .FirstOrDefaultAsync(d => d.Id == id);
         }
 
-        public async Task<DocDb[]> GetDocsAsync(UserParams userParams)
+        public IQueryable<DocDb> GetDocsAsync()
         {
-            // var docsDb = await _context.Docs.AsNoTracking()
-            // .Include(d => d.Category)
-            // .Skip((userParams.PageNumber - 1) * userParams.PageSize).Take(userParams.PageSize).ToArrayAsync();
-
-            // var docsDb = await _context.Docs.AsNoTracking()
-            // .Include(d => d.Category)        
-            // .ToArrayAsync();
-
-            return docsDb;
+         return _context.Docs.Include(d => d.Category).AsQueryable();
         }
 
         public async Task<bool> Create(DocDb doc)

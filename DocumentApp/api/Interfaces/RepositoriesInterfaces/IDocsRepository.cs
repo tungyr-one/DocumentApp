@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using api.DTOs;
 using api.Entities;
+using api.Helpers;
 using DocumentApp.Entities;
 
 namespace api.Interfaces
@@ -16,7 +18,7 @@ namespace api.Interfaces
       ///<summary>
       /// Gets documents list
       ///</summary>
-      Task<DocDb[]> GetDocsAsync(UserParams userParams);
+      IQueryable<DocDb> GetDocsAsync();
 
       ///<summary>
       /// Updates document

@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 using api.Controllers;
 using api.DTOs;
 using api.Entities;
+using api.Helpers;
 using api.Interfaces;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using DocumentApp.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace api.Services
@@ -35,10 +38,19 @@ namespace api.Services
          return _mapper.Map<DocDto>(doc);
       }
 
-      public async Task<DocDto[]> GetDocsAsync(UserParams userParams)
+      public async Task<PagedList<DocDto>> GetDocsAsync(UserParams userParams)
       {
-         var docs = await _docsRepository.GetDocsAsync(userParams);
-         return _mapper.Map<DocDto[]>(docs);
+         var query = _docsRepository.GetDocsAsync();
+
+          if(!string.IsNullOrWhiteSpace(userParams.filterBy))
+         {
+            query = query.Where(d => d.Name == userParams.filterBy);
+         }
+
+         return await PagedList<DocDto>.CreateAsync(
+         query.AsNoTracking().ProjectTo<DocDto>(_mapper.ConfigurationProvider),
+         userParams.PageNumber,
+         userParams.PageSize);         
       }
 
       public async Task<bool> CreateAsync(DocNewDto newDoc)
@@ -46,9 +58,6 @@ namespace api.Services
          var docToDb = _mapper.Map<DocDb>(newDoc);
          var category = await _categoriesRepository.GetCategoryAsync(newDoc.CategoryId);
          docToDb.Category = category;
-
-         
-
          return await _docsRepository.Create(docToDb);
       }
 

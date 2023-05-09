@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using api.DTOs;
+using api.Helpers;
 
 namespace api.Interfaces
 {
@@ -9,7 +9,7 @@ namespace api.Interfaces
         ///<summary>
         /// Gets document
         ///</summary>
-        Task<DocDto[]> GetDocsAsync(UserParams userParams);
+        Task<PagedList<DocDto>> GetDocsAsync(UserParams userParams);
 
         ///<summary>
         /// Gets documents list

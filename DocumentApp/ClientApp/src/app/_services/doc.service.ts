@@ -1,9 +1,9 @@
 import { UserParams } from './../_models/userParams';
 import { Injectable } from '@angular/core';
-import { map, of, tap } from 'rxjs';
+import { map, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
-import { getPaginationHeaders } from './paginationHelper';
+import { PagedList } from '../_models/PagedList';
 import { Doc } from '../_models/Doc';
 
 @Injectable({
@@ -16,14 +16,14 @@ export class DocService {
   constructor(private http: HttpClient) {
   }
 
-
   getDocuments(userParams:UserParams)
   {
     console.log('docs service userParams: ', userParams);
-    return this.http.post<Doc[]>(this.baseUrl + 'docs', userParams).pipe(
-      map((docs:Doc[]) => {
-        console.log('docs service: ', docs);
-        return docs;
+    return this.http.post<PagedList>(this.baseUrl + 'docs', userParams).pipe(
+      map((result:PagedList) => {
+        console.log('docs service: ', result);
+        console.log('docs cur page: ', result.currentPage);
+        return result;
       }))
     }
 

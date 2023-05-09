@@ -6,8 +6,8 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Doc } from '../_models/Doc';
 import { DocService } from '../_services/doc.service';
-import { Pagination } from '../_models/pagination';
 import { UserParams } from '../_models/userParams';
+import { PagedList } from '../_models/PagedList';
 
 @Component({
   selector: 'app-doc-list',
@@ -20,7 +20,7 @@ export class DocumentListComponent implements OnInit
   displayedColumns: string[] = ['name', 'edited', 'created', 'version', 'author', 'category'];
   dataSource: MatTableDataSource<Doc>;
 
-  pagination: Pagination | undefined;
+  pagination: PagedList | undefined;
   userParams: UserParams;
 
   length = 50;
