@@ -42,9 +42,81 @@ namespace api.Services
       {
          var query = _docsRepository.GetDocsAsync();
 
-          if(!string.IsNullOrWhiteSpace(userParams.filterBy))
+         if(!string.IsNullOrWhiteSpace(userParams.filterBy))
          {
-            query = query.Where(d => d.Name == userParams.filterBy);
+            query = query.Where(d => d.Name.StartsWith(userParams.filterBy));
+         }
+
+         switch(userParams.SortBy.ToLower())
+         {
+            case "name":
+            if(userParams.SortOrder.ToLower() == "asc")
+            {
+               query = query.OrderBy(d => d.Name);
+            }
+            else
+            {
+               query = query.OrderByDescending(d => d.Name);
+            }
+            break;
+
+            case "edited":
+            if(userParams.SortOrder.ToLower() == "asc")
+            {
+               query = query.OrderBy(d => d.Edited);
+            }
+            else
+            {
+               query = query.OrderByDescending(d => d.Edited);
+            }
+            break;
+
+            case "created":
+            if(userParams.SortOrder.ToLower() == "asc")
+            {
+               query = query.OrderBy(d => d.Created);
+            }
+            else
+            {
+               query = query.OrderByDescending(d => d.Created);
+            }
+            break;
+
+            case "version":
+            if(userParams.SortOrder.ToLower() == "asc")
+            {
+               query = query.OrderBy(d => d.Version);
+            }
+            else
+            {
+               query = query.OrderByDescending(d => d.Version);
+            }
+            break;
+
+            case "author":
+            if(userParams.SortOrder.ToLower() == "asc")
+            {
+               query = query.OrderBy(d => d.Author);
+            }
+            else
+            {
+               query = query.OrderByDescending(d => d.Author);
+            }
+            break;
+
+            case "category":
+            if(userParams.SortOrder.ToLower() == "asc")
+            {
+               query = query.OrderBy(d => d.Category.Name);
+            }
+            else
+            {
+               query = query.OrderByDescending(d => d.Category.Name);
+            }
+            break;
+
+            default:
+            break;
          }
 
          return await Pagination<DocDto>.CreateAsync(

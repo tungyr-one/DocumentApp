@@ -52,15 +52,16 @@ namespace api.Controllers
          // Console.WriteLine(json);
          var docs = await _docsService.GetDocsAsync(userParams);
          // string jsonDocs = JsonConvert.SerializeObject(docs);
-         string jsonOfDocs = Newtonsoft.Json.JsonConvert
+         string json = Newtonsoft.Json.JsonConvert
          .SerializeObject(new
          {
             items = docs,
-            totalPages = docs.CountPages,
-            totalItems = docs.CountItems
+            countPages = docs.CountPages,
+            countItems = docs.CountItems
          });
 
-         Console.WriteLine("docs: " + jsonOfDocs);
+         Console.WriteLine("docs: " + json);
+         Console.Clear();
          // Console.WriteLine("TotalCount: " + docs.TotalCount);
          return Ok(docs);
       }

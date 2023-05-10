@@ -18,11 +18,9 @@ export class DocService {
 
   getDocuments(userParams:UserParams)
   {
-    console.log('docs service userParams: ', userParams);
-    return this.http.post<Pagination>(this.baseUrl + 'docs', userParams).pipe(
-      map((result:Pagination) => {
-        console.log('docs service: ', result.items);
-        console.log('docs tot page: ', result.countPages);
+    return this.http.post<Pagination<Doc>>(this.baseUrl + 'docs', userParams).pipe(
+      map((result:Pagination<Doc>) => {
+        console.log('docs service pagination: ', result);
         return result;
       }))
     }

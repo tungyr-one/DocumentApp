@@ -20,12 +20,17 @@ export class DocumentListComponent implements OnInit
   displayedColumns: string[] = ['name', 'edited', 'created', 'version', 'author', 'category'];
   dataSource: MatTableDataSource<Doc>;
 
-  pagination: Pagination | undefined;
-  userParams: UserParams;
+  userParams: UserParams =
+  {
+    pageNumber: 0,
+    pageSize: 5,
+    sortBy: 'name',
+    sortOrder: 'asc',
+    filterBy: '',
+  };
 
-  length = 50;
-  pageSize = 5;
-  pageIndex = 0;
+  pagination: Pagination<Doc> = new Pagination();
+
   pageSizeOptions = [5, 10, 25, 50, 100];
 
   hidePageSize = false;
@@ -33,47 +38,31 @@ export class DocumentListComponent implements OnInit
   showFirstLastButtons = true;
   disabled = false;
 
-  // pageChanged(event: any){
-  //   if(this.userParams && this.userParams.pageNumber !== event.page)
-  //   {
-  //     this.userParams.pageNumber = event.page;
-  //     this.loadDocs();
-  //   }
-  // }
-
-  pageEvent: PageEvent;
-
-  handlePageEvent(e: PageEvent) {
-    this.pageEvent = e;
-    this.length = e.length;
-    this.pageSize = e.pageSize;
-    this.pageIndex = e.pageIndex;
-    console.clear();
-    console.log(e);
-
-    this.userParams!.pageSize = e.pageSize;
-    this.userParams!.pageNumber = e.pageIndex;
-
-    this.loadDocs();
-
-  }
 
   @ViewChild(MatPaginator) paginator:MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
   @ViewChild(MatSort) sort:MatSort = new MatSort();
 
-  constructor(private docService: DocService, private categoriesService:CategoryService,
-    private toastrService:ToastrService) {
+  constructor(private docService: DocService,
+    private categoriesService:CategoryService,
+    private toastrService:ToastrService)
+  {
     this.dataSource = new MatTableDataSource();
   }
 
   ngOnInit(): void {
-    this.userParams = new UserParams();
     this.loadDocs();
+  }
 
-    this.categoriesService.categoriesChangedEvent
-    .subscribe(() => {
-         this.loadDocs();
-    });
+  handlePageEvent(e: PageEvent) {
+    // this.pageSize = e.pageSize;
+    // this.pageIndex = e.pageIndex;
+    console.clear();
+    console.log(e);
+
+    this.userParams.pageSize = e.pageSize;
+    this.userParams.pageNumber = e.pageIndex;
+
+    this.loadDocs();
   }
 
   loadDocs() {
@@ -81,11 +70,13 @@ export class DocumentListComponent implements OnInit
     {
       console.log("user params: ", this.userParams);
       this.docService.getDocuments(this.userParams).subscribe({
-        next: (response: Pagination) => {
+        next: (response: Pagination<Doc>) => {
             this.dataSource = new MatTableDataSource(response.items);
             // this.dataSource.paginator = this.paginator;
           // this.dataSource.sort = this.sort;
-          this.length = response.countItems;
+          this.pagination = response;
+          console.log("pagination: ", this.pagination);
+          // this.length = response.countItems;
         }
       })
     }
@@ -122,14 +113,14 @@ export class DocumentListComponent implements OnInit
       this.dataSource.paginator.firstPage();
     }
 
-    this.userParams!.filterBy = filterValue
+    this.userParams.filterBy = filterValue;
     this.loadDocs();
   }
 
   sortData(sort: Sort) {
     console.log(sort);
-    this.userParams!.orderBy = sort.active;
-    this.userParams!.orderDirection = sort.direction;
+    this.userParams!.sortBy = sort.active;
+    this.userParams!.sortOrder = sort.direction;
     this.loadDocs();
     }
 }

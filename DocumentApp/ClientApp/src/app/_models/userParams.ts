@@ -1,7 +1,7 @@
 export class UserParams{
-   pageNumber = 1;
-   pageSize = 5;
-   orderBy = 'name';
-   orderDirection = 'asc';
-   filterBy = '';
+   pageNumber:number;
+   pageSize:number;
+   sortBy:string;
+   sortOrder:string;
+   filterBy:string;
 }
