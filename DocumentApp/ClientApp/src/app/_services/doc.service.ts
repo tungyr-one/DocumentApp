@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
-import { PagedList } from '../_models/PagedList';
+import { Pagination } from '../_models/Pagination';
 import { Doc } from '../_models/Doc';
 
 @Injectable({
@@ -19,10 +19,10 @@ export class DocService {
   getDocuments(userParams:UserParams)
   {
     console.log('docs service userParams: ', userParams);
-    return this.http.post<PagedList>(this.baseUrl + 'docs', userParams).pipe(
-      map((result:PagedList) => {
-        console.log('docs service: ', result);
-        console.log('docs cur page: ', result.currentPage);
+    return this.http.post<Pagination>(this.baseUrl + 'docs', userParams).pipe(
+      map((result:Pagination) => {
+        console.log('docs service: ', result.items);
+        console.log('docs tot page: ', result.countPages);
         return result;
       }))
     }

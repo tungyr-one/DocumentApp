@@ -6,6 +6,7 @@ using System;
 using System.Text.Json;
 using api.Helpers;
 using DocumentApp.Entities;
+using Newtonsoft.Json;
 
 namespace api.Controllers
 {
@@ -45,13 +46,22 @@ namespace api.Controllers
       // }
 
       [HttpPost]
-      public async Task<ActionResult<PagedList<DocDto>>> GetDocs(UserParams userParams)
+      public async Task<ActionResult<Pagination<DocDto>>> GetDocs(UserParams userParams)
       {
-         string json = JsonSerializer.Serialize(userParams);
-         Console.WriteLine(json);
+         // string json = JsonSerializer.Serialize(userParams);
+         // Console.WriteLine(json);
          var docs = await _docsService.GetDocsAsync(userParams);
-         // Console.WriteLine("docs: " + JsonSerializer.Serialize(docs));
-         Console.WriteLine("TotalCount: " + docs.TotalCount);
+         // string jsonDocs = JsonConvert.SerializeObject(docs);
+         string jsonOfDocs = Newtonsoft.Json.JsonConvert
+         .SerializeObject(new
+         {
+            items = docs,
+            totalPages = docs.CountPages,
+            totalItems = docs.CountItems
+         });
+
+         Console.WriteLine("docs: " + jsonOfDocs);
+         // Console.WriteLine("TotalCount: " + docs.TotalCount);
          return Ok(docs);
       }
 

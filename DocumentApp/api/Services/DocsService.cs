@@ -38,7 +38,7 @@ namespace api.Services
          return _mapper.Map<DocDto>(doc);
       }
 
-      public async Task<PagedList<DocDto>> GetDocsAsync(UserParams userParams)
+      public async Task<Pagination<DocDto>> GetDocsAsync(UserParams userParams)
       {
          var query = _docsRepository.GetDocsAsync();
 
@@ -47,7 +47,7 @@ namespace api.Services
             query = query.Where(d => d.Name == userParams.filterBy);
          }
 
-         return await PagedList<DocDto>.CreateAsync(
+         return await Pagination<DocDto>.CreateAsync(
          query.AsNoTracking().ProjectTo<DocDto>(_mapper.ConfigurationProvider),
          userParams.PageNumber,
          userParams.PageSize);         

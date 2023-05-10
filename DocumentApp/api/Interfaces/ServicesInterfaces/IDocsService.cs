@@ -9,7 +9,7 @@ namespace api.Interfaces
         ///<summary>
         /// Gets document
         ///</summary>
-        Task<PagedList<DocDto>> GetDocsAsync(UserParams userParams);
+        Task<Pagination<DocDto>> GetDocsAsync(UserParams userParams);
 
         ///<summary>
         /// Gets documents list

@@ -7,7 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Doc } from '../_models/Doc';
 import { DocService } from '../_services/doc.service';
 import { UserParams } from '../_models/userParams';
-import { PagedList } from '../_models/PagedList';
+import { Pagination } from '../_models/Pagination';
 
 @Component({
   selector: 'app-doc-list',
@@ -20,7 +20,7 @@ export class DocumentListComponent implements OnInit
   displayedColumns: string[] = ['name', 'edited', 'created', 'version', 'author', 'category'];
   dataSource: MatTableDataSource<Doc>;
 
-  pagination: PagedList | undefined;
+  pagination: Pagination | undefined;
   userParams: UserParams;
 
   length = 50;
@@ -81,11 +81,11 @@ export class DocumentListComponent implements OnInit
     {
       console.log("user params: ", this.userParams);
       this.docService.getDocuments(this.userParams).subscribe({
-        next: (response: any) => {
-            this.dataSource = new MatTableDataSource(response);
+        next: (response: Pagination) => {
+            this.dataSource = new MatTableDataSource(response.items);
             // this.dataSource.paginator = this.paginator;
           // this.dataSource.sort = this.sort;
-          this.length = 50;
+          this.length = response.countItems;
         }
       })
     }
