@@ -37,6 +37,7 @@ namespace DocumentApp.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Edited = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Version = table.Column<int>(type: "integer", nullable: false),
                     Author = table.Column<string>(type: "text", nullable: true),
                     Text = table.Column<string>(type: "text", nullable: true),

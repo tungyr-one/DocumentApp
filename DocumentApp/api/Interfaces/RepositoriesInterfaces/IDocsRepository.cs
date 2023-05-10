@@ -1,9 +1,5 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using api.DTOs;
-using api.Entities;
-using api.Helpers;
 using DocumentApp.Entities;
 
 namespace api.Interfaces

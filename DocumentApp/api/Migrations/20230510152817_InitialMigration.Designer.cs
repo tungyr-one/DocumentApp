@@ -10,8 +10,8 @@ using api.Data;
 namespace DocumentApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230502163117_AddedEditedDateTime")]
-    partial class AddedEditedDateTime
+    [Migration("20230510152817_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

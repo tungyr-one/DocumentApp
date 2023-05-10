@@ -54,11 +54,6 @@ export class DocumentListComponent implements OnInit
   }
 
   handlePageEvent(e: PageEvent) {
-    // this.pageSize = e.pageSize;
-    // this.pageIndex = e.pageIndex;
-    console.clear();
-    console.log(e);
-
     this.userParams.pageSize = e.pageSize;
     this.userParams.pageNumber = e.pageIndex;
 
@@ -68,15 +63,10 @@ export class DocumentListComponent implements OnInit
   loadDocs() {
     if(this.userParams)
     {
-      console.log("user params: ", this.userParams);
       this.docService.getDocuments(this.userParams).subscribe({
         next: (response: Pagination<Doc>) => {
-            this.dataSource = new MatTableDataSource(response.items);
-            // this.dataSource.paginator = this.paginator;
-          // this.dataSource.sort = this.sort;
+          this.dataSource = new MatTableDataSource(response.items);
           this.pagination = response;
-          console.log("pagination: ", this.pagination);
-          // this.length = response.countItems;
         }
       })
     }
@@ -106,21 +96,13 @@ export class DocumentListComponent implements OnInit
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    console.log(filterValue);
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-
     this.userParams.filterBy = filterValue;
     this.loadDocs();
   }
 
   sortData(sort: Sort) {
-    console.log(sort);
-    this.userParams!.sortBy = sort.active;
-    this.userParams!.sortOrder = sort.direction;
+    this.userParams.sortBy = sort.active;
+    this.userParams.sortOrder = sort.direction;
     this.loadDocs();
     }
 }

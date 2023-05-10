@@ -20,20 +20,11 @@ export class DocService {
   {
     return this.http.post<Pagination<Doc>>(this.baseUrl + 'docs', userParams).pipe(
       map((result:Pagination<Doc>) => {
-        console.log('docs service pagination: ', result);
         return result;
       }))
     }
 
-    // getDocuments()
-    // {
-    //   return this.http.get<Doc[]>(this.baseUrl + 'docs').pipe(
-    //     map((docs:Doc[]) => {
-    //       return docs;
-    //     }))
-    // }
-
-    getDocument(id:number)
+  getDocument(id:number)
   {
     const doc = this.docs.find(x => x.id === +id);
     if (doc != undefined) return of(doc);

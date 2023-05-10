@@ -34,24 +34,13 @@ namespace api.Controllers
          };
       }
 
-        ///<summary>
-        /// Gets documents list
-        ///</summary>
-      // [HttpGet]
-      // public async Task<ActionResult<DocDto>> GetDocs()
-      // {
-      //    var userParams = new UserParams();
-      //    var docs = await _docsService.GetDocsAsync(userParams);
-      //    return Ok(docs);
-      // }
-
+      ///<summary>
+      /// Gets documents list
+      ///</summary>
       [HttpPost]
       public async Task<ActionResult<Pagination<DocDto>>> GetDocs(UserParams userParams)
       {
-         // string json = JsonSerializer.Serialize(userParams);
-         // Console.WriteLine(json);
          var docs = await _docsService.GetDocsAsync(userParams);
-         // string jsonDocs = JsonConvert.SerializeObject(docs);
          string json = Newtonsoft.Json.JsonConvert
          .SerializeObject(new
          {
@@ -59,10 +48,6 @@ namespace api.Controllers
             countPages = docs.CountPages,
             countItems = docs.CountItems
          });
-
-         Console.WriteLine("docs: " + json);
-         Console.Clear();
-         // Console.WriteLine("TotalCount: " + docs.TotalCount);
          return Ok(docs);
       }
 

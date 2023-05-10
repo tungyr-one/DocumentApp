@@ -42,9 +42,9 @@ namespace api.Services
       {
          var query = _docsRepository.GetDocsAsync();
 
-         if(!string.IsNullOrWhiteSpace(userParams.filterBy))
+         if(!string.IsNullOrWhiteSpace(userParams.FilterBy))
          {
-            query = query.Where(d => d.Name.StartsWith(userParams.filterBy));
+            query = query.Where(d => d.Name.StartsWith(userParams.FilterBy));
          }
 
          switch(userParams.SortBy.ToLower())
