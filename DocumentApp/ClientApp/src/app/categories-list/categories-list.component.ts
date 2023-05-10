@@ -2,7 +2,7 @@ import { LoadingInterceptor } from '../_interceptors/loading.interceptor';
 import { Component, OnInit } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { FlatNode } from '../_models/FlatNode';
+import { IFlatNode } from '../_models/IFlatNode';
 import { CategoryService } from '../_services/category.service';
 import { Category } from '../_models/Category';
 import { ToastrService } from 'ngx-toastr';
@@ -26,7 +26,7 @@ export class CategoriesListComponent implements OnInit{
     };
   };
 
-  treeControl = new FlatTreeControl<FlatNode>(
+  treeControl = new FlatTreeControl<IFlatNode>(
     (node) => node.level,
     (node) => node.expandable
   );
@@ -56,7 +56,7 @@ export class CategoriesListComponent implements OnInit{
     })
   }
 
-  hasChild = (_: number, node: FlatNode) => node.expandable;
+  hasChild = (_: number, node: IFlatNode) => node.expandable;
 
   deleteCategory(id:number){
     this.categoriesService.deleteCategory(id).subscribe({

@@ -139,8 +139,9 @@ namespace api.Services
          _mapper.Map(docUpdate, docDb);
          var category = await _categoriesRepository.GetCategoryAsync(docUpdate.CategoryId);
          docDb.Category = category;
+         docDb.Version++;
 
-          return await _docsRepository.Update(docDb);
+         return await _docsRepository.Update(docDb);
       }
 
       public async Task<bool> DeleteAsync(int id)
