@@ -43,29 +43,33 @@ namespace api.Services
       public async Task<bool> CreateAsync(CategoryDto newCategory)
       {
           var categoryToDb = _mapper.Map<CategoryDb>(newCategory);    
-            return await _categoriesRepository.Create(categoryToDb);
+          return await _categoriesRepository.Create(categoryToDb);
       }
 
       public async Task<bool> UpdateAsync(int id, CategoryDto categoryUpdate)
       {
           var categoryDb = await _categoriesRepository.GetCategoryAsync(id);
-            _mapper.Map(categoryUpdate, categoryDb);      
-            return await _categoriesRepository.Update(categoryDb);
+          if (categoryDb is null)
+          {
+            throw new ValidationException("Can't find category for update");
+          }
+          _mapper.Map(categoryUpdate, categoryDb);      
+          return await _categoriesRepository.Update(categoryDb);
       }
 
       public async Task<bool> DeleteAsync(int id)
       {
-            var categoryToDelete = await _categoriesRepository.GetCategoryAsync(id);
+          var categoryToDelete = await _categoriesRepository.GetCategoryAsync(id);
 
-            if (categoryToDelete.Children.Count > 0)
-            {
-                throw new ValidationException("Category has subcategories, delete them first");
-            }
+          if (categoryToDelete.Children.Count > 0)
+          {
+              throw new ValidationException("Category has subcategories, delete them first");
+          }
 
-            if (await _docsRepository.IsDocumentWithCategoryRelationExists(categoryToDelete.Id))
-            {
-                throw new ValidationException("Category has documents, delete them first");
-            }
+          if (await _docsRepository.IsDocumentWithCategoryRelationExists(categoryToDelete.Id))
+          {
+              throw new ValidationException("Category has documents, delete them first");
+          }
 
           return await _categoriesRepository.Delete(categoryToDelete);
       }

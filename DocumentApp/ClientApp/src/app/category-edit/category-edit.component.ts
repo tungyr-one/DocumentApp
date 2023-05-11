@@ -56,6 +56,9 @@ export class CategoryEditComponent {
           next: () => {
             this.toastr.success('Category updated', 'Done!')
             this.router.navigateByUrl('/categories')
+          },
+          error:(error) => {
+            this.toastr.error('Something went wrong!', 'Oops!');
           }
         })
   }

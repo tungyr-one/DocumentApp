@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using api.Controllers;
 using api.DTOs;
@@ -40,6 +41,8 @@ namespace api.Services
 
       public async Task<Pagination<DocDto>> GetDocsAsync(UserParams userParams)
       {
+         userParams.SortBy = string.Concat(userParams.SortBy[0].ToString().ToUpper(), userParams.SortBy.AsSpan(1));
+
          var query = _docsRepository.GetDocsAsync();
 
          if(!string.IsNullOrWhiteSpace(userParams.FilterBy))
@@ -47,81 +50,13 @@ namespace api.Services
             query = query.Where(d => d.Name.StartsWith(userParams.FilterBy));
          }
 
-         switch(userParams.SortBy.ToLower())
-         {
-            case "name":
-            if(userParams.SortOrder.ToLower() == "asc")
-            {
-               query = query.OrderBy(d => d.Name);
-            }
-            else
-            {
-               query = query.OrderByDescending(d => d.Name);
-            }
-            break;
-
-            case "edited":
-            if(userParams.SortOrder.ToLower() == "asc")
-            {
-               query = query.OrderBy(d => d.Edited);
-            }
-            else
-            {
-               query = query.OrderByDescending(d => d.Edited);
-            }
-            break;
-
-            case "created":
-            if(userParams.SortOrder.ToLower() == "asc")
-            {
-               query = query.OrderBy(d => d.Created);
-            }
-            else
-            {
-               query = query.OrderByDescending(d => d.Created);
-            }
-            break;
-
-            case "version":
-            if(userParams.SortOrder.ToLower() == "asc")
-            {
-               query = query.OrderBy(d => d.Version);
-            }
-            else
-            {
-               query = query.OrderByDescending(d => d.Version);
-            }
-            break;
-
-            case "author":
-            if(userParams.SortOrder.ToLower() == "asc")
-            {
-               query = query.OrderBy(d => d.Author);
-            }
-            else
-            {
-               query = query.OrderByDescending(d => d.Author);
-            }
-            break;
-
-            case "category":
-            if(userParams.SortOrder.ToLower() == "asc")
-            {
-               query = query.OrderBy(d => d.Category.Name);
-            }
-            else
-            {
-               query = query.OrderByDescending(d => d.Category.Name);
-            }
-            break;
-
-            default:
-            break;
-         }
+         query = userParams.SortOrder == "asc"
+            ? query.OrderBy(ResolveOrderFieldExpression(userParams))
+            : query.OrderByDescending(ResolveOrderFieldExpression(userParams));
 
          return await Pagination<DocDto>.CreateAsync(
          query.AsNoTracking().ProjectTo<DocDto>(_mapper.ConfigurationProvider),
-         userParams.PageNumber,
+         userParams.Offset,
          userParams.PageSize);         
       }
 
@@ -148,5 +83,17 @@ namespace api.Services
       {
          return await _docsRepository.Delete(id);
       }
+
+      private static Expression<Func<DocDb, object>> ResolveOrderFieldExpression(UserParams userParams)
+      => userParams.SortBy switch
+      {
+      nameof(DocDb.Name) => x => x.Name,
+      nameof(DocDb.Edited) => x => x.Edited,
+      nameof(DocDb.Created) => x => x.Created,
+      nameof(DocDb.Version) => x => x.Version,
+      nameof(DocDb.Author) => x => x.Author,
+      nameof(DocDb.Category) => x => x.Category,
+      _ => x => x.Id
+      };
    }
 }

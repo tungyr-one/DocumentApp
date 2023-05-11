@@ -22,7 +22,7 @@ export class DocumentListComponent implements OnInit
 
   userParams: UserParams =
   {
-    pageNumber: 0,
+    offset:0,
     pageSize: 5,
     sortBy: 'name',
     sortOrder: 'asc',
@@ -30,6 +30,7 @@ export class DocumentListComponent implements OnInit
   };
 
   pagination: Pagination<Doc> = new Pagination();
+  countPages:number;
 
   pageSizeOptions = [5, 10, 25, 50, 100];
 
@@ -37,10 +38,6 @@ export class DocumentListComponent implements OnInit
   showPageSizeOptions = true;
   showFirstLastButtons = true;
   disabled = false;
-
-
-  @ViewChild(MatPaginator) paginator:MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
-  @ViewChild(MatSort) sort:MatSort = new MatSort();
 
   constructor(private docService: DocService,
     private categoriesService:CategoryService,
@@ -55,7 +52,7 @@ export class DocumentListComponent implements OnInit
 
   handlePageEvent(e: PageEvent) {
     this.userParams.pageSize = e.pageSize;
-    this.userParams.pageNumber = e.pageIndex;
+    this.userParams.offset = e.pageSize * e.pageIndex;
 
     this.loadDocs();
   }

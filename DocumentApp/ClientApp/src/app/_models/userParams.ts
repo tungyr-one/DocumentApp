@@ -1,5 +1,5 @@
 export class UserParams{
-   pageNumber:number;
+   offset:number;
    pageSize:number;
    sortBy:string;
    sortOrder:string;

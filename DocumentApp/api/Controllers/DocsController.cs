@@ -45,7 +45,6 @@ namespace api.Controllers
          .SerializeObject(new
          {
             items = docs,
-            countPages = docs.CountPages,
             countItems = docs.CountItems
          });
          return Ok(docs);
