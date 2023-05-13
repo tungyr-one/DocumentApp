@@ -1,13 +1,10 @@
-import { LoadingInterceptor } from '../_interceptors/loading.interceptor';
 import { Component, OnInit } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { IFlatNode } from '../_models/IFlatNode';
 import { CategoryService } from '../_services/category.service';
-import { Category } from '../_models/Category';
 import { ToastrService } from 'ngx-toastr';
 import { TreeData } from 'mat-tree-select-input';
-
 
 @Component({
   selector: 'app-cat-list',
@@ -19,7 +16,7 @@ export class CategoriesListComponent implements OnInit{
 
   private _transformer = (node: TreeData, level: number) => {
     return {
-      expandable: !!node.children && node.children.length > 0,
+      expandable: true,
       name: node.name,
       level: level,
       id: node.id
@@ -45,6 +42,59 @@ export class CategoriesListComponent implements OnInit{
 
   ngOnInit(): void {
     this.loadCategories();
+  }
+
+
+
+  async onExpand(node:IFlatNode)
+  {
+    if(!this.treeControl.isExpanded(node))
+    {
+      await this.getChildren(node);
+    }
+    else
+    {
+      this.treeControl.collapse(node);
+    }
+  }
+
+async getChildren(node:IFlatNode) {
+    this.categoriesService.getCategory(node.id).subscribe({
+      next:(category) => {
+        if (category.children?.length)
+        {
+          const childrenTreeData = this.categoriesService.constructTreeData(category.children);
+          const parentNode = this.categoriesService.findCategoryById(this.categoriesService.categoriesTreeData, node.id);
+
+          if (parentNode)
+          {
+            parentNode.children = childrenTreeData;
+            this.dataSource.data = this.categoriesService.categoriesTreeData;
+            const index = this.treeControl.dataNodes.findIndex((item) => item.id === node.id);
+            this.expandNodes(index, node.level);
+          }
+        }
+      }
+    })
+  }
+
+  expandNodes(nodeIndex:number, nodeLevel:number)
+  {
+    this.treeControl.expand(this.treeControl.dataNodes[nodeIndex]);
+    if(nodeLevel > 0)
+    {
+      for(let i = nodeIndex - 1; i >= 0; i--)
+      {
+        const previousNode = this.treeControl.dataNodes[i];
+        if(previousNode.level !== nodeLevel)
+        {
+          this.treeControl.expand(this.treeControl.dataNodes[i]);
+        }
+
+        if(previousNode.level === 0)
+          return;
+      }
+    }
   }
 
   loadCategories()

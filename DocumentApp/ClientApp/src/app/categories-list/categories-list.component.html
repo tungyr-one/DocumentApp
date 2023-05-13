@@ -17,6 +17,14 @@
         - {{node.name}}
       </span>
 
+      <button mat-icon-button
+      style="display: inline-block; vertical-align: middle;"
+      (click)="onExpand(node)">
+        <mat-icon class="mat-icon-rtl-mirror" >
+          {{'skip_next'}}
+        </mat-icon>
+      </button>
+
       <button mat-icon-button disabled></button>
 
       <a class="text-decoration-none" routerLink="/categories/edit/{{node.id}}"><button mat-icon-button title="edit category">
@@ -30,34 +38,5 @@
     </mat-list-item>
 
   </mat-tree-node>
-
-  <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-
-     <mat-list-item>
-    <span style="display: inline-block;">
-      <span style="display: inline-block; vertical-align: middle;">
-       - {{node.name}}
-      </span>
-
-      <button mat-icon-button matTreeNodeToggle
-              [attr.aria-label]="'toggle ' + node.name"
-              style="display: inline-block; vertical-align: middle;">
-        <mat-icon class="mat-icon-rtl-mirror" >
-          {{treeControl.isExpanded(node) ? 'skip_previous' : 'skip_next'}}
-        </mat-icon>
-      </button>
-
-      <a class="text-decoration-none" routerLink="/categories/edit/{{node.id}}"><button mat-icon-button title="edit category">
-        <mat-icon class="material-icons-outlined">edit</mat-icon></button>
-      </a>
-
-      <button mat-icon-button title="delete category" (click)="deleteCategory(node.id)">
-        <mat-icon class="material-icons-outlined" color="warn">delete</mat-icon>
-      </button>
-
-  </span>
-     </mat-list-item>
-  </mat-tree-node>
 </mat-tree>
-
 </mat-list>

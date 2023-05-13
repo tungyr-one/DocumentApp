@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { TreeData } from 'mat-tree-select-input';
-import { map, tap, Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { environment } from '../environments/environment';
 import { Category } from '../_models/Category';
 
@@ -36,6 +36,7 @@ export class CategoryService {
     tap({
       next: (categories) => {
         const filteredArray = categories.filter(item => item.parentId === null);
+        this.categoriesTreeData = [];
         this.categoriesTreeData = this.constructTreeData(filteredArray);
       }})
       )
@@ -73,12 +74,10 @@ export class CategoryService {
     }
 
     constructTreeData(data: Category[], level: number = 0): TreeData[] {
-      this.categoriesTreeData = [];
       return data.map((item:any) => {
         const node: TreeData = {
           name: item.name,
           id: item.id,
-          level: level,
           children: item.children.length
             ? this.constructTreeData(item.children, level + 1)
             : [],

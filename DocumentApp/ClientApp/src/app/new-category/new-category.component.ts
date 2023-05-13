@@ -22,7 +22,6 @@ export class NewCategoryComponent implements OnInit{
     private categoriesService:CategoryService,
     private toastr: ToastrService,
     private fb: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit(): void {
@@ -48,12 +47,6 @@ export class NewCategoryComponent implements OnInit{
   onSubmit(form: FormGroup) {
     let categoryName = this.newCategoryForm.get('categoryName')?.value;
     let parentCategory = this.newCategoryForm.controls['parentCategory']?.value;
-
-    if(parentCategory.level == 2)
-    {
-      this.toastr.error('The maximum depth of nested categories for the selected category has been reached', 'Oops!');
-      return;
-    }
 
     let newCategory:Category = {
       name: categoryName,

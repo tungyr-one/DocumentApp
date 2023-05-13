@@ -37,11 +37,7 @@ export class CategoryEditComponent {
   onSubmit() {
     let parentCategory = this.editCategoryForm.controls['parentCategory']?.value;
 
-    if(parentCategory.level == 2)
-    {
-      this.toastr.error('The maximum depth of nested categories for the selected category has been reached', 'Oops!');
-      return;
-    }
+
 
     if(parentCategory)
     {
