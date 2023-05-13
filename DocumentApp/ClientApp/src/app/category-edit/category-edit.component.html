@@ -12,15 +12,24 @@
        </label>
      </div>
 
-     <div class="me-2">
+     <!-- <div class="me-2">
       <label class="me-2">Parent category: </label>
           <ngx-mat-tree-select-input
           [options]="categoriesSelectOptions"
           [placeholder]="'Select category'"
           [controlName]="'parentCategory'"
+          [nestedTreeControl]="treeControl"
           >
         </ngx-mat-tree-select-input>
+    </div> -->
+    <div>
+      <label class="me-2">Parent category: </label>
     </div>
+    <div class="mb-2" style="display: inline-block; border: 1px solid dimgray;">
+      <app-cat-list [selectable]="selectableParent"
+      (NodeSelected)="onNodeSelect($event)"></app-cat-list>
+    </div>
+
 
      <div class="text-center">
        <button [disabled]="!ctrl.valid" class="btn btn-success mr-5" type="submit">Save category</button>
@@ -28,6 +37,8 @@
        <button class="btn btn-default ml-5" (click)="cancel()" type="button">Cancel</button>
      </div>
   </form>
+
+
 
 
 

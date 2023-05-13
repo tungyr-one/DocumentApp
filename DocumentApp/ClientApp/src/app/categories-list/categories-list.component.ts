@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { IFlatNode } from '../_models/IFlatNode';
@@ -13,6 +13,8 @@ import { TreeData } from 'mat-tree-select-input';
 })
 export class CategoriesListComponent implements OnInit{
   treeData:TreeData[] = [];
+  @Input() selectable:boolean;
+  @Output() NodeSelected = new EventEmitter<number>();;
 
   private _transformer = (node: TreeData, level: number) => {
     return {
@@ -44,7 +46,10 @@ export class CategoriesListComponent implements OnInit{
     this.loadCategories();
   }
 
-
+  onSelect(id:number)
+  {
+    this.NodeSelected.emit(id);
+  }
 
   async onExpand(node:IFlatNode)
   {

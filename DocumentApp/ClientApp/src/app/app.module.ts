@@ -36,6 +36,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatListModule} from '@angular/material/list';
 import { CategoriesListComponent } from './categories-list/categories-list.component';
+import { CategoriesListToolbarComponent } from './categories-list-toolbar/categories-list-toolbar.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { CategoriesListComponent } from './categories-list/categories-list.compo
     CategoryEditComponent,
     ManageCategoryComponent,
     CategoriesListComponent,
-    DocumentViewComponent
+    DocumentViewComponent,
+    CategoriesListToolbarComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

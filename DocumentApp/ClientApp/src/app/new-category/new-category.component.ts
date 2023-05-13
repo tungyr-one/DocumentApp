@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Category } from '../_models/Category';
 import { DocService } from '../_services/doc.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { TreeData } from 'mat-tree-select-input';
 import { tap } from 'rxjs';
 

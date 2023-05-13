@@ -1,19 +1,17 @@
-<mat-toolbar style="display: flex">
-  <div style="flex-grow: 1">
-    Categories
-  </div>
-  <button class="btn btn-outline-primary ms-3">
-    <a class="nav-link text-dark" [routerLink]="['/categories/new']">New category</a>
-  </button>
-</mat-toolbar>
-
 <mat-list role="list">
 
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
   <mat-tree-node *matTreeNodeDef="let node;" matTreeNodePadding>
     <mat-list-item>
 
-      <span style="display: inline-block; vertical-align: middle;">
+      <span style="display: inline-block; vertical-align: middle;"
+      *ngIf="selectable"
+      (click)="onSelect(node.id)">
+        - {{node.name}}
+      </span>
+
+      <span style="display: inline-block; vertical-align: middle;"
+      *ngIf="!selectable">
         - {{node.name}}
       </span>
 
@@ -27,11 +25,12 @@
 
       <button mat-icon-button disabled></button>
 
-      <a class="text-decoration-none" routerLink="/categories/edit/{{node.id}}"><button mat-icon-button title="edit category">
+      <a class="text-decoration-none" routerLink="/categories/edit/{{node.id}}" *ngIf="!selectable">
+        <button mat-icon-button title="edit category">
         <mat-icon class="material-icons-outlined">edit</mat-icon></button>
       </a>
 
-      <button mat-icon-button title="delete category" (click)="deleteCategory(node.id)">
+      <button mat-icon-button title="delete category" (click)="deleteCategory(node.id)" *ngIf="!selectable">
         <mat-icon class="material-icons-outlined" color="warn">delete</mat-icon>
       </button>
 

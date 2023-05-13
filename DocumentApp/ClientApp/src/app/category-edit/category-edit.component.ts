@@ -17,6 +17,8 @@ export class CategoryEditComponent {
   category$: Observable<Category>;
   category: Category;
   categoriesSelectOptions: TreeData[] = [];
+  selectableParent = true;
+  parentCategoryId:number;
 
 
   constructor(private categoriesService:CategoryService,
@@ -35,18 +37,18 @@ export class CategoryEditComponent {
   }
 
   onSubmit() {
-    let parentCategory = this.editCategoryForm.controls['parentCategory']?.value;
-
-
-
-    if(parentCategory)
+    if(!this.parentCategoryId)
     {
-      if(parentCategory.id === this.category.id){
-        this.toastr.error('Choosen parent category id and catetegory id cannot be the same', 'Oops!');
-        return;
-      }
-      this.category.parentId = parentCategory.id;
+      this.toastr.error('Parent category not chosen!', 'Oops!');
+      return;
     }
+
+    if(this.parentCategoryId === this.category.id){
+      this.toastr.error('Choosen parent category id and catetegory id cannot be the same', 'Oops!');
+      return;
+    }
+    
+    this.category.parentId = this.parentCategoryId;
 
     this.categoriesService.updateCategory(this.category).subscribe({
           next: () => {
@@ -59,6 +61,12 @@ export class CategoryEditComponent {
         })
   }
 
+  onNodeSelect(id:number)
+  {
+    console.log('parent: ', id);
+    this.parentCategoryId = id;
+  }
+
   loadDropdownCategoriesData(){
     this.categoriesService.getCategories()
     .pipe(
@@ -69,6 +77,7 @@ export class CategoryEditComponent {
       )
     ).subscribe();
   }
+
 
 loadCategory(){
     let id = +this.route.snapshot.paramMap.get('id')!;
