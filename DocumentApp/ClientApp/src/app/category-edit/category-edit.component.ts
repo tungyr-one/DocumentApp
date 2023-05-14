@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { TreeData } from 'mat-tree-select-input';
+import { IFlatNode } from '../_models/IFlatNode';
 
 @Component({
   selector: 'app-category-edit',
@@ -16,9 +17,12 @@ export class CategoryEditComponent {
   editCategoryForm: FormGroup;
   category$: Observable<Category>;
   category: Category;
-  categoriesSelectOptions: TreeData[] = [];
+  parentCategory: TreeData = {
+    name: 'none',
+    id: 0,
+    children: []
+  };
   selectableParent = true;
-  parentCategoryId:number;
 
 
   constructor(private categoriesService:CategoryService,
@@ -28,59 +32,55 @@ export class CategoryEditComponent {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.loadDropdownCategoriesData();
     this.loadCategory();
     this.editCategoryForm = this.fb.group({
-      categoryName: ['', [Validators.required]],
-      parentCategory: [''],
+      categoryName: ['', [Validators.required]]
     });
   }
 
   onSubmit() {
-    if(!this.parentCategoryId)
+    if(this.parentCategory.id !== 0)
     {
-      this.toastr.error('Parent category not chosen!', 'Oops!');
-      return;
-    }
+        if(this.parentCategory.id === this.category.id){
+        this.toastr.error('Choosen parent category id and catetegory id cannot be the same', 'Oops!');
+        return;
+        }
 
-    if(this.parentCategoryId === this.category.id){
-      this.toastr.error('Choosen parent category id and catetegory id cannot be the same', 'Oops!');
-      return;
+        this.category.parentId = this.parentCategory.id;
     }
-    
-    this.category.parentId = this.parentCategoryId;
+    else
+    {
+      this.category.parentId = undefined;
+    }
 
     this.categoriesService.updateCategory(this.category).subscribe({
           next: () => {
             this.toastr.success('Category updated', 'Done!')
             this.router.navigateByUrl('/categories')
           },
-          error:(error) => {
+          error:() => {
             this.toastr.error('Something went wrong!', 'Oops!');
           }
         })
   }
 
-  onNodeSelect(id:number)
+  onNodeSelect(node:IFlatNode)
   {
-    console.log('parent: ', id);
-    this.parentCategoryId = id;
+    this.parentCategory.id = node.id;
+    this.parentCategory.name = node.name;
   }
 
-  loadDropdownCategoriesData(){
-    this.categoriesService.getCategories()
-    .pipe(
-      tap({
-        next: () => {
-          this.categoriesSelectOptions = this.categoriesService.categoriesTreeData;
-        }}
-      )
-    ).subscribe();
+  clearParent()
+  {
+    this.parentCategory = {
+      name: 'none',
+      id: 0,
+      children: []
+    };
   }
-
 
 loadCategory(){
-    let id = +this.route.snapshot.paramMap.get('id')!;
+    const id = +this.route.snapshot.paramMap.get('id')!;
     if(id)
     {
       this.category$ = this.categoriesService.getCategory(id)
@@ -93,9 +93,9 @@ loadCategory(){
 
           if(categoryData.parentId)
           {
-            var parentCategory = this.categoriesService
-            .findCategoryById(this.categoriesSelectOptions,categoryData.parentId);
-            this.editCategoryForm.controls['parentCategory'].setValue(parentCategory);
+            const parentCategory = this.categoriesService
+            .findCategoryById(this.categoriesService.categoriesTreeData, categoryData.parentId);
+            parentCategory? this.parentCategory = parentCategory : this.parentCategory;
           }
         }})
       )

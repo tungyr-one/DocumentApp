@@ -6,7 +6,7 @@ import { DocService } from '../_services/doc.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { TreeData } from 'mat-tree-select-input';
-import { tap } from 'rxjs';
+import { IFlatNode } from '../_models/IFlatNode';
 
 @Component({
   selector: 'app-new-category',
@@ -15,8 +15,12 @@ import { tap } from 'rxjs';
 })
 export class NewCategoryComponent implements OnInit{
   newCategoryForm: FormGroup;
-  isChecked:boolean = true;
-  categoriesSelectOptions: TreeData[] = [];
+  parentCategory: TreeData = {
+    name: 'none',
+    id: 0,
+    children: []
+  };
+  selectableParent = true;
 
   constructor(private docService:DocService,
     private categoriesService:CategoryService,
@@ -25,32 +29,21 @@ export class NewCategoryComponent implements OnInit{
     private router: Router) { }
 
   ngOnInit(): void {
-    this.loadCategories();
     this.newCategoryForm = this.fb.group({
       categoryName: ['!exampleCategory', [Validators.required]],
       parentCategory: [''],
     });
   }
 
-  loadCategories(){
-    this.categoriesService.getCategories()
-    .pipe(
-      tap({
-        next: () => {
-          this.categoriesSelectOptions = this.categoriesService.categoriesTreeData;
-        }}
-      )
-    ).subscribe();
-  }
-
-
   onSubmit(form: FormGroup) {
-    let categoryName = this.newCategoryForm.get('categoryName')?.value;
-    let parentCategory = this.newCategoryForm.controls['parentCategory']?.value;
+    const newCategory:Category = {
+      name: this.newCategoryForm.get('categoryName')?.value,
+      parentId: this.parentCategory.id
+    }
 
-    let newCategory:Category = {
-      name: categoryName,
-      parentId: parentCategory.id
+    if(this.parentCategory.id === 0)
+    {
+      newCategory.parentId = undefined;
     }
 
     this.categoriesService.createCategory(newCategory).subscribe({
@@ -64,6 +57,20 @@ export class NewCategoryComponent implements OnInit{
     });
   }
 
+  onNodeSelect(node:IFlatNode)
+  {
+    this.parentCategory.id = node.id;
+    this.parentCategory.name = node.name;
+  }
+
+  clearParent()
+  {
+    this.parentCategory = {
+      name: 'none',
+      id: 0,
+      children: []
+    };
+  }
 
   cancel(){
     this.router.navigateByUrl('/categories');

@@ -1,39 +1,48 @@
 <mat-list role="list">
 
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-  <mat-tree-node *matTreeNodeDef="let node;" matTreeNodePadding>
+  <mat-tree-node *matTreeNodeDef="let node;" matTreeNodePadding
+  [ngClass]="{'selected-node': node === selectedNode}">
     <mat-list-item>
 
-      <span style="display: inline-block; vertical-align: middle;"
-      *ngIf="selectable"
-      (click)="onSelect(node.id)">
-        - {{node.name}}
-      </span>
+      <div *ngIf="selectable">
+        <span style="vertical-align: middle; float: left;"
+        (click)="onSelect(node)">
+          - {{node.name}}
+          <button mat-icon-button
+          style="display: inline-block; vertical-align: middle;"
+          (click)="onExpand(node)" type="button">
+            <mat-icon class="mat-icon-rtl-mirror" >
+              {{'skip_next'}}
+            </mat-icon>
+          </button>
+        </span>
+      </div>
 
-      <span style="display: inline-block; vertical-align: middle;"
-      *ngIf="!selectable">
-        - {{node.name}}
-      </span>
+      <div *ngIf="!selectable">
+        <span style="display: inline-block; vertical-align: middle; font-size: 22px;"        >
+          - {{node.name}}
+        </span>
 
-      <button mat-icon-button
-      style="display: inline-block; vertical-align: middle;"
-      (click)="onExpand(node)">
-        <mat-icon class="mat-icon-rtl-mirror" >
-          {{'skip_next'}}
-        </mat-icon>
-      </button>
+        <button mat-icon-button
+        style="display: inline-block; vertical-align: middle;"
+        (click)="onExpand(node)" type="button">
+          <mat-icon class="mat-icon-rtl-mirror" >
+            {{'skip_next'}}
+          </mat-icon>
+        </button>
 
-      <button mat-icon-button disabled></button>
+        <button mat-icon-button disabled></button>
 
-      <a class="text-decoration-none" routerLink="/categories/edit/{{node.id}}" *ngIf="!selectable">
-        <button mat-icon-button title="edit category">
-        <mat-icon class="material-icons-outlined">edit</mat-icon></button>
-      </a>
+        <a class="text-decoration-none" routerLink="/categories/edit/{{node.id}}">
+          <button mat-icon-button title="edit category">
+          <mat-icon class="material-icons-outlined">edit</mat-icon></button>
+        </a>
 
-      <button mat-icon-button title="delete category" (click)="deleteCategory(node.id)" *ngIf="!selectable">
-        <mat-icon class="material-icons-outlined" color="warn">delete</mat-icon>
-      </button>
-
+        <button mat-icon-button title="delete category" (click)="deleteCategory(node.id)">
+          <mat-icon class="material-icons-outlined" color="warn">delete</mat-icon>
+        </button>
+      </div>
     </mat-list-item>
 
   </mat-tree-node>

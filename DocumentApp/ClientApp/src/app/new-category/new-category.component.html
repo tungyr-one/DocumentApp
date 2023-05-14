@@ -10,15 +10,14 @@
          <input id="name" formControlName="categoryName" placeholder="Category name">
         </label>
 
-        <div  class="mt-2">
-         <label class="me-2">Parent category: </label>
-             <ngx-mat-tree-select-input
-             [options]="categoriesSelectOptions"
-             [placeholder]="'Select category'"
-             [controlName]="'parentCategory'"
-             >
-           </ngx-mat-tree-select-input>
-       </div>
+        <div>
+          <label class="mt-2 mb-2">Parent category: </label>
+        </div>
+        <div class="mb-2" style="display: inline-block; border: 1px solid dimgray;">
+          <app-cat-list
+          [selectable]="selectableParent"
+          (parentCategoryChanged)="onNodeSelect($event);"></app-cat-list>
+        </div>
 
         <div *ngIf="newCategoryForm.get('name')?.invalid && (newCategoryForm.get('name')?.dirty || newCategoryForm.get('name')?.touched)" class="error-field">
           <p class="error">Please provide a name.</p>

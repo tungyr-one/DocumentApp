@@ -14,7 +14,10 @@ import { TreeData } from 'mat-tree-select-input';
 export class CategoriesListComponent implements OnInit{
   treeData:TreeData[] = [];
   @Input() selectable:boolean;
-  @Output() NodeSelected = new EventEmitter<number>();;
+  @Input() parentCategoryId:number;
+  @Output() parentCategoryChanged = new EventEmitter<IFlatNode>();
+  selectedNode: IFlatNode;
+
 
   private _transformer = (node: TreeData, level: number) => {
     return {
@@ -46,9 +49,19 @@ export class CategoriesListComponent implements OnInit{
     this.loadCategories();
   }
 
-  onSelect(id:number)
+  loadCategories()
   {
-    this.NodeSelected.emit(id);
+    this.categoriesService.getCategories().subscribe({
+      next:() => {
+        this.dataSource.data = this.categoriesService.categoriesTreeData;
+      }
+    })
+  }
+
+  onSelect(node:IFlatNode)
+  {
+    this.selectedNode = node;
+    this.parentCategoryChanged.emit(node);
   }
 
   async onExpand(node:IFlatNode)
@@ -100,15 +113,6 @@ async getChildren(node:IFlatNode) {
           return;
       }
     }
-  }
-
-  loadCategories()
-  {
-    this.categoriesService.getCategories().subscribe({
-      next:() => {
-        this.dataSource.data = this.categoriesService.categoriesTreeData;
-      }
-    })
   }
 
   hasChild = (_: number, node: IFlatNode) => node.expandable;

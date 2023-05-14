@@ -29,8 +29,7 @@ namespace api.Data.Repositories
       public async Task<CategoryDb[]> GetCategoriesAsync()
       {
             return await _context.Categories.AsNoTracking()
-            // .Include(c=> c.Children)
-            // .ThenInclude(c => c.Children)
+
             .ToArrayAsync();
       }
 
