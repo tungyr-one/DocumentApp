@@ -11,11 +11,6 @@ namespace api.Interfaces
       Task<CategoryDb> GetCategoryAsync(int id);
 
       ///<summary>
-      /// Gets category by name
-      ///</summary>
-      Task<CategoryDb> GetCategoryByNameAsync(string name);
-
-      ///<summary>
       /// Gets categories list
       ///</summary>
       Task<CategoryDb[]> GetCategoriesAsync();
@@ -39,6 +34,5 @@ namespace api.Interfaces
       /// Checks is category exists
       ///</summary>
       Task<bool> IsCategoryExists(int id);
-
    }
 }

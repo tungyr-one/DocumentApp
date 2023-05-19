@@ -6,21 +6,21 @@
 
      <div>
         <div class="mb-2">
-        <label>
-          Category name:
-          <input [(ngModel)]="category.name" [ngModelOptions]="{standalone: true}"
-          name="CategoryName" #ctrl="ngModel" required placeholder="Category name" required >
-        </label>
+          <label>
+            Category name:
+            <input [(ngModel)]="category.name" [ngModelOptions]="{standalone: true}"
+            name="CategoryName" #ctrl="ngModel" required placeholder="Category name" required >
+          </label>
         </div>
 
-      <div>
-        <label class="me-2">Parent category: </label>
-        <input [(ngModel)]="parentCategory.name"
-        [ngModelOptions]="{standalone: true}"
-        placeholder="Parent category name" readonly>
-        <button class="btn btn-outline-primary ms-2" (click)="clearParent()" type="button">Clear parent</button>
+          <div>
+            <label class="me-2">Parent category: </label>
+            <input [(ngModel)]="parentCategory.name"
+            [ngModelOptions]="{standalone: true}"
+            placeholder="Parent category name" readonly>
+            <button class="btn btn-outline-primary ms-2" (click)="clearParent()" type="button">Clear parent</button>
+          </div>
       </div>
-     </div>
 
 
     <div>

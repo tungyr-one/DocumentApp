@@ -7,6 +7,8 @@ import { Doc } from 'src/app/_models/Doc';
 import { DocService } from '../_services/doc.service';
 import { CategoryService } from '../_services/category.service';
 import { TreeData } from 'mat-tree-select-input';
+import { IFlatNode } from '../_models/IFlatNode';
+import { Category } from '../_models/Category';
 
 @Component({
   selector: 'app-doc-edit',
@@ -17,7 +19,9 @@ export class DocEditComponent implements OnInit{
   editForm: FormGroup;
   id:number;
   doc$:Observable<Doc>;
-  categoriesSelectOptions: TreeData[] = [];
+  docsCategory:Category;
+  selectableParent = true;
+  isCategorySelectDirty = false;
 
   constructor(private docService:DocService,
     private categoriesService:CategoryService,
@@ -28,7 +32,6 @@ export class DocEditComponent implements OnInit{
     }
 
   ngOnInit() {
-    this.loadCategories();
     this.loadDoc();
     this.editForm = this.fb.group({
       name: ['', Validators.required],
@@ -39,15 +42,14 @@ export class DocEditComponent implements OnInit{
     });
   }
 
-  loadCategories(){
-    this.categoriesService.getCategories()
-    .pipe(
-      tap({
-        next: () => {
-          this.categoriesSelectOptions = this.categoriesService.categoriesTreeData;
-        }}
-      )
-    ).subscribe();
+  onNodeSelect(node:IFlatNode)
+  {
+    if(this.docsCategory.id !== node.id)
+    {
+      this.docsCategory.id = node.id;
+      this.docsCategory.name = node.name;
+      this.isCategorySelectDirty = true;
+    }
   }
 
   loadDoc(){
@@ -58,8 +60,7 @@ export class DocEditComponent implements OnInit{
       .pipe(
         tap({next: (doc)=>{
           this.editForm.patchValue(doc, {emitEvent: false, onlySelf: true});
-          let docCategory = this.searchCategoryById(doc.category.id!, this.categoriesSelectOptions);
-          this.editForm.controls['category'].setValue(docCategory);
+          this.docsCategory = doc.category;
         }})
         );
     }
@@ -84,7 +85,7 @@ export class DocEditComponent implements OnInit{
   }
 
   onSubmit() {
-    if(this.editForm.dirty)
+    if(this.editForm.dirty || this.isCategorySelectDirty)
     {
       let docCategoryId = this.editForm.controls['category'].value.id;
       const values = {...this.editForm.value, categoryId: docCategoryId};

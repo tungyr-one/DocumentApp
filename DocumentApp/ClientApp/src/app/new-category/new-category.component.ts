@@ -30,7 +30,7 @@ export class NewCategoryComponent implements OnInit{
 
   ngOnInit(): void {
     this.newCategoryForm = this.fb.group({
-      categoryName: ['!exampleCategory', [Validators.required]],
+      categoryName: ['', [Validators.required]],
       parentCategory: [''],
     });
   }
