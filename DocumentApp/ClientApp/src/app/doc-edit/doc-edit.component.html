@@ -1,8 +1,7 @@
 <div *ngIf="doc$ | async; let document" class="container-mt5" style='text-align: center;'>
   <h2>Edit document</h2>
-  <form
-    [formGroup]="editForm"
-    (ngSubmit)="onSubmit()">
+  <form [formGroup]="editForm"
+        (ngSubmit)="onSubmit()">
     <div class="flex-container" style="display: flex; justify-content: center;">
       <div class="flex-child me-2" style="display: flex; justify-content: center; flex-direction: column;">
         <div>
@@ -18,7 +17,7 @@
         <div class="mt-3">
           <label>
             Version:
-            <input type="text"  id="version" formControlName="version" placeholder="Doc version" readonly>
+            <input type="text" id="version" formControlName="version" placeholder="Doc version" readonly>
           </label>
         </div>
 
@@ -31,12 +30,12 @@
             <p class="error">Please provide an author.</p>
           </div>
         </div>
-        
+
         <div class="mt-3 me-3">
           <label class="me-2">Category: </label>
           <input [(ngModel)]="docsCategory.name"
-          [ngModelOptions]="{standalone: true}"
-          placeholder="Parent category name" readonly>
+                 [ngModelOptions]="{standalone: true}"
+                 placeholder="Parent category name" readonly>
         </div>
 
       </div>
@@ -45,9 +44,8 @@
           <label class="mt-2 mb-2">New category: </label>
         </div>
         <div class="mb-2" style="display: inline-block; border: 1px solid dimgray;">
-          <app-cat-list
-          [selectable]="selectableParent"
-          (parentCategoryChanged)="onNodeSelect($event);"></app-cat-list>
+          <app-cat-list [selectable]="selectableParent"
+                        (parentCategoryChanged)="onNodeSelect($event);"></app-cat-list>
         </div>
       </div>
     </div>
@@ -56,7 +54,7 @@
         Text:
       </label>
       <div class="mt-2">
-        <textarea  id="text" formControlName="text" placeholder="Doc text" rows="15" cols="150"></textarea>
+        <textarea id="text" formControlName="text" placeholder="Doc text" rows="15" cols="150"></textarea>
       </div>
 
       <div *ngIf="editForm.get('text')?.invalid && (editForm.get('text')?.dirty || editForm.get('text')?.touched)">
@@ -68,4 +66,5 @@
       <button class="btn btn-outline-danger me-2 mb-3" (click)="deleteDoc()" type="button">Delete</button>
       <button class="btn btn-outline-secondary mb-3" (click)="cancel()" type="button">Cancel</button>
     </div>
-      </form>
+  </form>
+</div>

@@ -1,5 +1,5 @@
 import { CategoryService } from './../_services/category.service';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DocService } from '../_services/doc.service';
 import { ToastrService } from 'ngx-toastr';

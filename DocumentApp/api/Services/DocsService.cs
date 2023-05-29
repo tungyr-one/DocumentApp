@@ -10,7 +10,6 @@ using DocumentApp.Helpers;
 using DocumentApp.Interfaces.RepositoriesInterfaces;
 using DocumentApp.Interfaces.ServicesInterfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace DocumentApp.Services
 {

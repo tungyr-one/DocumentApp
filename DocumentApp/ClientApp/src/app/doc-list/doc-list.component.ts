@@ -1,8 +1,8 @@
 import { ToastrService } from 'ngx-toastr';
 import { CategoryService } from './../_services/category.service';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
+import { Component, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { IDoc as Doc } from '../_models/Doc';
 import { DocService } from '../_services/doc.service';

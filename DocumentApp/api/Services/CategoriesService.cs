@@ -61,7 +61,7 @@ namespace DocumentApp.Services
       {
           var categoryToDelete = await _categoriesRepository.GetCategoryAsync(id);
 
-          if (categoryToDelete.Children != null && categoryToDelete.Children.Count > 0)
+          if (categoryToDelete.Children is { Count: > 0 })
           {
               throw new ValidationException("Category has subcategories, delete them first");
           }
