@@ -101,7 +101,7 @@ export class DocEditComponent implements OnInit{
               error:() => {
                 this.toastr.error('Something went wrong!', 'Oops!');
               }
-            })
+        });
         }
     }
     else
@@ -117,7 +117,7 @@ export class DocEditComponent implements OnInit{
     {
     this.docService.deleteDocument(this.id).subscribe({
       next: () => {
-        this.router.navigateByUrl('')
+        this.router.navigateByUrl('');
       }
     });
     }

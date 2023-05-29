@@ -18,7 +18,6 @@ export class NewDocComponent implements OnInit{
   newDocForm: FormGroup;
   categoriesSelectOptions: TreeData[] = [];
   selectedCategory:string;
-  @ViewChild('searchInput', { static: false }) searchInputRef: ElementRef;
 
   docsCategoryId:number;
   selectableParent = true;
@@ -35,8 +34,7 @@ export class NewDocComponent implements OnInit{
       name: ['', Validators.required],
       version: ['1'],
       author: ['', [Validators.required]],
-      text: ['',
-      [Validators.required, Validators.minLength(15)]],
+      text: ['', [Validators.required, Validators.minLength(1)]],
     });
   }
 

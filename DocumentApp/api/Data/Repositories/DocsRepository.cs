@@ -42,7 +42,7 @@ namespace api.Data.Repositories
 
         public async Task<bool> Delete(int id)
         {
-            var docToDelete = _context.Docs.Find(id);
+            var docToDelete = await _context.Docs.FindAsync(id);
             _context.Entry(docToDelete).State = EntityState.Deleted; 
             return await _context.SaveChangesAsync() > 0;
         }     

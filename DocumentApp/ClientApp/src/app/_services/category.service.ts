@@ -28,49 +28,55 @@ export class CategoryService {
       }));
   }
 
-  getCategories(){
+  getCategories() {
     return this.http.get<Category[]>(this.baseUrl + 'categories').pipe(
       map(response => {
         return response;
-    }),
-    tap({
-      next: (categories) => {
-        const filteredArray = categories.filter(item => item.parentId === null);
-        this.categoriesTreeData = [];
-        this.categoriesTreeData = this.constructTreeData(filteredArray);
-      }})
-      )
-    }
+      }),
+      tap({
+        next: (categories) => {
+          const filteredArray = categories.filter(item => item.parentId === null);
+          this.categoriesTreeData = [];
+          this.categoriesTreeData = this.constructTreeData(filteredArray);
+        }
+      })
+    );
+  }
 
-    createCategory(model:Category)
-    {
+    createCategory(model:Category) {
       return this.http.post(this.baseUrl + 'categories/', model)
-      .pipe(
-        tap({next:()=> {
-          this.getCategories();
-          this.categoriesChanged();
-        }})
-      )
+        .pipe(
+          tap({
+            next: () => {
+              this.getCategories();
+              this.categoriesChanged();
+            }
+          })
+        );
     }
 
-    updateCategory(model:Category){
+    updateCategory(model:Category) {
       return this.http.put(this.baseUrl + 'categories/' + model.id, model)
-      .pipe(
-        tap({next: ()=> {
-          this.getCategories();
-          this.categoriesChanged();
-        }})
-      )
+        .pipe(
+          tap({
+            next: () => {
+              this.getCategories();
+              this.categoriesChanged();
+            }
+          })
+        );
     }
 
-    deleteCategory(id:number){
-      return this.http.delete(this.baseUrl + 'categories/'+ (+id))
-      .pipe(
-        tap({next: ()=> {
-          this.getCategories();
-          this.categoriesChanged();
-        }})
-      )
+    deleteCategory(id:number) {
+      return this.http.delete(this.baseUrl + 'categories/' + (+id))
+        .pipe(
+          tap({
+            next: () => {
+              this.getCategories();
+              this.categoriesChanged();
+            }
+          })
+        );
     }
 
     constructTreeData(data: Category[], level: number = 0): TreeData[] {

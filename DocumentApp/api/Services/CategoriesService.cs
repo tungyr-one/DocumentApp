@@ -14,7 +14,7 @@ namespace api.Services
         private readonly ILogger<CategoriesService> _logger;
         private ICategoriesRepository _categoriesRepository { get; }
         private IMapper _mapper { get; }
-        private IDocsRepository _docsRepository;
+        readonly IDocsRepository _docsRepository;
 
 
         public CategoriesService(ICategoriesRepository categoryRepository, 
@@ -37,7 +37,7 @@ namespace api.Services
       public async Task<CategoryDto[]> GetCategoriesAsync()
       {
         var categories = await _categoriesRepository.GetCategoriesAsync();
-        return _mapper.Map<CategoryDto[]>(categories);;
+        return _mapper.Map<CategoryDto[]>(categories);
       }
 
       public async Task<bool> CreateAsync(CategoryDto newCategory)

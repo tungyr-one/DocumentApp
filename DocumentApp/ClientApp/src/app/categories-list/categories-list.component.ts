@@ -55,7 +55,7 @@ export class CategoriesListComponent implements OnInit{
       next:() => {
         this.dataSource.data = this.categoriesService.categoriesTreeData;
       }
-    })
+    });
   }
 
   onSelect(node:IFlatNode)
@@ -93,7 +93,7 @@ async getChildren(node:IFlatNode) {
           }
         }
       }
-    })
+    });
   }
 
   expandNodes(nodeIndex:number, nodeLevel:number)

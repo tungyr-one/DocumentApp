@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using api.DTOs;
 using api.Interfaces.ServicesInterfaces;
-using System;
 
 namespace api.Controllers
 {

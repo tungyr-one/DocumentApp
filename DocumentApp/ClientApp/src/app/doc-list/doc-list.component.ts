@@ -65,7 +65,7 @@ export class DocumentListComponent implements OnInit
           this.dataSource = new MatTableDataSource(response.items);
           this.pagination = response;
         }
-      })
+      });
     }
   }
 
@@ -86,7 +86,7 @@ export class DocumentListComponent implements OnInit
         this.ngOnInit();
       },
       error: error => {
-        this.toastrService.error(error.error.message, "Oops!")
+        this.toastrService.error(error.error.message, "Oops!");
     }
     });
   }

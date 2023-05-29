@@ -44,7 +44,7 @@ export class DocumentViewComponent {
     {
     this.docService.deleteDocument(this.id).subscribe({
       next: () => {
-        this.router.navigateByUrl('')
+        this.router.navigateByUrl('');
       }
     });
     }

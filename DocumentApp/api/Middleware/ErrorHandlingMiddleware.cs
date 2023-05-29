@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -14,7 +12,7 @@ namespace API.Middleware
     public class ErrorHandlingMiddleware
     {
         private readonly RequestDelegate _next;
-        public ILogger<ErrorHandlingMiddleware> _logger { get; }
+        private ILogger<ErrorHandlingMiddleware> _logger { get; }
         private readonly IHostEnvironment _env;
         public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger, IHostEnvironment env)
         {

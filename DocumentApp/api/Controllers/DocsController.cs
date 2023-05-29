@@ -2,11 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using api.Interfaces;
 using api.DTOs;
-using System;
-using System.Text.Json;
 using api.Helpers;
-using DocumentApp.Entities;
-using Newtonsoft.Json;
 
 namespace api.Controllers
 {
@@ -41,7 +37,7 @@ namespace api.Controllers
       public async Task<ActionResult<Pagination<DocDto>>> GetDocs(UserParams userParams)
       {
          var docs = await _docsService.GetDocsAsync(userParams);
-         string json = Newtonsoft.Json.JsonConvert
+         Newtonsoft.Json.JsonConvert
          .SerializeObject(new
          {
             items = docs,

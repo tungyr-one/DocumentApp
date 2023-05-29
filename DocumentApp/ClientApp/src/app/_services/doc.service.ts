@@ -16,13 +16,12 @@ export class DocService {
   constructor(private http: HttpClient) {
   }
 
-  getDocuments(userParams:UserParams)
-  {
+  getDocuments(userParams:UserParams) {
     return this.http.post<Pagination<Doc>>(this.baseUrl + 'docs', userParams).pipe(
-      map((result:Pagination<Doc>) => {
+      map((result: Pagination<Doc>) => {
         return result;
-      }))
-    }
+      }));
+  }
 
   getDocument(id:number)
   {
@@ -35,14 +34,14 @@ export class DocService {
   }
 
   createDocument(model:Doc){
-    return this.http.post(this.baseUrl + 'docs/new', model)
+    return this.http.post(this.baseUrl + 'docs/new', model);
   }
 
   updateDocument(id:number, model:Doc){
-    return this.http.put(this.baseUrl + 'docs/'+ id, model)
+    return this.http.put(this.baseUrl + 'docs/' + id, model);
   }
 
   deleteDocument(id:number){
-    return this.http.delete(this.baseUrl + 'docs/'+ id)
+    return this.http.delete(this.baseUrl + 'docs/' + id);
   }
 }

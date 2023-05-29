@@ -55,13 +55,13 @@ export class CategoryEditComponent {
 
     this.categoriesService.updateCategory(this.category).subscribe({
           next: () => {
-            this.toastr.success('Category updated', 'Done!')
-            this.router.navigateByUrl('/categories')
+        this.toastr.success('Category updated', 'Done!');
+        this.router.navigateByUrl('/categories');
           },
           error:() => {
             this.toastr.error('Something went wrong!', 'Oops!');
           }
-        })
+    });
   }
 
   onNodeSelect(node:IFlatNode)
@@ -98,7 +98,7 @@ loadCategory(){
             parentCategory? this.parentCategory = parentCategory : this.parentCategory;
           }
         }})
-      )
+      );
     }
     else
     {
