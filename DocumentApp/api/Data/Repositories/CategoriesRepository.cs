@@ -1,21 +1,18 @@
 using System.Threading.Tasks;
-using api.Entities;
-using api.Interfaces;
-using AutoMapper;
+using DocumentApp.Entities;
+using DocumentApp.Interfaces.RepositoriesInterfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace api.Data.Repositories
+namespace DocumentApp.Data.Repositories
 {
    public class CategoriesRepository : ICategoriesRepository
    {
 
       private readonly DataContext _context;
-      private readonly IMapper _mapper;
 
-      public CategoriesRepository(DataContext context, IMapper mapper)
+      public CategoriesRepository(DataContext context)
       {
       _context = context;
-      _mapper = mapper;
       }
 
       public async Task<CategoryDb> GetCategoryAsync(int id)

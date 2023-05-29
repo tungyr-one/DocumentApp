@@ -1,5 +1,3 @@
-using api.Data;
-using api.Entities;
 using DocumentApp.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.IO;

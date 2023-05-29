@@ -84,7 +84,7 @@ import { CategoriesListToolbarComponent } from './categories-list-toolbar/catego
     MatButtonModule,
     MatMenuModule,
     MatToolbarModule,
-    MatListModule,
+    MatListModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass:LoadingInterceptor, multi:true}

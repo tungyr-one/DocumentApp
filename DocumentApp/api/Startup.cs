@@ -1,5 +1,5 @@
-using API.Extensions;
-using API.Middleware;
+using DocumentApp.Extensions;
+using DocumentApp.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

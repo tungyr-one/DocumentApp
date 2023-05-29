@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 
-namespace api.Entities
+namespace DocumentApp.Entities
 {
     ///<summary>
     ///Category model for DB
-    ///<summary>
+    ///</summary>
     public class CategoryDb
     {
         public int Id { get; set; }

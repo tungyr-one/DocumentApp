@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using api.DTOs;
-using api.Helpers;
+using DocumentApp.DTOs;
+using DocumentApp.Helpers;
 
-namespace api.Interfaces
+namespace DocumentApp.Interfaces.ServicesInterfaces
 {
    public interface IDocsService
     {

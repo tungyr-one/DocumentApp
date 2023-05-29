@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using api.DTOs;
+using DocumentApp.DTOs;
 
-namespace api.Interfaces.ServicesInterfaces
+namespace DocumentApp.Interfaces.ServicesInterfaces
 {
     public interface ICategoriesService
     {
@@ -23,7 +23,7 @@ namespace api.Interfaces.ServicesInterfaces
         ///<summary>
         /// Updates category
         ///</summary>
-        Task<bool> UpdateAsync(int id, CategoryDto CategoryUpdate);
+        Task<bool> UpdateAsync(int id, CategoryDto categoryUpdate);
 
         ///<summary>
         /// Deletes category

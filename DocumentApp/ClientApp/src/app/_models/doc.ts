@@ -1,6 +1,6 @@
-import { Category } from './Category';
+import { ICategory as Category } from './Category';
 
-export interface Doc {
+export interface IDoc {
    id: number;
    name: string;
    created: Date;

@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
+using DocumentApp.DTOs;
+using DocumentApp.Helpers;
+using DocumentApp.Interfaces.ServicesInterfaces;
 using Microsoft.AspNetCore.Mvc;
-using api.Interfaces;
-using api.DTOs;
-using api.Helpers;
 
-namespace api.Controllers
+namespace DocumentApp.Controllers
 {
    [ApiController]
    [Route("api/[controller]")]
@@ -60,9 +60,9 @@ namespace api.Controllers
         /// Updates document 
         ///</summary>
       [HttpPut("{id}")]
-      public async Task<ActionResult> UpdateDocAsync(int id, DocUpdateDto DocUpdate)
+      public async Task<ActionResult> UpdateDocAsync(int id, DocUpdateDto docUpdate)
       {
-         if (await _docsService.UpdateAsync(id, DocUpdate)) return NoContent();
+         if (await _docsService.UpdateAsync(id, docUpdate)) return NoContent();
          return BadRequest("Failed to update document");
       }
 

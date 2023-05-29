@@ -3,7 +3,7 @@ import { EventEmitter, Injectable, Output } from '@angular/core';
 import { TreeData } from 'mat-tree-select-input';
 import { map, tap } from 'rxjs';
 import { environment } from '../environments/environment';
-import { Category } from '../_models/Category';
+import { ICategory as Category } from '../_models/Category';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +30,7 @@ export class CategoryService {
 
   getCategories() {
     return this.http.get<Category[]>(this.baseUrl + 'categories').pipe(
-      map(response => {
+      map((response:Category[]) => {
         return response;
       }),
       tap({

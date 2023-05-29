@@ -1,7 +1,7 @@
 import { CategoryService } from './../_services/category.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Category } from '../_models/Category';
+import { ICategory as Category } from '../_models/Category';
 import { DocService } from '../_services/doc.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';

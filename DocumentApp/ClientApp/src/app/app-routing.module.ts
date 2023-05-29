@@ -6,7 +6,6 @@ import { DocEditComponent } from './doc-edit/doc-edit.component';
 import { HomeComponent } from './home/home.component';
 import { CategoryEditComponent } from './category-edit/category-edit.component';
 import { DocumentViewComponent } from './doc-view/doc-view.component';
-import { CategoriesListComponent } from './categories-list/categories-list.component';
 import { CategoriesListToolbarComponent } from './categories-list-toolbar/categories-list-toolbar.component';
 
 const routes: Routes = [
@@ -16,7 +15,7 @@ const routes: Routes = [
   { path: 'docs/edit/:id', component: DocEditComponent, pathMatch: 'full' },
   { path: 'categories', component: CategoriesListToolbarComponent, pathMatch: 'full' },
   { path: 'categories/new', component: NewCategoryComponent, pathMatch: 'full' },
-  { path: 'categories/edit/:id', component: CategoryEditComponent, pathMatch: 'full' },
+  { path: 'categories/edit/:id', component: CategoryEditComponent, pathMatch: 'full' }
 ];
 
 @NgModule({

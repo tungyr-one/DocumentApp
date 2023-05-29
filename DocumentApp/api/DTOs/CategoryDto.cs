@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 
-namespace api.DTOs
+namespace DocumentApp.DTOs
 {
     ///<summary>
     ///Category model for transfer data to frontend
-    ///<summary>
+    ///</summary>
     public class CategoryDto
     {
         public int Id { get; set; }

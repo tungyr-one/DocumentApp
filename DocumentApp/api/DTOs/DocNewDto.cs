@@ -1,10 +1,10 @@
 using System;
 
-namespace api.DTOs
+namespace DocumentApp.DTOs
 {
     ///<summary>
     ///Document creation model for getting data from frontend
-    ///<summary>
+    ///</summary>
     public class DocNewDto
     {
         public string Name { get; set; }             

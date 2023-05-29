@@ -2,12 +2,12 @@ using System;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
-using API.Errors;
+using DocumentApp.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace API.Middleware
+namespace DocumentApp.Middleware
 {
     public class ErrorHandlingMiddleware
     {

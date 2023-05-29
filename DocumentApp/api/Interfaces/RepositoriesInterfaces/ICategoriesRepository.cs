@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using api.Entities;
+using DocumentApp.Entities;
 
-namespace api.Interfaces
+namespace DocumentApp.Interfaces.RepositoriesInterfaces
 {
    public interface ICategoriesRepository
    {

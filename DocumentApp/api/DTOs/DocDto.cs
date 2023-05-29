@@ -1,10 +1,10 @@
 using System;
 
-namespace api.DTOs
+namespace DocumentApp.DTOs
 {
     ///<summary>
     ///Document model for transfer data to frontend
-    ///<summary>
+    ///</summary>
     public class DocDto
     {
         public int Id { get; set; }

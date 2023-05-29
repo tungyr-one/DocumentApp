@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
-using api.DTOs;
-using api.Entities;
-using api.Exceptions;
-using api.Interfaces;
-using api.Interfaces.ServicesInterfaces;
 using AutoMapper;
+using DocumentApp.DTOs;
+using DocumentApp.Entities;
+using DocumentApp.Exceptions;
+using DocumentApp.Interfaces.RepositoriesInterfaces;
+using DocumentApp.Interfaces.ServicesInterfaces;
 using Microsoft.Extensions.Logging;
 
-namespace api.Services
+namespace DocumentApp.Services
 {
    public class CategoriesService : ICategoriesService
    {
@@ -61,7 +61,7 @@ namespace api.Services
       {
           var categoryToDelete = await _categoriesRepository.GetCategoryAsync(id);
 
-          if (categoryToDelete.Children.Count > 0)
+          if (categoryToDelete.Children != null && categoryToDelete.Children.Count > 0)
           {
               throw new ValidationException("Category has subcategories, delete them first");
           }

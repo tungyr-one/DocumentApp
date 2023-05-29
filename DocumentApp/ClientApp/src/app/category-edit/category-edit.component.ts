@@ -1,7 +1,7 @@
 import { CategoryService } from './../_services/category.service';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Category } from '../_models/Category';
+import { ICategory as Category } from '../_models/Category';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';

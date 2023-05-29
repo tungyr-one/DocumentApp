@@ -2,32 +2,27 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using api.DTOs;
-using api.Helpers;
-using api.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using DocumentApp.DTOs;
 using DocumentApp.Entities;
+using DocumentApp.Helpers;
+using DocumentApp.Interfaces.RepositoriesInterfaces;
+using DocumentApp.Interfaces.ServicesInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace api.Services
+namespace DocumentApp.Services
 {
    public class DocsService : IDocsService
    {
       private readonly IDocsRepository _docsRepository;
-      private readonly ICategoriesRepository _categoriesRepository;
-      private readonly ILogger<DocsService> _logger;
       private readonly IMapper _mapper;
 
       public DocsService(IDocsRepository docsRepository,
-            ICategoriesRepository categoriesRepository,
-            ILogger<DocsService> logger,
-            IMapper mapper)
+          IMapper mapper)
       {
          _docsRepository = docsRepository;
-         _categoriesRepository = categoriesRepository;
-         _logger = logger;
          _mapper = mapper;
       }
       public async Task<DocDto> GetDocAsync(int id)

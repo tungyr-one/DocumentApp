@@ -1,10 +1,10 @@
 using System.Linq;
 using System.Threading.Tasks;
-using api.Interfaces;
 using DocumentApp.Entities;
+using DocumentApp.Interfaces.RepositoriesInterfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace api.Data.Repositories
+namespace DocumentApp.Data.Repositories
 {
     public class DocsRepository: IDocsRepository
     {

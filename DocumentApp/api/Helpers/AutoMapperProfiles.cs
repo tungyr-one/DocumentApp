@@ -1,10 +1,9 @@
 using System;
-using api.DTOs;
-using api.Entities;
 using AutoMapper;
+using DocumentApp.DTOs;
 using DocumentApp.Entities;
 
-namespace api.Helpers
+namespace DocumentApp.Helpers
 {
     public class AutoMapperProfiles : Profile
     {

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace api.Helpers
+namespace DocumentApp.Helpers
 {
     [JsonObject]
     public class Pagination<T>

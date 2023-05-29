@@ -1,4 +1,4 @@
-namespace api.DTOs
+namespace DocumentApp.DTOs
 {
     public class UserParams
     {
