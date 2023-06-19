@@ -11,21 +11,18 @@ namespace DocumentApp.Services
 {
    public class CategoriesService : ICategoriesService
    {
-        private readonly ILogger<CategoriesService> _logger;
-        private ICategoriesRepository _categoriesRepository { get; }
-        private IMapper _mapper { get; }
-        readonly IDocsRepository _docsRepository;
+        private readonly ICategoriesRepository _categoriesRepository;
+        private readonly IMapper _mapper;
+        private readonly  IDocsRepository _docsRepository;
 
 
         public CategoriesService(ICategoriesRepository categoryRepository, 
         IDocsRepository docsRepository,
-        ILogger<CategoriesService> logger,
         IMapper mapper)
         {
             _categoriesRepository = categoryRepository;
             _docsRepository = docsRepository;
             _mapper = mapper;
-            _logger = logger;
         }
 
       public async Task<CategoryDto> GetCategoryAsync(int id)

@@ -3,6 +3,9 @@ using DocumentApp.DTOs;
 using DocumentApp.Helpers;
 using DocumentApp.Interfaces.ServicesInterfaces;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using Microsoft.AspNetCore.Http;
+using System.Net;
 
 namespace DocumentApp.Controllers
 {
@@ -37,13 +40,9 @@ namespace DocumentApp.Controllers
       public async Task<ActionResult<Pagination<DocDto>>> GetDocs(UserParams userParams)
       {
          var docs = await _docsService.GetDocsAsync(userParams);
-         Newtonsoft.Json.JsonConvert
-         .SerializeObject(new
-         {
-            items = docs,
-            countItems = docs.CountItems
-         });
-         return Ok(docs);
+         HttpContext.Response.StatusCode = 200;
+         await HttpContext.Response.WriteAsJsonAsync(docs);
+         return new EmptyResult();
       }
 
         ///<summary>
