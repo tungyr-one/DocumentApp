@@ -9,7 +9,7 @@ namespace DocumentApp.DTOs
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        #nullable enable    
+
         public int? ParentId { get; set; }
         public IList<CategoryDto>? Children { get; set; }         
     }

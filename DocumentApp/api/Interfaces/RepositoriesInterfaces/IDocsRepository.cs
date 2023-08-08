@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentApp.DTOs;
 using DocumentApp.Entities;
 
 namespace DocumentApp.Interfaces.RepositoriesInterfaces
@@ -14,26 +15,26 @@ namespace DocumentApp.Interfaces.RepositoriesInterfaces
       ///<summary>
       /// Gets documents list
       ///</summary>
-      IQueryable<DocDb> GetDocsAsync();
+      Task<DocDb[]> GetDocsAsync(UserParams userParams);
 
       ///<summary>
       /// Updates document
       ///</summary>
-      Task<bool> Update(DocDb doc);
+      Task<bool> UpdateAsync(DocDb doc);
 
       ///<summary>
       /// Creates document
       ///</summary>
-      Task<bool> Create(DocDb doc);
+      Task<bool> CreateAsync(DocDb doc);
 
       ///<summary>
       /// Deletes document
       ///</summary>
-      Task<bool> Delete(int id);
+      Task<bool> DeleteAsync(int id);
 
       ///<summary>
       /// Checks if the document is in any category
       ///</summary>
-      Task<bool> IsDocumentWithCategoryRelationExists(int id);
+      Task<bool> IsDocumentWithCategoryRelationExistsAsync(int id);
    }
 }

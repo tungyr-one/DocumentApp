@@ -30,19 +30,55 @@ namespace DocumentApp.Middleware
             catch(Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                context.Response.ContentType = "application/json";
-                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
 
-                var response = _env.IsDevelopment()
-                ? new ApiException(context.Response.StatusCode, ex.Message, ex.StackTrace?.ToString())
-                : new ApiException(context.Response.StatusCode, "Internal Server Error");
-
-                var options = new JsonSerializerOptions{PropertyNamingPolicy = JsonNamingPolicy.CamelCase};
-
-                var json = JsonSerializer.Serialize(response, options);
-
-                await context.Response.WriteAsync(json);
+                if (!_env.IsDevelopment())
+                {
+                    new ApiException(context.Response.StatusCode, "Internal Server Error");
+                }
+                else
+                {
+                    await HandleExceptionAsync(context, ex);
+                }
             }
+        }
+
+        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+        {
+            string errorMessage;
+            int statusCode;
+            string stackTrace = exception.StackTrace?.ToString();            
+
+            if (exception is NotFoundException)
+            {
+                errorMessage = "Resource not found";
+                statusCode = (int)HttpStatusCode.NotFound;
+            }
+            else if (exception is ValidationException)
+            {
+                errorMessage = "Wrong input data";
+                statusCode = (int)HttpStatusCode.BadRequest;
+            }
+            else
+            {
+                errorMessage = "An error occurred.";
+                statusCode = (int)HttpStatusCode.InternalServerError;
+            }
+
+            var response = new
+            {
+                ErrorMessage = errorMessage,
+                StatusCode = statusCode,
+                StackTrace = stackTrace
+            };
+
+            context.Response.StatusCode = statusCode;
+            context.Response.ContentType = "application/json";
+
+            var options = new JsonSerializerOptions{PropertyNamingPolicy = JsonNamingPolicy.CamelCase};
+
+            var json = JsonSerializer.Serialize(response, options);
+            
+            await context.Response.WriteAsync(json);
         }
     }
 }

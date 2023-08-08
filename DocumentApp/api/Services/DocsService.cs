@@ -1,15 +1,12 @@
 using System;
-using System.Linq;
-using System.Linq.Expressions;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using DocumentApp.DTOs;
 using DocumentApp.Entities;
 using DocumentApp.Helpers;
 using DocumentApp.Interfaces.RepositoriesInterfaces;
 using DocumentApp.Interfaces.ServicesInterfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace DocumentApp.Services
 {
@@ -32,21 +29,11 @@ namespace DocumentApp.Services
 
       public async Task<Pagination<DocDto>> GetDocsAsync(UserParams userParams)
       {
-         userParams.SortBy = string.Concat(userParams.SortBy[0].ToString().ToUpper(), userParams.SortBy.AsSpan(1));
 
-         var query = _docsRepository.GetDocsAsync();
+         var docs = await _docsRepository.GetDocsAsync(userParams);
 
-         if(!string.IsNullOrWhiteSpace(userParams.FilterBy))
-         {
-            query = query.Where(d => d.Name.StartsWith(userParams.FilterBy));
-         }
-
-         query = userParams.SortOrder == "asc"
-            ? query.OrderBy(ResolveOrderFieldExpression(userParams))
-            : query.OrderByDescending(ResolveOrderFieldExpression(userParams));
-
-         return await Pagination<DocDto>.CreateAsync(
-         query.AsNoTracking().ProjectTo<DocDto>(_mapper.ConfigurationProvider),
+         return Pagination<DocDto>.ToPageResult(
+         _mapper.Map<IEnumerable<DocDto>>(docs),
          userParams.Offset,
          userParams.PageSize);         
       }
@@ -54,7 +41,7 @@ namespace DocumentApp.Services
       public async Task<bool> CreateAsync(DocNewDto newDoc)
       {
          var docToDb = _mapper.Map<DocDb>(newDoc);
-         return await _docsRepository.Create(docToDb);
+         return await _docsRepository.CreateAsync(docToDb);
       }
 
       public async Task<bool> UpdateAsync(int id, DocUpdateDto docUpdate)
@@ -62,24 +49,16 @@ namespace DocumentApp.Services
          var docDb = await _docsRepository.GetDocAsync(id);
          _mapper.Map(docUpdate, docDb);
          docDb.Version++;
-         return await _docsRepository.Update(docDb);
+         if(!await _docsRepository.UpdateAsync(docDb)) 
+         {
+            throw new ArgumentException("Failed to update document");
+         }
+         return true;
       }
 
       public async Task<bool> DeleteAsync(int id)
       {
-         return await _docsRepository.Delete(id);
+         return await _docsRepository.DeleteAsync(id);
       }
-
-      private static Expression<Func<DocDb, object>> ResolveOrderFieldExpression(UserParams userParams)
-      => userParams.SortBy switch
-      {
-      nameof(DocDb.Name) => x => x.Name,
-      nameof(DocDb.Edited) => x => x.Edited,
-      nameof(DocDb.Created) => x => x.Created,
-      nameof(DocDb.Version) => x => x.Version,
-      nameof(DocDb.Author) => x => x.Author,
-      nameof(DocDb.Category) => x => x.Category,
-      _ => x => x.Id
-      };
    }
 }

@@ -3,12 +3,12 @@ import { FormBuilder, FormGroup,  Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, tap } from 'rxjs';
-import { IDoc as Doc } from 'src/app/_models/Doc';
+import { IDoc as Doc } from 'src/app/_models/IDoc';
 import { DocService } from '../_services/doc.service';
 import { CategoryService } from '../_services/category.service';
 import { TreeData } from 'mat-tree-select-input';
 import { IFlatNode } from '../_models/IFlatNode';
-import { ICategory as Category } from '../_models/Category';
+import { ICategory as Category } from '../_models/ICategory';
 
 @Component({
   selector: 'app-doc-edit',

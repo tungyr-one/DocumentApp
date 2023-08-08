@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
-import { IDoc as Doc } from 'src/app/_models/Doc';
+import { IDoc as Doc } from 'src/app/_models/IDoc';
 import { DocService } from '../_services/doc.service';
 
 

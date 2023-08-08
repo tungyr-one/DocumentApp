@@ -59,11 +59,13 @@ namespace DocumentApp.Controllers
         /// Updates document 
         ///</summary>
       [HttpPut("{id}")]
-      public async Task<ActionResult> UpdateDocAsync(int id, DocUpdateDto docUpdate)
-      {
-         if (await _docsService.UpdateAsync(id, docUpdate)) return NoContent();
-         return BadRequest("Failed to update document");
-      }
+      public Task Update(int id, DocUpdateDto docUpdate) => _docsService.UpdateAsync(id, docUpdate);
+      // public async Task UpdateDocAsync(int id, DocUpdateDto docUpdate)
+      // {
+      //    // await _docsService.UpdateAsync(id, docUpdate);
+      //    // return NoContent();
+      //    await _docsService.UpdateAsync(id, docUpdate);
+      // }
 
         ///<summary>
         /// Deletes document

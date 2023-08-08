@@ -4,7 +4,7 @@ import { map, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { Pagination } from '../_models/Pagination';
-import { IDoc as Doc } from '../_models/Doc';
+import { IDoc as Doc } from '../_models/IDoc';
 
 @Injectable({
   providedIn: 'root'

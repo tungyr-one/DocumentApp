@@ -24,32 +24,28 @@ namespace DocumentApp.Data.Repositories
 
       }
 
-      public async Task<CategoryDb[]> GetCategoriesAsync()
-      {
-            return await _context.Categories.AsNoTracking()
-            .ToArrayAsync();
-      }
+      public Task<CategoryDb[]> GetCategoriesAsync() => _context.Categories.AsNoTracking().ToArrayAsync();
 
-      public async Task<bool> Create(CategoryDb newCategory)
+      public async Task<bool> CreateAsync(CategoryDb newCategory)
       {
             _context.Categories
             .Add(newCategory).State = EntityState.Added;
             return await _context.SaveChangesAsync() > 0;
       }
 
-      public async Task<bool> Update(CategoryDb category)
+      public async Task<bool> UpdateAsync(CategoryDb category)
       {
             _context.Entry(category).State = EntityState.Modified;
             return await _context.SaveChangesAsync() > 0;
       }
 
-      public async Task<bool> Delete(CategoryDb category)
+      public async Task<bool> DeleteAsync(CategoryDb category)
       {
             _context.Entry(category).State = EntityState.Deleted; 
             return await _context.SaveChangesAsync() > 0;
       }   
 
-      async Task<bool> ICategoriesRepository.IsCategoryExists(int categoryId)
+      async Task<bool> ICategoriesRepository.IsCategoryExistsAsync(int categoryId)
       {
           return await _context.Categories.AnyAsync(c => c.Id == categoryId);
       }

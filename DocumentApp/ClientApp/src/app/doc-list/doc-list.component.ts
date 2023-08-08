@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { IDoc as Doc } from '../_models/Doc';
+import { IDoc as Doc } from '../_models/IDoc';
 import { DocService } from '../_services/doc.service';
 import { UserParams } from '../_models/userParams';
 import { Pagination } from '../_models/Pagination';

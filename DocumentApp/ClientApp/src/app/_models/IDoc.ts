@@ -1,4 +1,4 @@
-import { ICategory as Category } from './Category';
+import { ICategory as Category } from './ICategory';
 
 export interface IDoc {
    id: number;

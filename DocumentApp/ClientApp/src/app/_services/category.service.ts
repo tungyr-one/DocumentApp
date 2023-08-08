@@ -3,7 +3,7 @@ import { EventEmitter, Injectable, Output } from '@angular/core';
 import { TreeData } from 'mat-tree-select-input';
 import { map, tap } from 'rxjs';
 import { environment } from '../environments/environment';
-import { ICategory as Category } from '../_models/Category';
+import { ICategory as Category } from '../_models/ICategory';
 
 @Injectable({
   providedIn: 'root'

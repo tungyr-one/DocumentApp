@@ -1,11 +1,10 @@
 using System.Threading.Tasks;
+using DocumentApp.Exceptions;
 using AutoMapper;
 using DocumentApp.DTOs;
 using DocumentApp.Entities;
-using DocumentApp.Exceptions;
 using DocumentApp.Interfaces.RepositoriesInterfaces;
 using DocumentApp.Interfaces.ServicesInterfaces;
-using Microsoft.Extensions.Logging;
 
 namespace DocumentApp.Services
 {
@@ -40,7 +39,7 @@ namespace DocumentApp.Services
       public async Task<bool> CreateAsync(CategoryDto newCategory)
       {
           var categoryToDb = _mapper.Map<CategoryDb>(newCategory);    
-          return await _categoriesRepository.Create(categoryToDb);
+          return await _categoriesRepository.CreateAsync(categoryToDb);
       }
 
       public async Task<bool> UpdateAsync(int id, CategoryDto categoryUpdate)
@@ -48,10 +47,10 @@ namespace DocumentApp.Services
           var categoryDb = await _categoriesRepository.GetCategoryAsync(id);
           if (categoryDb is null)
           {
-            throw new ValidationException("Can't find category for update");
+            throw new NotFoundException("Can't find category for update");
           }
           _mapper.Map(categoryUpdate, categoryDb);      
-          return await _categoriesRepository.Update(categoryDb);
+          return await _categoriesRepository.UpdateAsync(categoryDb);
       }
 
       public async Task<bool> DeleteAsync(int id)
@@ -63,12 +62,12 @@ namespace DocumentApp.Services
               throw new ValidationException("Category has subcategories, delete them first");
           }
 
-          if (await _docsRepository.IsDocumentWithCategoryRelationExists(categoryToDelete.Id))
+          if (await _docsRepository.IsDocumentWithCategoryRelationExistsAsync(categoryToDelete.Id))
           {
               throw new ValidationException("Category has documents, delete them first");
           }
 
-          return await _categoriesRepository.Delete(categoryToDelete);
+          return await _categoriesRepository.DeleteAsync(categoryToDelete);
       }
    }
 }

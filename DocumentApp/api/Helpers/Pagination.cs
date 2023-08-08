@@ -18,10 +18,10 @@ namespace DocumentApp.Helpers
         public int CountItems { get; set; }      
         public IEnumerable<T> Items { get; set; }
 
-        public static async Task<Pagination<T>> CreateAsync(IQueryable<T> source, int offset, int pageSize)
+        public static Pagination<T> ToPageResult(IEnumerable<T> source, int offset, int pageSize)
         {   
-            var count = await source.CountAsync();
-            var items = await source.Skip(offset).Take(pageSize).ToArrayAsync();
+            var count = source.Count();
+            var items = source.Skip(offset).Take(pageSize);
             return new Pagination<T>(items, count);
         }
     }

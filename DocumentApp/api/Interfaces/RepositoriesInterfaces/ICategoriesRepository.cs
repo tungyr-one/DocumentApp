@@ -18,21 +18,21 @@ namespace DocumentApp.Interfaces.RepositoriesInterfaces
       ///<summary>
       /// Creates category
       ///</summary>
-      Task<bool> Create(CategoryDb cateogory);
+      Task<bool> CreateAsync(CategoryDb cateogory);
 
       ///<summary>
       /// Updates category
       ///</summary>
-      Task<bool> Update(CategoryDb cateogory);
+      Task<bool> UpdateAsync(CategoryDb cateogory);
 
       ///<summary>
       /// Deletes category
       ///</summary>
-      Task<bool> Delete(CategoryDb category);
+      Task<bool> DeleteAsync(CategoryDb category);
 
       ///<summary>
       /// Checks is category exists
       ///</summary>
-      Task<bool> IsCategoryExists(int id);
+      Task<bool> IsCategoryExistsAsync(int id);
    }
 }
