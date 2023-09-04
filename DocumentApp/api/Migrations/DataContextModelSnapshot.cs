@@ -2,9 +2,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using api.Data;
+using DocumentApp.Data;
 
 namespace DocumentApp.Migrations
 {
@@ -33,6 +32,9 @@ namespace DocumentApp.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("Edited")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")

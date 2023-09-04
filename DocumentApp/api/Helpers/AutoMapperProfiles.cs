@@ -1,24 +1,29 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using api.DTOs;
-using api.Entities;
 using AutoMapper;
+using DocumentApp.DTOs;
 using DocumentApp.Entities;
 
-namespace api.Helpers
+namespace DocumentApp.Helpers
 {
     public class AutoMapperProfiles : Profile
     {
         public AutoMapperProfiles()
         {
             CreateMap<DocDb, DocDto>().ReverseMap();
+
+            CreateMap<DocNewDto, DocDb>()
+                .ForMember(
+                    dest => dest.Created,
+                    opt => opt.MapFrom(src => DateTime.UtcNow))
+                .ForMember(
+                    dest => dest.Edited,
+                    opt => opt.MapFrom(src => DateTime.UtcNow));  
+
             CreateMap<DocUpdateDto, DocDb>()
                 .ForMember(
-                    dest => dest.Version,
-                    opt => opt.MapFrom(src => src.Version + 1));
-            CreateMap<DocNewDto, DocDb>();
+                    dest => dest.Edited,
+                    opt => opt.MapFrom(src => DateTime.UtcNow)); 
+
             CreateMap<CategoryDb, CategoryDto>().ReverseMap();
         }
     }

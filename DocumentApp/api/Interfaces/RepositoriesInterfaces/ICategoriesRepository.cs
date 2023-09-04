@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using api.Entities;
+using DocumentApp.Entities;
 
-namespace api.Interfaces
+namespace DocumentApp.Interfaces.RepositoriesInterfaces
 {
    public interface ICategoriesRepository
    {
@@ -14,11 +11,6 @@ namespace api.Interfaces
       Task<CategoryDb> GetCategoryAsync(int id);
 
       ///<summary>
-      /// Gets category by name
-      ///</summary>
-      Task<CategoryDb> GetCategoryByNameAsync(string name);
-
-      ///<summary>
       /// Gets categories list
       ///</summary>
       Task<CategoryDb[]> GetCategoriesAsync();
@@ -26,27 +18,21 @@ namespace api.Interfaces
       ///<summary>
       /// Creates category
       ///</summary>
-      void Create(CategoryDb cateogory);
+      Task<bool> CreateAsync(CategoryDb cateogory);
 
       ///<summary>
       /// Updates category
       ///</summary>
-      void Update(CategoryDb cateogory);
+      Task<bool> UpdateAsync(CategoryDb cateogory);
 
       ///<summary>
       /// Deletes category
       ///</summary>
-      void Delete(CategoryDb category);
+      Task<bool> DeleteAsync(CategoryDb category);
 
       ///<summary>
       /// Checks is category exists
       ///</summary>
-      Task<bool> IsCategoryExists(int id);
-
-      ///<summary>
-      /// Saves all changes to database
-      ///</summary>
-      Task<bool> SaveAllAsync();
-
+      Task<bool> IsCategoryExistsAsync(int id);
    }
 }

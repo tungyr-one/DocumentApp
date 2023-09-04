@@ -1,10 +1,12 @@
 import { CategoryService } from './../_services/category.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Category } from '../_models/Category';
+import { ICategory as Category } from '../_models/ICategory';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
-import { firstValueFrom, lastValueFrom, Observable, Subject, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { TreeData } from 'mat-tree-select-input';
+import { IFlatNode } from '../_models/IFlatNode';
 
 @Component({
   selector: 'app-category-edit',
@@ -15,6 +17,12 @@ export class CategoryEditComponent {
   editCategoryForm: FormGroup;
   category$: Observable<Category>;
   category: Category;
+  parentCategory: TreeData = {
+    name: 'none',
+    id: 0,
+    children: []
+  };
+  selectableParent = true;
 
 
   constructor(private categoriesService:CategoryService,
@@ -26,33 +34,71 @@ export class CategoryEditComponent {
   ngOnInit(): void {
     this.loadCategory();
     this.editCategoryForm = this.fb.group({
-      categoryName: ['', [Validators.required]],
+      categoryName: ['', [Validators.required]]
     });
   }
 
   onSubmit() {
-    if(this.category.id)
+    if(this.parentCategory.id !== 0)
     {
-        this.categoriesService.updateCategory(this.category).subscribe({
-              next: () => {
-                this.toastr.success('Category updated', 'Done!')
-                this.router.navigateByUrl('')
-              }
-            })
+        if(this.parentCategory.id === this.category.id){
+        this.toastr.error('Choosen parent category id and catetegory id cannot be the same', 'Oops!');
+        return;
+        }
+
+        this.category.parentId = this.parentCategory.id;
     }
+    else
+    {
+      this.category.parentId = undefined;
+    }
+
+    this.categoriesService.updateCategory(this.category).subscribe({
+          next: () => {
+        this.toastr.success('Category updated', 'Done!');
+        this.router.navigateByUrl('/categories');
+          },
+          error:() => {
+            this.toastr.error('Something went wrong!', 'Oops!');
+          }
+    });
+  }
+
+  onNodeSelect(node:IFlatNode)
+  {
+    this.parentCategory.id = node.id;
+    this.parentCategory.name = node.name;
+  }
+
+  clearParent()
+  {
+    this.parentCategory = {
+      name: 'none',
+      id: 0,
+      children: []
+    };
   }
 
 loadCategory(){
-    let id = +this.route.snapshot.paramMap.get('id')!;
+    const id = +this.route.snapshot.paramMap.get('id')!;
     if(id)
     {
       this.category$ = this.categoriesService.getCategory(id)
-      .pipe(tap(category =>
-        this.editCategoryForm.patchValue({
-          name: category.name,
-        })),
-        tap(category => this.category = category),
-        );
+      .pipe
+      (
+        tap({next: (categoryData:Category)=>{
+          this.editCategoryForm.patchValue({
+            name: categoryData.name,});
+          this.category = categoryData;
+
+          if(categoryData.parentId)
+          {
+            const parentCategory = this.categoriesService
+            .findCategoryById(this.categoriesService.categoriesTreeData, categoryData.parentId);
+            parentCategory? this.parentCategory = parentCategory : this.parentCategory;
+          }
+        }})
+      );
     }
     else
     {
@@ -76,6 +122,9 @@ loadCategory(){
   }
 
   cancel(){
-    this.router.navigateByUrl('');
+    this.router.navigateByUrl('/categories');
   }
 }
+
+
+

@@ -1,19 +1,29 @@
 <div class="container-mt5" style='text-align: center;'>
   <h2>New category</h2>
-   <form
-     [formGroup]="newCategoryForm"
-     (ngSubmit)="onSubmit(newCategoryForm)">
-     <div class="mb-2">
-       <label>
-         Category name:
-         <input id="name" formControlName="categoryName" placeholder="Category name">
-       </label>
-       <div *ngIf="newCategoryForm.get('name')?.invalid && (newCategoryForm.get('name')?.dirty || newCategoryForm.get('name')?.touched)" class="error-field">
-         <p class="error">Please provide a name.</p>
-       </div>
-     </div>
-     <div class="text-center">
-       <button [disabled]="!newCategoryForm.valid" class="btn btn-success mr-5" type="submit">Save category</button>
-       <button class="btn btn-default ml-5" (click)="cancel()" type="button">Cancel</button>
-     </div>
-       </form>
+  <form [formGroup]="newCategoryForm"
+        (ngSubmit)="onSubmit(newCategoryForm)">
+
+    <div class="mb-2">
+      <label class="me-2">
+        Category name:
+        <input id="name" formControlName="categoryName" placeholder="Category name">
+      </label>
+
+      <div>
+        <label class="mt-2 mb-2">Parent category: </label>
+      </div>
+      <div class="mb-2" style="display: inline-block; border: 1px solid dimgray;">
+        <app-cat-list [selectable]="selectableParent"
+                      (parentCategoryChanged)="onNodeSelect($event);"></app-cat-list>
+      </div>
+
+      <div *ngIf="newCategoryForm.get('name')?.invalid && (newCategoryForm.get('name')?.dirty || newCategoryForm.get('name')?.touched)" class="error-field">
+        <p class="error">Please provide a name.</p>
+      </div>
+    </div>
+    <div class="text-center">
+      <button [disabled]="!newCategoryForm.valid" class="btn btn-success mr-5" type="submit">Save category</button>
+      <button class="btn btn-default ml-5" (click)="cancel()" type="button">Cancel</button>
+    </div>
+  </form>
+</div>

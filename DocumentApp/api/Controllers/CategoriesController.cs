@@ -1,10 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using api.DTOs;
-using api.Interfaces.ServicesInterfaces;
-using System;
+using DocumentApp.DTOs;
+using DocumentApp.Interfaces.ServicesInterfaces;
+using Microsoft.AspNetCore.Mvc;
 
-namespace api.Controllers
+namespace DocumentApp.Controllers
 {
    [ApiController]
    [Route("/api/[controller]")]

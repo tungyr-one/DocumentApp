@@ -1,13 +1,14 @@
-import { Category } from './../_models/Category';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup,  Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, tap } from 'rxjs';
-import { Doc } from 'src/app/_models/Doc';
+import { IDoc as Doc } from 'src/app/_models/IDoc';
 import { DocService } from '../_services/doc.service';
 import { CategoryService } from '../_services/category.service';
 import { TreeData } from 'mat-tree-select-input';
+import { IFlatNode } from '../_models/IFlatNode';
+import { ICategory as Category } from '../_models/ICategory';
 
 @Component({
   selector: 'app-doc-edit',
@@ -18,7 +19,9 @@ export class DocEditComponent implements OnInit{
   editForm: FormGroup;
   id:number;
   doc$:Observable<Doc>;
-  categoriesSelectOptions: TreeData[] = [];
+  docsCategory:Category;
+  selectableParent = true;
+  isCategorySelectDirty = false;
 
   constructor(private docService:DocService,
     private categoriesService:CategoryService,
@@ -29,7 +32,6 @@ export class DocEditComponent implements OnInit{
     }
 
   ngOnInit() {
-    this.loadCategories();
     this.loadDoc();
     this.editForm = this.fb.group({
       name: ['', Validators.required],
@@ -40,15 +42,14 @@ export class DocEditComponent implements OnInit{
     });
   }
 
-  loadCategories(){
-    this.categoriesService.getCategories()
-    .pipe(
-      tap({
-        next: () => {
-          this.categoriesSelectOptions = this.categoriesService.categoriesOptions;
-        }}
-      )
-    ).subscribe();
+  onNodeSelect(node:IFlatNode)
+  {
+    if(this.docsCategory.id !== node.id)
+    {
+      this.docsCategory.id = node.id;
+      this.docsCategory.name = node.name;
+      this.isCategorySelectDirty = true;
+    }
   }
 
   loadDoc(){
@@ -59,8 +60,7 @@ export class DocEditComponent implements OnInit{
       .pipe(
         tap({next: (doc)=>{
           this.editForm.patchValue(doc, {emitEvent: false, onlySelf: true});
-          let docCategory = this.searchCategoryById(doc.category.id!, this.categoriesSelectOptions);
-          this.editForm.controls['category'].setValue(docCategory);
+          this.docsCategory = doc.category;
         }})
         );
     }
@@ -72,7 +72,7 @@ export class DocEditComponent implements OnInit{
 
   searchCategoryById(id: number, categories: TreeData[]): TreeData | null {
     for (const category of categories) {
-      if (+category.value === id) {
+      if (+category.id === id) {
         return category;
       } else if (category.children.length > 0) {
         const result = this.searchCategoryById(id, category.children);
@@ -84,11 +84,11 @@ export class DocEditComponent implements OnInit{
     return null;
   }
 
-  onSubmit(form: FormGroup) {
-    if(this.editForm.dirty)
+  onSubmit() {
+    if(this.editForm.dirty || this.isCategorySelectDirty)
     {
-      let formCategory = this.editForm.controls['category'].value;
-      const values = {...this.editForm.value, categoryId: formCategory.value};
+      let docCategoryId = this.editForm.controls['category'].value.id;
+      const values = {...this.editForm.value, categoryId: docCategoryId};
 
       if(this.id)
       {
@@ -101,7 +101,7 @@ export class DocEditComponent implements OnInit{
               error:() => {
                 this.toastr.error('Something went wrong!', 'Oops!');
               }
-            })
+        });
         }
     }
     else
@@ -117,7 +117,7 @@ export class DocEditComponent implements OnInit{
     {
     this.docService.deleteDocument(this.id).subscribe({
       next: () => {
-        this.router.navigateByUrl('')
+        this.router.navigateByUrl('');
       }
     });
     }

@@ -3,14 +3,13 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using api.Data;
+using DocumentApp.Data;
 
 namespace DocumentApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230324112221_InitialMigration")]
+    [Migration("20230510152817_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +34,9 @@ namespace DocumentApp.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("Edited")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")

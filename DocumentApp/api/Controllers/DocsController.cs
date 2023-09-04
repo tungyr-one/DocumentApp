@@ -1,9 +1,13 @@
 using System.Threading.Tasks;
+using DocumentApp.DTOs;
+using DocumentApp.Helpers;
+using DocumentApp.Interfaces.ServicesInterfaces;
 using Microsoft.AspNetCore.Mvc;
-using api.Interfaces;
-using api.DTOs;
+using System;
+using Microsoft.AspNetCore.Http;
+using System.Net;
 
-namespace api.Controllers
+namespace DocumentApp.Controllers
 {
    [ApiController]
    [Route("api/[controller]")]
@@ -29,20 +33,22 @@ namespace api.Controllers
          };
       }
 
-        ///<summary>
-        /// Gets documents list
-        ///</summary>
-      [HttpGet]
-      public async Task<ActionResult<DocDto>> GetDocs()
+      ///<summary>
+      /// Gets documents list
+      ///</summary>
+      [HttpPost]
+      public async Task<ActionResult<Pagination<DocDto>>> GetDocs(UserParams userParams)
       {
-         var docs = await _docsService.GetDocsAsync();
-         return Ok(docs);
+         var docs = await _docsService.GetDocsAsync(userParams);
+         HttpContext.Response.StatusCode = 200;
+         await HttpContext.Response.WriteAsJsonAsync(docs);
+         return new EmptyResult();
       }
 
         ///<summary>
         /// Creates document 
         ///</summary>
-      [HttpPost]
+      [HttpPost("new")]
       public async Task<ActionResult> CreateDocAsync(DocNewDto newDoc)
       {
          if (await _docsService.CreateAsync(newDoc)) return Ok();
@@ -53,11 +59,13 @@ namespace api.Controllers
         /// Updates document 
         ///</summary>
       [HttpPut("{id}")]
-      public async Task<ActionResult> UpdateDocAsync(int id, DocUpdateDto DocUpdate)
-      {
-         if (await _docsService.UpdateAsync(id, DocUpdate)) return NoContent();
-         return BadRequest("Failed to update document");
-      }
+      public Task Update(int id, DocUpdateDto docUpdate) => _docsService.UpdateAsync(id, docUpdate);
+      // public async Task UpdateDocAsync(int id, DocUpdateDto docUpdate)
+      // {
+      //    // await _docsService.UpdateAsync(id, docUpdate);
+      //    // return NoContent();
+      //    await _docsService.UpdateAsync(id, docUpdate);
+      // }
 
         ///<summary>
         /// Deletes document

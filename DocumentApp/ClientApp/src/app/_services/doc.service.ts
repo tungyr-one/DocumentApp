@@ -1,8 +1,10 @@
+import { UserParams } from './../_models/userParams';
 import { Injectable } from '@angular/core';
 import { map, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
-import { Doc } from '../_models/Doc';
+import { Pagination } from '../_models/Pagination';
+import { IDoc as Doc } from '../_models/IDoc';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +16,11 @@ export class DocService {
   constructor(private http: HttpClient) {
   }
 
-  getDocuments()
-  {
-    return this.http.get<Doc[]>(this.baseUrl + 'docs').pipe(
-      map((docs:Doc[]) => {
-        return docs;
-      }))
+  getDocuments(userParams:UserParams) {
+    return this.http.post<Pagination<Doc>>(this.baseUrl + 'docs', userParams).pipe(
+      map((result: Pagination<Doc>) => {
+        return result;
+      }));
   }
 
   getDocument(id:number)
@@ -33,15 +34,14 @@ export class DocService {
   }
 
   createDocument(model:Doc){
-    model.created = new Date();
-    return this.http.post(this.baseUrl + 'docs/', model)
+    return this.http.post(this.baseUrl + 'docs/new', model);
   }
 
   updateDocument(id:number, model:Doc){
-    return this.http.put(this.baseUrl + 'docs/'+ id, model)
+    return this.http.put(this.baseUrl + 'docs/' + id, model);
   }
 
   deleteDocument(id:number){
-    return this.http.delete(this.baseUrl + 'docs/'+ id)
+    return this.http.delete(this.baseUrl + 'docs/' + id);
   }
 }

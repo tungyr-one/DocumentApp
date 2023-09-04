@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using api.Entities;
+using DocumentApp.DTOs;
 using DocumentApp.Entities;
 
-namespace api.Interfaces
+namespace DocumentApp.Interfaces.RepositoriesInterfaces
 {
    public interface IDocsRepository
    {
@@ -15,31 +15,26 @@ namespace api.Interfaces
       ///<summary>
       /// Gets documents list
       ///</summary>
-      Task<DocDb[]> GetDocsAsync();
+      Task<DocDb[]> GetDocsAsync(UserParams userParams);
 
       ///<summary>
       /// Updates document
       ///</summary>
-      void Update(DocDb doc);
+      Task<bool> UpdateAsync(DocDb doc);
 
       ///<summary>
       /// Creates document
       ///</summary>
-      void Create(DocDb doc);
+      Task<bool> CreateAsync(DocDb doc);
 
       ///<summary>
       /// Deletes document
       ///</summary>
-      void Delete(int id);
+      Task<bool> DeleteAsync(int id);
 
       ///<summary>
       /// Checks if the document is in any category
       ///</summary>
-      Task<bool> IsDocumentWithCategoryRelationExists(int id);
-
-      ///<summary>
-      /// Saves all changes to database
-      ///</summary>
-      Task<bool> SaveAllAsync();
+      Task<bool> IsDocumentWithCategoryRelationExistsAsync(int id);
    }
 }

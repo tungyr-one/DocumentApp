@@ -1,15 +1,15 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using api.DTOs;
+using DocumentApp.DTOs;
+using DocumentApp.Helpers;
 
-namespace api.Interfaces
+namespace DocumentApp.Interfaces.ServicesInterfaces
 {
    public interface IDocsService
     {
         ///<summary>
         /// Gets document
         ///</summary>
-        Task<DocDto[]> GetDocsAsync();
+        Task<Pagination<DocDto>> GetDocsAsync(UserParams userParams);
 
         ///<summary>
         /// Gets documents list

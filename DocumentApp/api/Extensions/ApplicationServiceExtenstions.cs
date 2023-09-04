@@ -1,14 +1,14 @@
-using api.Data;
-using api.Data.Repositories;
-using api.Helpers;
-using api.Interfaces;
-using api.Interfaces.ServicesInterfaces;
-using api.Services;
+using DocumentApp.Data;
+using DocumentApp.Data.Repositories;
+using DocumentApp.Helpers;
+using DocumentApp.Interfaces.RepositoriesInterfaces;
+using DocumentApp.Interfaces.ServicesInterfaces;
+using DocumentApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace API.Extensions
+namespace DocumentApp.Extensions
 {
     public static class ApplicationServiceExtenstions
     {

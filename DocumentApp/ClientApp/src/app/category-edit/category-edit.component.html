@@ -1,21 +1,44 @@
 <div *ngIf="category$ | async; let category" class="container-mt5" style='text-align: center;'>
-   <h2>Edit category</h2>
-   <form
-     (ngSubmit)="onSubmit()">
+  <h2>Edit category</h2>
+  <form [formGroup]="editCategoryForm"
+        (ngSubmit)="onSubmit()">
 
-     <div class="mb-5">
-       <label>
-         Category name:
-         <input [(ngModel)]="category.name" name="CategoryName" #ctrl="ngModel" required placeholder="Category name" required>
-       </label>
-     </div>
+    <div>
+      <div class="mb-2">
+        <label>
+          Category name:
+          <input [(ngModel)]="category.name" [ngModelOptions]="{standalone: true}"
+                 name="CategoryName" #ctrl="ngModel" required placeholder="Category name" required>
+        </label>
+      </div>
 
-     <div class="text-center">
-       <button [disabled]="!ctrl.valid" class="btn btn-success mr-5" type="submit">Save category</button>
-       <button class="btn btn-default ml-5" (click)="deleteCategory()" type="button">Delete</button>
-       <button class="btn btn-default ml-5" (click)="cancel()" type="button">Cancel</button>
-     </div>
-       </form>
+      <div>
+        <label class="me-2">Parent category: </label>
+        <input [(ngModel)]="parentCategory.name"
+               [ngModelOptions]="{standalone: true}"
+               placeholder="Parent category name" readonly>
+        <button class="btn btn-outline-primary ms-2" (click)="clearParent()" type="button">Clear parent</button>
+      </div>
+    </div>
+
+
+    <div>
+      <label class="mt-2 mb-2">New parent category: </label>
+    </div>
+    <div class="mb-2" style="display: inline-block; border: 1px solid dimgray;">
+      <app-cat-list [selectable]="selectableParent"
+                    (parentCategoryChanged)="onNodeSelect($event);"></app-cat-list>
+    </div>
+
+    <div class="text-center">
+      <button [disabled]="!ctrl.valid" class="btn btn-success mr-5" type="submit">Save category</button>
+      <button class="btn btn-default ml-5" (click)="deleteCategory()" type="button">Delete</button>
+      <button class="btn btn-default ml-5" (click)="cancel()" type="button">Cancel</button>
+    </div>
+  </form>
+</div>
+
+
 
 
 

@@ -1,0 +1,9 @@
+.right-align {
+  margin-left: auto;
+}
+
+.selected-node {
+  font-weight: bold;
+  color: blue;
+  background-color:  lightblue;
+}

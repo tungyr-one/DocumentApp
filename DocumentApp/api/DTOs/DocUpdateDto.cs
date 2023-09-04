@@ -1,19 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace api.DTOs
+namespace DocumentApp.DTOs
 {
     ///<summary>
     ///Document update model for getting data from frontend
-    ///<summary>
+    ///</summary>
     public class DocUpdateDto
     {
         public string Name { get; set; }
         public int Version { get; set; }
         public string Author {get; set; }             
         public int CategoryId { get; set; }
+        public DateTime Edited { get; set; }
         public string Text { get; set; }
     }
 }

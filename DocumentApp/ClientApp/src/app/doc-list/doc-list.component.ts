@@ -1,11 +1,13 @@
 import { ToastrService } from 'ngx-toastr';
 import { CategoryService } from './../_services/category.service';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { Component, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Doc } from '../_models/Doc';
+import { IDoc as Doc } from '../_models/IDoc';
 import { DocService } from '../_services/doc.service';
+import { UserParams } from '../_models/userParams';
+import { Pagination } from '../_models/Pagination';
 
 @Component({
   selector: 'app-doc-list',
@@ -15,34 +17,56 @@ import { DocService } from '../_services/doc.service';
 export class DocumentListComponent implements OnInit
 {
   docs: Doc[] = [];
-  displayedColumns: string[] = ['name', 'created', 'version', 'author', 'category'];
+  displayedColumns: string[] = ['name', 'edited', 'created', 'version', 'author', 'category'];
   dataSource: MatTableDataSource<Doc>;
 
-  @ViewChild(MatPaginator) paginator:MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);;
-  @ViewChild(MatSort) sort:MatSort = new MatSort();
+  userParams: UserParams =
+  {
+    offset:0,
+    pageSize: 5,
+    sortBy: 'name',
+    sortOrder: 'asc',
+    filterBy: '',
+  };
 
-  constructor(private docService: DocService, private categoriesService:CategoryService,
-    private toastrService:ToastrService) {
+  pagination: Pagination<Doc> = new Pagination();
+  countPages:number;
+
+  pageSizeOptions = [5, 10, 25, 50, 100];
+
+  hidePageSize = false;
+  showPageSizeOptions = true;
+  showFirstLastButtons = true;
+  disabled = false;
+
+  constructor(private docService: DocService,
+    private categoriesService:CategoryService,
+    private toastrService:ToastrService)
+  {
     this.dataSource = new MatTableDataSource();
   }
 
   ngOnInit(): void {
     this.loadDocs();
+  }
 
-    this.categoriesService.categoriesChangedEvent
-    .subscribe(() => {
-         this.loadDocs();
-    });
+  handlePageEvent(e: PageEvent) {
+    this.userParams.pageSize = e.pageSize;
+    this.userParams.offset = e.pageSize * e.pageIndex;
+
+    this.loadDocs();
   }
 
   loadDocs() {
-    this.docService.getDocuments().subscribe({
-      next: (response: any) => {
-          this.dataSource = new MatTableDataSource(response);
-          this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }
-    })
+    if(this.userParams)
+    {
+      this.docService.getDocuments(this.userParams).subscribe({
+        next: (response: Pagination<Doc>) => {
+          this.dataSource = new MatTableDataSource(response.items);
+          this.pagination = response;
+        }
+      });
+    }
   }
 
   deleteDoc(id:number)
@@ -62,18 +86,22 @@ export class DocumentListComponent implements OnInit
         this.ngOnInit();
       },
       error: error => {
-        this.toastrService.error(error.error.message, "Oops!")
+        this.toastrService.error(error.error.message, "Oops!");
     }
     });
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    this.userParams.filterBy = filterValue;
+    this.loadDocs();
   }
 
+  sortData(sort: Sort) {
+    this.userParams.sortBy = sort.active;
+    this.userParams.sortOrder = sort.direction;
+    this.loadDocs();
+    }
 }
+
+

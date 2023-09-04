@@ -1,36 +1,27 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using api.Data;
-using api.DTOs;
-using api.Entities;
-using api.Exceptions;
-using api.Interfaces;
-using api.Interfaces.ServicesInterfaces;
-using API.Errors;
+using DocumentApp.Exceptions;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using DocumentApp.DTOs;
+using DocumentApp.Entities;
+using DocumentApp.Interfaces.RepositoriesInterfaces;
+using DocumentApp.Interfaces.ServicesInterfaces;
 
-namespace api.Services
+namespace DocumentApp.Services
 {
    public class CategoriesService : ICategoriesService
    {
-        private readonly ILogger<CategoriesService> _logger;
-        private ICategoriesRepository _categoriesRepository { get; }
-        private IMapper _mapper { get; }
-        private IDocsRepository _docsRepository;
+        private readonly ICategoriesRepository _categoriesRepository;
+        private readonly IMapper _mapper;
+        private readonly  IDocsRepository _docsRepository;
 
 
         public CategoriesService(ICategoriesRepository categoryRepository, 
         IDocsRepository docsRepository,
-        ILogger<CategoriesService> logger,
         IMapper mapper)
         {
             _categoriesRepository = categoryRepository;
             _docsRepository = docsRepository;
             _mapper = mapper;
-            _logger = logger;
         }
 
       public async Task<CategoryDto> GetCategoryAsync(int id)
@@ -42,44 +33,41 @@ namespace api.Services
       public async Task<CategoryDto[]> GetCategoriesAsync()
       {
         var categories = await _categoriesRepository.GetCategoriesAsync();
-        _logger.LogInformation("Get all categories.");
-        return _mapper.Map<CategoryDto[]>(categories);;
+        return _mapper.Map<CategoryDto[]>(categories);
       }
 
       public async Task<bool> CreateAsync(CategoryDto newCategory)
       {
           var categoryToDb = _mapper.Map<CategoryDb>(newCategory);    
-            _categoriesRepository.Create(categoryToDb);
-
-            return await _categoriesRepository.SaveAllAsync();
+          return await _categoriesRepository.CreateAsync(categoryToDb);
       }
 
       public async Task<bool> UpdateAsync(int id, CategoryDto categoryUpdate)
       {
           var categoryDb = await _categoriesRepository.GetCategoryAsync(id);
-            _mapper.Map(categoryUpdate, categoryDb);      
-            _categoriesRepository.Update(categoryDb);
-            
-            return await _categoriesRepository.SaveAllAsync();
+          if (categoryDb is null)
+          {
+            throw new NotFoundException("Can't find category for update");
+          }
+          _mapper.Map(categoryUpdate, categoryDb);      
+          return await _categoriesRepository.UpdateAsync(categoryDb);
       }
 
       public async Task<bool> DeleteAsync(int id)
       {
-            var categoryToDelete = await _categoriesRepository.GetCategoryAsync(id);
+          var categoryToDelete = await _categoriesRepository.GetCategoryAsync(id);
 
-            if (categoryToDelete.Children.Count > 0)
-            {
-                throw new ValidationException("Category has subcategories, delete them first");
-            }
+          if (categoryToDelete.Children is { Count: > 0 })
+          {
+              throw new ValidationException("Category has subcategories, delete them first");
+          }
 
-            if (await _docsRepository.IsDocumentWithCategoryRelationExists(categoryToDelete.Id))
-            {
-                throw new ValidationException("Category has documents, delete them first");
-            }
+          if (await _docsRepository.IsDocumentWithCategoryRelationExistsAsync(categoryToDelete.Id))
+          {
+              throw new ValidationException("Category has documents, delete them first");
+          }
 
-          _categoriesRepository.Delete(categoryToDelete);
-
-          return await _categoriesRepository.SaveAllAsync();
+          return await _categoriesRepository.DeleteAsync(categoryToDelete);
       }
    }
 }

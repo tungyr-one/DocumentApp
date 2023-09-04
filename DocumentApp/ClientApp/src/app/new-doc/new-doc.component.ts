@@ -1,12 +1,12 @@
-import { Category } from './../_models/Category';
 import { CategoryService } from './../_services/category.service';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DocService } from '../_services/doc.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Router } from '@angular/router';
+import {  Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { TreeData } from 'mat-tree-select-input';
+import { IFlatNode } from '../_models/IFlatNode';
 
 
 @Component({
@@ -19,34 +19,42 @@ export class NewDocComponent implements OnInit{
   categoriesSelectOptions: TreeData[] = [];
   selectedCategory:string;
 
-  @ViewChild('searchInput', { static: false }) searchInputRef: ElementRef;
+  docsCategoryId:number;
+  selectableParent = true;
 
   constructor(private docService:DocService,
     private categoriesService:CategoryService,
     private toastr: ToastrService,
     private fb: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit(): void {
     this.loadCategories();
     this.newDocForm = this.fb.group({
-      name: ['!Test doc', Validators.required],
+      name: ['', Validators.required],
       version: ['1'],
-      author: ['Victor', [Validators.required]],
-      category: ['', [Validators.required]],
-      text: ['Please ensure the versions of these two packages exactly match.',
-      [Validators.required, Validators.minLength(15)]],
+      author: ['', [Validators.required]],
+      text: ['', [Validators.required, Validators.minLength(1)]],
     });
   }
 
+  onNodeSelect(node:IFlatNode)
+  {
+    this.docsCategoryId = node.id;
+  }
+
   onSubmit(form: FormGroup) {
-    let formCategory = this.newDocForm.controls['category'].value;
-    const values = {...this.newDocForm.value, categoryId:formCategory.value};
+    if(!this.docsCategoryId)
+    {
+      this.toastr.error('Please choose category!', 'Oops!');
+      return;
+    }
+
+    const values = {...this.newDocForm.value, categoryId:this.docsCategoryId};
 
     this.docService.createDocument(values).subscribe({
       next: () => {
-        this.toastr.success('Document saved');
+        this.toastr.success('Document created');
       },
       error:() => {
         this.toastr.error('Something went wrong!', 'Oops!');
@@ -59,7 +67,7 @@ export class NewDocComponent implements OnInit{
     .pipe(
       tap({
         next: () => {
-          this.categoriesSelectOptions = this.categoriesService.categoriesOptions;
+          this.categoriesSelectOptions = this.categoriesService.categoriesTreeData;
         }}
       )
     ).subscribe();
@@ -68,5 +76,4 @@ export class NewDocComponent implements OnInit{
   cancel(){
     this.router.navigateByUrl('');
   }
-
 }

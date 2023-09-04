@@ -1,0 +1,10 @@
+<mat-toolbar style="display: flex">
+  <div style="flex-grow: 1">
+    Categories
+  </div>
+  <button class="btn btn-outline-primary ms-3">
+    <a class="nav-link text-dark" [routerLink]="['/categories/new']">New category</a>
+  </button>
+</mat-toolbar>
+
+<app-cat-list [selectable]="selectableParent"></app-cat-list>
